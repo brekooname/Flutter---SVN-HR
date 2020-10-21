@@ -1,0 +1,57 @@
+{
+  "password": "Password",
+  "username": "Username",
+  "login": "Login",
+
+  "home": "Home",
+  "my_profile": "My Profile",
+  "leaves": "Leaves",
+  "vacations": "Vacations",
+  "time_sheet": "Time Sheet",
+  "salary_increment_request": "Salary Inc. Request",
+  "extra_work_request": "Extra Work Request",
+  "expense_request": "Expense Request",
+  "benefit_request": "Benefit Request",
+  "loan_request": "Loan Request",
+  "clock_record": "Clock Record",
+
+  "search": "Search",
+  "announcements": "Announcements",
+  "last_payslib": "Last Payslib",
+  "holidays": "Holidays",
+
+  "user_information": "User Information",
+  "employee_number": "Employee Number",
+  "email": "Email",
+  "telephone_number": "Telephone Number",
+  "reporting_manager": "Reporting Manager",
+
+
+  "status": "Status :",
+  "type": "Type :",
+  "filter_by": "Filter by :",
+  "from": "From : ",
+  "to": "To :",
+
+  "select_type": "Select Type",
+  "select_location": "Select Location",
+  "vacation_request": "Vacation Request",
+  "select_attachment": "Select Attachment",
+  "send_vacation": "Send Vacation",
+  "notes": "Notes",
+  "required": "Required",
+
+  "no_image_picked": "You have not yet picked an image",
+  "cancel": "Cancel",
+  "pick": "Pick",
+  "enter_max_width": "Enter maxWidth if desired",
+  "enter_max_height": "Enter maxHeight if desired",
+  "enter_quality": "Enter quality if desired",
+
+  "add_docs": "Add Docs",
+  "add_more": "Add more ?",
+  "attachments_required": "Attachments Required",
+  "leave_request": "Leave Request",
+  "send_leave": "Send Leave"
+
+}

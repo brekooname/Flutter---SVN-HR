@@ -1,0 +1,58 @@
+{
+  "password": "كلمة السر",
+  "username": "اسم المستخدم",
+  "login": "تسجيل الدخول",
+
+  "home": "الرئيسية",
+  "my_profile": "حسابي",
+  "leaves": "مغادرات",
+  "vacations": "اجازات",
+  "time_sheet": "سجل الحضور",
+  "salary_increment_request": "طلب زيادة راتب",
+  "extra_work_request": "طلب عمل اضافي",
+  "expense_request": "طلب بدل مصاريف",
+  "benefit_request": "طلب منفعة",
+  "loan_request": "طلب قرض",
+  "clock_record": "سجل الساعة",
+  "logout": "تسجيل الخروج",
+
+  "search": "بحث",
+  "announcements": "الاعلانات",
+  "last_payslib": "آخر قسيمة دفع",
+  "holidays": "العطل",
+
+  "user_information": "معلومات المستخدم",
+  "employee_number": "رقم الموظف",
+  "email": "الايميل",
+  "telephone_number": "رقم التلفون",
+  "reporting_manager": "المسؤول المبباشر",
+
+  "status": "الحالة :",
+  "type": "النوع :",
+  "filter_by": "مصنف بواسطة :",
+  "from": "من :",
+  "to": "الى :",
+
+
+  "select_type": "اختار النوع",
+  "select_location": "اختار المكان",
+  "vacation_request": "طلب اجازة",
+  "select_attachment": "اختار مرفق",
+  "send_vacation": "ارسال الطلب",
+  "notes": "ملاحظات",
+  "required": "مطلوب",
+
+  "add_docs": "اضافة مرفقات",
+
+  "cancel": "الغاء",
+  "pick": "تحديد",
+  "enter_max_width": "Enter maxWidth if desired",
+  "enter_max_height": "Enter maxHeight if desired",
+  "enter_quality": "Enter quality if desired",
+  "add_more": "Add more",
+  "attachments_required": "Attachments Required",
+  "no_image_picked": "You have not yet picked an image",
+  "leave_request": "Leave Request",
+  "send_leave": "Send Leave"
+
+}
