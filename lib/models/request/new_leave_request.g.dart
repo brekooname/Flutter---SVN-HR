@@ -8,16 +8,16 @@ part of 'new_leave_request.dart';
 
 NewLeaveRequest _$NewLeaveRequestFromJson(Map<String, dynamic> json) {
   return NewLeaveRequest()
-    ..notes = json['notes'] as String
-    ..end_date = json['end_date'] as String
+    ..leave_id = json['leave_id'] as String
     ..start_date = json['start_date'] as String
-    ..leave_id = json['leave_id'] as String;
+    ..end_date = json['end_date'] as String
+    ..notes = json['notes'] as String;
 }
 
 Map<String, dynamic> _$NewLeaveRequestToJson(NewLeaveRequest instance) =>
     <String, dynamic>{
-      'notes': instance.notes,
-      'end_date': instance.end_date,
-      'start_date': instance.start_date,
       'leave_id': instance.leave_id,
+      'start_date': instance.start_date,
+      'end_date': instance.end_date,
+      'notes': instance.notes,
     };
