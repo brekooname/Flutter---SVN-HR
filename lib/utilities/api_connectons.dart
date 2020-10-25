@@ -26,6 +26,12 @@ class ApiConnections{
 
   static const String  ADD_NEW_LEAVE="/addLeaveRequestV2";
 
+  static const String  GET_APPROVALS_LIST="/getApprovals";
 
+  static const String  GET_APPROVAL_INBOX="/getApprovalObject";
+
+  static const String  APPROVALS_INBOX_ACCEPT="/approvalInboxAccept";
+
+  static const String  APPROVAL_INBOX_REJECT="/approvalInboxReject";
 
 }

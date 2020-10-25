@@ -20,6 +20,7 @@ class Const {
   static final VACATION_REQUEST_DECLINED_STATUS="1474798944783";
   static final VACATION_REQUEST_PENDING_STATUS="1469456728756";
 
+
   static final VACATION_REQUEST_LOCATION_INTERNAL="207684107300700";
   static final VACATION_REQUEST_LOCATION_EXTERNAL="207698843063200";
 
@@ -35,6 +36,7 @@ class Const {
 
   static final DATE_FORMAT="yyyy-MM-dd";
   static final DATE_TIME_FORMAT="yyyy-MM-dd HH:mm";
+  static final REQUEST_RESPONSE_DISPLAYVALUE="New";
 
 
   static final SHARED_KEY_TOKEN_ID="tokenId";
@@ -52,6 +54,22 @@ class Const {
 
   static final LANGUAGE_CODE_EN="en";
   static final lANGUAGE_CODE_AR="ar";
+
+  static final APPROVAL_INBOX_LEAVE_TYPE="Entities.HR_EMP_LEAVE_TRANS";
+  static final APPROVAL_INBOX_VACATION_TYPE="Entities.HR_VACATION";
+  static final APPROVAL_INBOX_LOAN_TYPE="Entities.HR_EMPLOYEE_LOANS";
+  static final APPROVAL_INBOX_EXTRA_WORK_TYPE="Entities.HR_EMP_EXTRA_WORK_TRANS";
+  static final APPROVAL_INBOX_EXPENSE_TYPE="Entities.HR_EXPENSE_REQUEST";
+  static final APPROVAL_INBOX_DOCUEMNT_TYPE="Entities.HR_EMP_DOCUMENT_REQUESTS";
+  static final APPROVAL_INBOX_BENEFIT_TYPE="Entities.HR_EMP_BENEFIT_TRANS";
+  static final APPROVAL_INBOX_SALARY_INC_TYPE="Entities.HR_SALARY_INCREMENT_REQUEST";
+
+  static final APPROVAL_INBOX_LEAVE_ENCASHMENT_TYPE="Entities.HR_LEAVE.ENCASHMENT";
+
+
+
+  static final APPROVAL_INBOX_ACCTION_ACCEPT="accept";
+  static final APPROVAL_INBOX_ACTION_REJECT="reject";
 
 
   static final LOCALE_KEY_USERNAME="username";
@@ -82,7 +100,7 @@ class Const {
   static final LOCALE_KEY_TELEPHONE_NUMBER="telephone_number";
   static final LOCALE_KEY_REPORTING_MANAGER="reporting_manager";
 
-  static final LOCALE_KEY_SATAUS="status";
+  static final LOCALE_KEY_STATUS="status";
   static final LOCALE_KEY_TYPE="type";
   static final LOCALE_KEY_FILTER_BY="filter_by";
   static final LOCALE_KEY_FROM="from";
@@ -110,6 +128,68 @@ class Const {
 
   static final LOCALE_KEY_LEAVE_REQUEST="leave_request";
   static final LOCALE_KEY_SEND_LEAVE="send_leave";
+
+  static final LOCALE_KEY_APPROVAL_INBOX="approval_inbox";
+  static final LOCALE_KEY_REQUEST_DATE="request_date";
+
+  static final LOCALE_KEY_REQUEST_DETAILS="request_details";
+
+  static final LOCALE_KEY_APPROVE="approve";
+  static final LOCALE_KEY_REJECT="reject";
+
+  static final LOCALE_KEY_LOCATION="location";
+  static final LOCALE_KEY_UNPAID_DAYS="unpaid_days";
+  static final LOCALE_KEY_PAID_DAYS="paid_days";
+  static final LOCALE_KEY_PREVIOUS_BALANCE="previous_balance";
+  static final LOCALE_KEY_NEW_BALANCE="new_balance";
+
+
+  static final LOCALE_KEY_LEAVE_START_TIME="start_time";
+  static final LOCALE_KEY_LEAVE_END_TIME="end_time";
+
+  static final LOCALE_KEY_LOAN_AMOUNT="loan_amount";
+  static final LOCALE_KEY_LOAN_CURRENCY="loan_currancy";
+  static final LOCALE_KEY_LOAN_PAYMENT_METHOD="loanPaymentMethod";
+  static final LOCALE_KEY_LOAN_PAYMENT_DUEDATE="loanPaymentDueDate";
+  static final LOCALE_KEY_LOAN_TYPES="loanTypes";
+  static final LOCALE_KEY_LOAN_APPROVED_AMOUNT="loanApprovedAmount";
+
+  static final LOCALE_KEY_EXTRA_WORK_UNIT="extraWorkUnit";
+  static final LOCALE_KEY_EXTRA_WORK_UNIT_QUANTITY="extraWorkUnitQuantity";
+  static final LOCALE_KEY_EXTRA_WOR_DAY_TYPE="extraWorkDayType";
+  static final LOCALE_KEY_EXTRA_WORK_REASON="extraWorkReason";
+  static final LOCALE_KEY_EXTRA_WORK_PAYROLL_CYCLE="extraWorkPayrollCycle";
+  static final LOCALE_KEY_EXTRA_WORK_REQUEST_DATE="extraWorkRequestDate";
+
+
+  static final LOCALE_KEY_EXPENSE_CURRANCY="expenseCurrancy";
+  static final LOCALE_KEY_EXPENSE_AMOUNT="expenseAmount";
+  static final LOCALE_KEY_EXPENSE_DATE="expenseDate";
+  static final LOCALE_KEY_EXPENSE_REQUEST_DATE="expenseRequestDate";
+  static final LOCALE_KEY_EXPENSE_APPROVED_AMOUNT="expenseApprovedAmount";
+
+  static final LOCALE_KEY_EMP_BENEFIT_APPROVE_DATE="empBenefitApproveDate";
+  static final LOCALE_KEY_EMP_BENEFIT_TRANS_STATUS="empBenefitTransStatus";
+  static final LOCALE_KEY_EMP_BENEFIT_REQUEST_AMT="empBenefitRequestAmt";
+  static final LOCALE_KEY_EMP_BENEFIT_REQUEST_DATE="empBenefitRequestDate";
+  static final LOCALE_KEY_EMP_BENEFIT_UNIT_PRICE="empBenefitUnitPrice";
+
+  static final LOCALE_KEY_DOCUMENT_APPROVED_DATE="documentApprovedDate";
+  static final LOCALE_KEY_DOCUMENT_TYPE="documentType";
+  static final LOCALE_KEY_DOCUMENT_REQUEST_DATE="documentRequestdate";
+
+  static final LOCALE_KEY_LEAVE_ENCASHMENT_AMOUNT="leaveEncashmentAmount";
+  static final LOCALE_KEY_LEAVE_ENCASHMENT_FROM_DATE="leaveEncashmentFromDate";
+  static final LOCALE_KEY_LEAVE_ENCASHMENT_TO_DATE="leaveEncashmentToDate";
+
+
+  static final LOCALE_KEY_SALARY_INC_REQUEST_DATE="salaryIncRequestDate";
+  static final LOCALE_KEY_SALARY_INC_CURRENCY="salaryIncCurrency";
+  static final LOCALE_KEY_SALARY_INC_CURRENT_SALARY="salaryIncCurrentSalary";
+  static final LOCALE_KEY_SALARY_INC_APPROVED_AMOUNT="salaryIncApprovedAmount";
+  static final LOCALE_KEY_SALARY_INCR_TYPE="salaryIncrType";
+  static final LOCALE_KEY_SALARY_INC_REQUEST_AMOUNT="salaryIncRequestAmount";
+
 
 
 }

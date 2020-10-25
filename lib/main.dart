@@ -9,6 +9,8 @@ import 'package:sven_hr/Screens/Leaves/leaves_transaction_screen.dart';
 import 'package:sven_hr/Screens/Vacations/picker_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_request_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
+import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
+import 'package:sven_hr/Screens/approval_inbox/request_details_screen.dart';
 import 'package:sven_hr/Screens/navigation_home_screen.dart';
 import 'package:sven_hr/Screens/Login/login_screen.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
@@ -114,6 +116,7 @@ class _MyAppState extends State<MyApp> {
         LeavesTransaction.id: (context) => LeavesTransaction(),
         VacationRequestScreen.id: (context) => VacationRequestScreen(),
         LeaveRequestScreen.id: (context) => LeaveRequestScreen(),
+        ApprovalInboxTransactionScreen.id: (context) => ApprovalInboxTransactionScreen(),
       },
       localizationsDelegates: [
         newLocaleDelegate,

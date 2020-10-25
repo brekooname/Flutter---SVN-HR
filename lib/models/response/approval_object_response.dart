@@ -1,16 +1,16 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sven_hr/models/request/base_request.dart';
 
-part 'get_approval_object_response.g.dart';
+part 'approval_object_response.g.dart';
 
 @JsonSerializable(nullable: false)
-class GetApprovalObjectResponse{
+class ApprovalObjectResponse{
 
-  GetApprovalObjectResponse();
+  ApprovalObjectResponse();
 
-  factory GetApprovalObjectResponse.fromJson(Map<String, dynamic> json) => _$GetApprovalObjectResponseFromJson(json);
+  factory ApprovalObjectResponse.fromJson(Map<String, dynamic> json) => _$ApprovalObjectResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$GetApprovalObjectResponseToJson(this);
+  Map<String, dynamic> toJson() => _$ApprovalObjectResponseToJson(this);
 
   @JsonKey(name: 'row_id')
   String _row_id;
@@ -34,7 +34,7 @@ class GetApprovalObjectResponse{
   String _vacationLocation;
 
   @JsonKey(name: 'vacationTransactionPeriod')
-  String _vacationTransactionPeriod;
+  int _vacationTransactionPeriod;
 
   @JsonKey(name: 'vacationTransactionReason')
   String _vacationTransactionReason;
@@ -55,19 +55,19 @@ class GetApprovalObjectResponse{
   String _vacationRequestChannel;
 
   @JsonKey(name: 'vacationHolidayDays')
-  String _vacationHolidayDays;
+  int _vacationHolidayDays;
 
   @JsonKey(name: 'vacationPaidDays')
-  String _vacationPaidDays;
+  num _vacationPaidDays;
 
   @JsonKey(name: 'vacationUnPaidDays')
-  String _vacationUnPaidDays;
+  num _vacationUnPaidDays;
 
   @JsonKey(name: 'vacationPreviousBalance')
-  String _vacationPreviousBalance;
+  int _vacationPreviousBalance;
 
   @JsonKey(name: 'vacationNewBalance')
-  String _vacationNewBalance;
+  int _vacationNewBalance;
 
   @JsonKey(name: 'vacationRemarks')
   String _vacationRemarks;
@@ -85,10 +85,10 @@ class GetApprovalObjectResponse{
   String _leaveApprovedBy;
 
   @JsonKey(name: 'leaveStartTime')
-  String _leaveStartTime;
+  int _leaveStartTime;
 
   @JsonKey(name: 'leaveEndTime')
-  String _leaveEndTime;
+  int _leaveEndTime;
 
   @JsonKey(name: 'leaveNotes')
   String _leaveNotes;
@@ -103,7 +103,7 @@ class GetApprovalObjectResponse{
   String _loanCurrancy;
 
   @JsonKey(name: 'loanAmount')
-  String _loanAmount;
+  num _loanAmount;
 
   @JsonKey(name: 'loanRequestDate')
   String _loanRequestDate;
@@ -118,7 +118,7 @@ class GetApprovalObjectResponse{
   String _loanInstallmentStartDate;
 
   @JsonKey(name: 'loanApprovedAmount')
-  String _loanApprovedAmount;
+  num _loanApprovedAmount;
 
   @JsonKey(name: 'loanPaymentDueDate')
   String _loanPaymentDueDate;
@@ -127,7 +127,7 @@ class GetApprovalObjectResponse{
   String _extraWorkUnit;
 
   @JsonKey(name: 'extraWorkUnitQuantity')
-  String _extraWorkUnitQuantity;
+  num _extraWorkUnitQuantity;
 
   @JsonKey(name: 'extraWorkDayType')
   String _extraWorkDayType;
@@ -145,7 +145,7 @@ class GetApprovalObjectResponse{
   String _expenseCurrancy;
 
   @JsonKey(name: 'expenseAmount')
-  String _expenseAmount;
+  num _expenseAmount;
 
   @JsonKey(name: 'expenseDate')
   String _expenseDate;
@@ -154,7 +154,7 @@ class GetApprovalObjectResponse{
   String _expenseRequestDate;
 
   @JsonKey(name: 'expenseApprovedAmount')
-  String _expenseApprovedAmount;
+  num _expenseApprovedAmount;
 
   @JsonKey(name: 'documentApprovedDate')
   String _documentApprovedDate;
@@ -172,7 +172,7 @@ class GetApprovalObjectResponse{
   String _empBenefitTransStatus;
 
   @JsonKey(name: 'empBenefitRequestAmt')
-  String _empBenefitRequestAmt;
+  num _empBenefitRequestAmt;
 
   @JsonKey(name: 'empBenefitRequestDate')
   String _empBenefitRequestDate;
@@ -181,7 +181,7 @@ class GetApprovalObjectResponse{
   String _empBenefitUnitPrice;
 
   @JsonKey(name: 'leaveEncashmentAmount')
-  String _leaveEncashmentAmount;
+  num _leaveEncashmentAmount;
 
   @JsonKey(name: 'leaveEncashmentLeave')
   String _leaveEncashmentLeave;
@@ -211,16 +211,16 @@ class GetApprovalObjectResponse{
   String _salaryIncSerivecPeriod;
 
   @JsonKey(name: 'salaryIncCurrentSalary')
-  String _salaryIncCurrentSalary;
+  num _salaryIncCurrentSalary;
 
   @JsonKey(name: 'salaryIncApprovedAmount')
-  String _salaryIncApprovedAmount;
+  num _salaryIncApprovedAmount;
 
   @JsonKey(name: 'salaryIncIncrType')
   String _salaryIncIncrType;
 
   @JsonKey(name: 'salaryIncRequestAmount')
-  String _salaryIncRequestAmount;
+  num _salaryIncRequestAmount;
 
   @JsonKey(name: 'salaryIncRequestStatus')
   String _salaryIncRequestStatus;
@@ -273,9 +273,9 @@ class GetApprovalObjectResponse{
     _vacationLocation = value;
   }
 
-  String get vacationTransactionPeriod => _vacationTransactionPeriod;
+  int get vacationTransactionPeriod => _vacationTransactionPeriod;
 
-  set vacationTransactionPeriod(String value) {
+  set vacationTransactionPeriod(int value) {
     _vacationTransactionPeriod = value;
   }
 
@@ -315,34 +315,11 @@ class GetApprovalObjectResponse{
     _vacationRequestChannel = value;
   }
 
-  String get vacationHolidayDays => _vacationHolidayDays;
 
-  set vacationHolidayDays(String value) {
+  int get vacationHolidayDays => _vacationHolidayDays;
+
+  set vacationHolidayDays(int value) {
     _vacationHolidayDays = value;
-  }
-
-  String get vacationPaidDays => _vacationPaidDays;
-
-  set vacationPaidDays(String value) {
-    _vacationPaidDays = value;
-  }
-
-  String get vacationUnPaidDays => _vacationUnPaidDays;
-
-  set vacationUnPaidDays(String value) {
-    _vacationUnPaidDays = value;
-  }
-
-  String get vacationPreviousBalance => _vacationPreviousBalance;
-
-  set vacationPreviousBalance(String value) {
-    _vacationPreviousBalance = value;
-  }
-
-  String get vacationNewBalance => _vacationNewBalance;
-
-  set vacationNewBalance(String value) {
-    _vacationNewBalance = value;
   }
 
   String get vacationRemarks => _vacationRemarks;
@@ -375,15 +352,15 @@ class GetApprovalObjectResponse{
     _leaveApprovedBy = value;
   }
 
-  String get leaveStartTime => _leaveStartTime;
+  int get leaveStartTime => _leaveStartTime;
 
-  set leaveStartTime(String value) {
+  set leaveStartTime(int value) {
     _leaveStartTime = value;
   }
 
-  String get leaveEndTime => _leaveEndTime;
+  int get leaveEndTime => _leaveEndTime;
 
-  set leaveEndTime(String value) {
+  set leaveEndTime(int value) {
     _leaveEndTime = value;
   }
 
@@ -411,9 +388,9 @@ class GetApprovalObjectResponse{
     _loanCurrancy = value;
   }
 
-  String get loanAmount => _loanAmount;
+  num get loanAmount => _loanAmount;
 
-  set loanAmount(String value) {
+  set loanAmount(num value) {
     _loanAmount = value;
   }
 
@@ -441,9 +418,9 @@ class GetApprovalObjectResponse{
     _loanInstallmentStartDate = value;
   }
 
-  String get loanApprovedAmount => _loanApprovedAmount;
+  num get loanApprovedAmount => _loanApprovedAmount;
 
-  set loanApprovedAmount(String value) {
+  set loanApprovedAmount(num value) {
     _loanApprovedAmount = value;
   }
 
@@ -459,9 +436,9 @@ class GetApprovalObjectResponse{
     _extraWorkUnit = value;
   }
 
-  String get extraWorkUnitQuantity => _extraWorkUnitQuantity;
+  num get extraWorkUnitQuantity => _extraWorkUnitQuantity;
 
-  set extraWorkUnitQuantity(String value) {
+  set extraWorkUnitQuantity(num value) {
     _extraWorkUnitQuantity = value;
   }
 
@@ -495,9 +472,9 @@ class GetApprovalObjectResponse{
     _expenseCurrancy = value;
   }
 
-  String get expenseAmount => _expenseAmount;
+  num get expenseAmount => _expenseAmount;
 
-  set expenseAmount(String value) {
+  set expenseAmount(num value) {
     _expenseAmount = value;
   }
 
@@ -513,9 +490,9 @@ class GetApprovalObjectResponse{
     _expenseRequestDate = value;
   }
 
-  String get expenseApprovedAmount => _expenseApprovedAmount;
+  num get expenseApprovedAmount => _expenseApprovedAmount;
 
-  set expenseApprovedAmount(String value) {
+  set expenseApprovedAmount(num value) {
     _expenseApprovedAmount = value;
   }
 
@@ -549,9 +526,9 @@ class GetApprovalObjectResponse{
     _empBenefitTransStatus = value;
   }
 
-  String get empBenefitRequestAmt => _empBenefitRequestAmt;
+  num get empBenefitRequestAmt => _empBenefitRequestAmt;
 
-  set empBenefitRequestAmt(String value) {
+  set empBenefitRequestAmt(num value) {
     _empBenefitRequestAmt = value;
   }
 
@@ -567,9 +544,9 @@ class GetApprovalObjectResponse{
     _empBenefitUnitPrice = value;
   }
 
-  String get leaveEncashmentAmount => _leaveEncashmentAmount;
+  num get leaveEncashmentAmount => _leaveEncashmentAmount;
 
-  set leaveEncashmentAmount(String value) {
+  set leaveEncashmentAmount(num value) {
     _leaveEncashmentAmount = value;
   }
 
@@ -627,15 +604,15 @@ class GetApprovalObjectResponse{
     _salaryIncSerivecPeriod = value;
   }
 
-  String get salaryIncCurrentSalary => _salaryIncCurrentSalary;
+  num get salaryIncCurrentSalary => _salaryIncCurrentSalary;
 
-  set salaryIncCurrentSalary(String value) {
+  set salaryIncCurrentSalary(num value) {
     _salaryIncCurrentSalary = value;
   }
 
-  String get salaryIncApprovedAmount => _salaryIncApprovedAmount;
+  num get salaryIncApprovedAmount => _salaryIncApprovedAmount;
 
-  set salaryIncApprovedAmount(String value) {
+  set salaryIncApprovedAmount(num value) {
     _salaryIncApprovedAmount = value;
   }
 
@@ -645,9 +622,9 @@ class GetApprovalObjectResponse{
     _salaryIncIncrType = value;
   }
 
-  String get salaryIncRequestAmount => _salaryIncRequestAmount;
+  num get salaryIncRequestAmount => _salaryIncRequestAmount;
 
-  set salaryIncRequestAmount(String value) {
+  set salaryIncRequestAmount(num value) {
     _salaryIncRequestAmount = value;
   }
 
@@ -667,5 +644,29 @@ class GetApprovalObjectResponse{
 
   set salaryIncApprovedDate(String value) {
     _salaryIncApprovedDate = value;
+  }
+
+  num get vacationPaidDays => _vacationPaidDays;
+
+  set vacationPaidDays(num value) {
+    _vacationPaidDays = value;
+  }
+
+  num get vacationUnPaidDays => _vacationUnPaidDays;
+
+  set vacationUnPaidDays(num value) {
+    _vacationUnPaidDays = value;
+  }
+
+  int get vacationPreviousBalance => _vacationPreviousBalance;
+
+  set vacationPreviousBalance(int value) {
+    _vacationPreviousBalance = value;
+  }
+
+  int get vacationNewBalance => _vacationNewBalance;
+
+  set vacationNewBalance(int value) {
+    _vacationNewBalance = value;
   }
 }

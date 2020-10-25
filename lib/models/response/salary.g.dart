@@ -24,7 +24,7 @@ Salary _$SalaryFromJson(Map<String, dynamic> json) {
     ..hour_value = (json['hour_value'] as num).toDouble()
     ..updatedate = json['updatedate'] as String
     ..exemptions_amt = (json['exemptions_amt'] as num).toDouble()
-    ..unpaid_days_amount = json['unpaid_days_amount'] as int
+    ..unpaid_days_amount = (json['unpaid_days_amount'] as num).toDouble()
     ..status = json['status'] as String
     ..comp_commit_flg = json['comp_commit_flg'] as String
     ..loans_value = json['loans_value'] as int

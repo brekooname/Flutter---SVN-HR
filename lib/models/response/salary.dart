@@ -57,7 +57,7 @@ class Salary{
   double _exemptions_amt;
 
   @JsonKey(name: 'unpaid_days_amount')
-  int _unpaid_days_amount;
+  double _unpaid_days_amount;
 
   @JsonKey(name: 'status')
   String _status;
@@ -334,9 +334,9 @@ class Salary{
     _exemptions_amt = value;
   }
 
-  int get unpaid_days_amount => _unpaid_days_amount;
+  double get unpaid_days_amount => _unpaid_days_amount;
 
-  set unpaid_days_amount(int value) {
+  set unpaid_days_amount(double value) {
     _unpaid_days_amount = value;
   }
 

@@ -153,7 +153,7 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
                             ),
                             child: Center(
                                 child: Text(
-                                  AppTranslations.of(context).text(Const.LOCALE_KEY_SATAUS),
+                                  AppTranslations.of(context).text(Const.LOCALE_KEY_STATUS),
                                   style: TextStyle(color: AppTheme.kPrimaryColor),
                                   textAlign: TextAlign.center,
                                 )),
@@ -496,7 +496,7 @@ class LeavesView extends StatelessWidget {
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_SATAUS),
+                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_STATUS),
                                   style: TextStyle(
                                       color: leaveListItem.getRightColor(),
                                       fontSize: 13,

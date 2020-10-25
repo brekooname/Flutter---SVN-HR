@@ -20,13 +20,6 @@ class VacationsTransaction extends StatefulWidget {
   _VacationsTransactionState createState() => _VacationsTransactionState();
 }
 
-class ListItem {
-  int value;
-  String name;
-
-  ListItem(this.value, this.name);
-}
-
 class _VacationsTransactionState extends State<VacationsTransaction>
     with TickerProviderStateMixin {
   AnimationController animationController;
@@ -157,7 +150,7 @@ class _VacationsTransactionState extends State<VacationsTransaction>
                             ),
                             child: Center(
                                 child: Text(
-                                  AppTranslations.of(context).text(Const.LOCALE_KEY_SATAUS),
+                                  AppTranslations.of(context).text(Const.LOCALE_KEY_STATUS),
                               style: TextStyle(color: AppTheme.kPrimaryColor),
                               textAlign: TextAlign.center,
                             )),
@@ -501,7 +494,7 @@ class VacationView extends StatelessWidget {
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_SATAUS),
+                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_STATUS),
                                   style: TextStyle(
                                       color: vacationListItem.getRightColor(),
                                       fontSize: 13,

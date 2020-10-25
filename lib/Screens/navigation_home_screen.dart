@@ -1,5 +1,6 @@
 import 'package:sven_hr/Screens/Leaves/leaves_transaction_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
+import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/Screens/custom_drawer/drawer_user_controller.dart';
@@ -67,6 +68,10 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       } else if (drawerIndex == DrawerIndex.MY_PROFILE) {
         setState(() {
           screenView = ProfilePage();
+        });
+      }else if (drawerIndex == DrawerIndex.APPROVAL_INBOX) {
+        setState(() {
+          screenView = ApprovalInboxTransactionScreen();
         });
       } else {
         //do in your way......

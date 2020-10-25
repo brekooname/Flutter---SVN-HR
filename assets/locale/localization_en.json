@@ -52,6 +52,63 @@
   "add_more": "Add more ?",
   "attachments_required": "Attachments Required",
   "leave_request": "Leave Request",
-  "send_leave": "Send Leave"
+  "send_leave": "Send Leave",
+
+  "approval_inbox": "Approval Inbox",
+  "request_date": "Request Date :",
+  "request_details": "Request Details",
+
+  "approve": "Approve",
+  "reject": "Reject",
+
+  "location": "Location",
+  "unpaid_days": "UnPaid Days",
+  "paid_days": "Paid Days",
+  "previous_balance": "Previous Balance",
+  "new_balance": "New Balance",
+  "start_time": "Start Time",
+  "end_time": "End Time",
+
+  "loan_amount": "Loan Amount",
+  "loan_currancy": "Loan Currency",
+  "loanPaymentMethod": "Loan Payment Method",
+  "loanPaymentDueDate": "Loan Payment DueDate",
+  "loanTypes": "Loan Types",
+  "loanApprovedAmount": "Loan Approved Amount",
+
+  "extraWorkUnit": "Extra Work Unit",
+  "extraWorkUnitQuantity": "Extra Work Unit Quantity",
+  "extraWorkDayType": "Extra Work Day Type",
+  "extraWorkReason": "Extra Work Reason",
+  "extraWorkPayrollCycle": "Extra Work Payroll Cycle",
+  "extraWorkRequestDate": "Extra Work Reques tDate",
+
+  "expenseCurrancy": "Expense Currency",
+  "expenseAmount": "Expense Amount",
+  "expenseDate": "Expense Date",
+  "expenseRequestDate": "Expense Request Date",
+  "expenseApprovedAmount": "Expense Approved Amount",
+
+  "documentApprovedDate": "Document Approved Date",
+  "documentType": "Document Type",
+  "documentRequestdate": "Document Request Date",
+
+  "empBenefitApproveDate": "Benefit Approve Date",
+  "empBenefitTransStatus": "Benefit TransStatus",
+  "empBenefitRequestAmt": "Benefit Request Amt",
+  "empBenefitRequestDate": "Benefit Request Date",
+  "empBenefitUnitPrice": "Benefit Unit Price",
+
+  "leaveEncashmentAmount": "leaveEncashmentAmount",
+  "leaveEncashmentFromDate": "leaveEncashmentFromDate",
+  "leaveEncashmentToDate": "leaveEncashmentToDate",
+
+  "salaryIncRequestDate": "Salary Inc Request Date",
+  "salaryIncCurrency": "Currency",
+  "salaryIncCurrentSalary": " Current Salary",
+  "salaryIncApprovedAmount": "Approved Amount",
+  "salaryIncrType": "Salary Inc Type",
+  "salaryIncRequestAmount": "Salary Inc Request Amount"
+
 
 }
