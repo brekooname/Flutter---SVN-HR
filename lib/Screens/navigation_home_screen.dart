@@ -11,18 +11,29 @@ import 'package:sven_hr/Screens/Home/home_screen.dart';
 
 class NavigationHomeScreen extends StatefulWidget {
   static final String id = "NavigationHomeScreen";
+  Widget screenView;
+  DrawerIndex drawerIndex;
+
+  NavigationHomeScreen({this.screenView, this.drawerIndex});
+
   @override
-  _NavigationHomeScreenState createState() => _NavigationHomeScreenState();
+  _NavigationHomeScreenState createState() => _NavigationHomeScreenState(screenView,drawerIndex);
 }
 
 class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
   Widget screenView;
   DrawerIndex drawerIndex;
 
+
+  _NavigationHomeScreenState(this.screenView, this.drawerIndex){
+    this.drawerIndex=drawerIndex;
+    this.screenView=screenView;
+  }
+
   @override
   void initState() {
-    drawerIndex = DrawerIndex.HOME;
-    screenView = const MyHomePage();
+    // this.widget.drawerIndex = DrawerIndex.HOME;
+    // this.widget.screenView = const MyHomePage();
     super.initState();
   }
 
@@ -36,13 +47,13 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
         child: Scaffold(
           backgroundColor: AppTheme.nearlyWhite,
           body: DrawerUserController(
-            screenIndex: drawerIndex,
+            screenIndex:  drawerIndex,
             drawerWidth: MediaQuery.of(context).size.width * 0.75,
             onDrawerCall: (DrawerIndex drawerIndexdata) {
               changeIndex(drawerIndexdata);
               //callback from drawer for replace screen as user need with passing DrawerIndex(Enum index)
             },
-            screenView: screenView,
+            screenView:  screenView,
             //we replace screen view as we need on navigate starting screens like MyHomePage, HelpScreen, FeedbackScreen, etc...
           ),
         ),

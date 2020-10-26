@@ -64,10 +64,10 @@ class ApprovalObjectResponse{
   num _vacationUnPaidDays;
 
   @JsonKey(name: 'vacationPreviousBalance')
-  int _vacationPreviousBalance;
+  num _vacationPreviousBalance;
 
   @JsonKey(name: 'vacationNewBalance')
-  int _vacationNewBalance;
+  num _vacationNewBalance;
 
   @JsonKey(name: 'vacationRemarks')
   String _vacationRemarks;
@@ -658,15 +658,15 @@ class ApprovalObjectResponse{
     _vacationUnPaidDays = value;
   }
 
-  int get vacationPreviousBalance => _vacationPreviousBalance;
+  num get vacationPreviousBalance => _vacationPreviousBalance;
 
-  set vacationPreviousBalance(int value) {
+  set vacationPreviousBalance(num value) {
     _vacationPreviousBalance = value;
   }
 
-  int get vacationNewBalance => _vacationNewBalance;
+  num get vacationNewBalance => _vacationNewBalance;
 
-  set vacationNewBalance(int value) {
+  set vacationNewBalance(num value) {
     _vacationNewBalance = value;
   }
 }

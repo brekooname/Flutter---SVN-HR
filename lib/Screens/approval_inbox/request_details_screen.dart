@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_controller.dart';
 import 'package:sven_hr/Screens/custom_drawer/menue_top_bar.dart';
 import 'package:sven_hr/Screens/custom_drawer/notification_controller.dart';
@@ -72,6 +73,7 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -116,28 +118,46 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                           Text(
                             this.widget.approvalInboxItenm.title_name != null
                                 ? this.widget.approvalInboxItenm.title_name
-                                : "Employee Name",
+                                : "-",
                             style: TextStyle(
                                 color: AppTheme.kPrimaryColor,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 20),
                             textAlign: TextAlign.center,
                           ),
-                          ListTile(
-                            title: Text(AppTranslations.of(context)
-                                .text(Const.LOCALE_KEY_REQUEST_DATE)),
-                            subtitle: Text(this
-                                        .widget
-                                        .approvalInboxItenm
-                                        .approval_request_date !=
-                                    null
-                                ? this
-                                    .widget
-                                    .approvalInboxItenm
-                                    .approval_request_date
-                                : "-"),
-                          ),
 
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: ListTile(
+                                  title: Text(AppTranslations.of(context)
+                                      .text(Const.LOCALE_KEY_EMPLOYEE_NAME)),
+                                  subtitle: Text(
+                                      _requestDetails.employeeName != null
+                                          ? _requestDetails.employeeName
+                                          : "-"),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: ListTile(
+                                  title: Text(AppTranslations.of(context)
+                                      .text(Const.LOCALE_KEY_REQUEST_DATE)),
+                                  subtitle: Text(this
+                                      .widget
+                                      .approvalInboxItenm
+                                      .approval_request_date !=
+                                      null
+                                      ? this
+                                      .widget
+                                      .approvalInboxItenm
+                                      .approval_request_date
+                                      : "-"),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -1079,7 +1099,7 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                         flex: 1,
                         child: GestureDetector(
                           onTap: () {
-                            sendRequest(Const.APPROVAL_INBOX_ACTION_REJECT);
+                            sendRequest(Const.APPROVAL_INBOX_ACCTION_ACCEPT);
                           },
                           child: Container(
                             height: 48,

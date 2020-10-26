@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:sven_hr/Screens/Home/home_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_controller.dart';
 import 'package:sven_hr/Screens/approval_inbox/models/approval_inbox_item_list.dart';
 import 'package:sven_hr/Screens/approval_inbox/request_details_screen.dart';
+import 'package:sven_hr/Screens/custom_drawer/home_drawer.dart';
+import 'package:sven_hr/Screens/custom_drawer/menue_top_bar.dart';
+import 'package:sven_hr/Screens/custom_drawer/notification_controller.dart';
 import 'package:sven_hr/Screens/screen_loader.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/main.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
+
+import '../navigation_home_screen.dart';
 
 class ApprovalInboxTransactionScreen extends StatefulWidget {
   static String id = "ApprovalInboxTransaction";
@@ -22,6 +28,8 @@ class _ApprovalInboxTransactionScreenState
   AnimationController animationController;
   ApprovalInboxController _approvalInboxController;
   bool showSpinner = false;
+  NotificationController _notificationController = NotificationController();
+
   @override
   void initState() {
     animationController = AnimationController(
@@ -111,7 +119,20 @@ class _ApprovalInboxTransactionScreenState
                                                 Const.SYSTEM_SUCCESS_MSG) ==
                                             0)
                                           {
-                                            getLastApprovalInboxTransaction()
+                                            Navigator.pop(context),
+                                            Navigator.of(context)
+                                                .push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          NavigationHomeScreen(
+                                                              drawerIndex:
+                                                                  DrawerIndex
+                                                                      .APPROVAL_INBOX,
+                                                              screenView:
+                                                                  ApprovalInboxTransactionScreen())),
+                                                )
+                                                .then((value) =>
+                                                    {if (value != null) {}})
                                           }
                                       }
                                   });
@@ -218,14 +239,14 @@ class ApprovalInboxView extends StatelessWidget {
                                   AppTranslations.of(context)
                                       .text(Const.LOCALE_KEY_STATUS),
                                   style: TextStyle(
-                                      color: approvalInboxListItem
-                                          .getRightColor(),
+                                      color:
+                                          approvalInboxListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                               Text(approvalInboxListItem.status,
                                   style: TextStyle(
-                                      color: approvalInboxListItem
-                                          .getRightColor(),
+                                      color:
+                                          approvalInboxListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                             ],
@@ -247,14 +268,14 @@ class ApprovalInboxView extends StatelessWidget {
                                   AppTranslations.of(context)
                                       .text(Const.LOCALE_KEY_REQUEST_DATE),
                                   style: TextStyle(
-                                      color: approvalInboxListItem
-                                          .getRightColor(),
+                                      color:
+                                          approvalInboxListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                               Text(approvalInboxListItem.requestDate,
                                   style: TextStyle(
-                                      color: approvalInboxListItem
-                                          .getRightColor(),
+                                      color:
+                                          approvalInboxListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                             ],

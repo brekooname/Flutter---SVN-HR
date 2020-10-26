@@ -20,12 +20,13 @@ class MenueTopBar extends StatefulWidget {
   MenueTopBar({@required this.screenName});
 
   @override
-  _MenueTopBarState createState() => _MenueTopBarState();
+  _MenueTopBarState createState() =>
+      _MenueTopBarState();
 }
 
 class _MenueTopBarState extends State<MenueTopBar> {
-  int counter = 0;
-  List<NotificationListResponse> notificationList = List();
+  int counter=0;
+  List<NotificationListResponse> notificationList;
   NotificationController _notificationController = NotificationController();
 
   @override

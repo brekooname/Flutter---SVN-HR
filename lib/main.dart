@@ -11,6 +11,7 @@ import 'package:sven_hr/Screens/Vacations/vacation_request_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/request_details_screen.dart';
+import 'package:sven_hr/Screens/custom_drawer/home_drawer.dart';
 import 'package:sven_hr/Screens/navigation_home_screen.dart';
 import 'package:sven_hr/Screens/Login/login_screen.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
@@ -109,7 +110,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
         MyHomePage.id: (context) => MyHomePage(),
-        NavigationHomeScreen.id: (context) => NavigationHomeScreen(),
+        NavigationHomeScreen.id: (context) => NavigationHomeScreen(drawerIndex: DrawerIndex.HOME,screenView: MyHomePage(),),
         ProfilePage.id: (context) => ProfilePage(),
         VacationsTransaction.id: (context) => VacationsTransaction(),
         PickerScreen.id: (context) => PickerScreen(),

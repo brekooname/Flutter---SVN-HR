@@ -80,8 +80,8 @@ ApprovalObjectResponse _$ApprovalObjectResponseFromJson(
     ..salaryIncApprovedDate = json['salaryIncApprovedDate'] as String
     ..vacationPaidDays = json['vacationPaidDays'] as num
     ..vacationUnPaidDays = json['vacationUnPaidDays'] as num
-    ..vacationPreviousBalance = json['vacationPreviousBalance'] as int
-    ..vacationNewBalance = json['vacationNewBalance'] as int;
+    ..vacationPreviousBalance = json['vacationPreviousBalance'] as num
+    ..vacationNewBalance = json['vacationNewBalance'] as num;
 }
 
 Map<String, dynamic> _$ApprovalObjectResponseToJson(
