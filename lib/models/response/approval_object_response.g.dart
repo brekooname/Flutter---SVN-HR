@@ -72,11 +72,9 @@ ApprovalObjectResponse _$ApprovalObjectResponseFromJson(
     ..salaryIncNote = json['salaryIncNote'] as String
     ..salaryIncSerivecPeriod = json['salaryIncSerivecPeriod'] as String
     ..salaryIncCurrentSalary = json['salaryIncCurrentSalary'] as num
-    ..salaryIncApprovedAmount =
-        json['salaryIncApprovedAmount'] as num
+    ..salaryIncApprovedAmount = json['salaryIncApprovedAmount'] as num
     ..salaryIncIncrType = json['salaryIncIncrType'] as String
-    ..salaryIncRequestAmount =
-        json['salaryIncRequestAmount'] as num
+    ..salaryIncRequestAmount = json['salaryIncRequestAmount'] as num
     ..salaryIncRequestStatus = json['salaryIncRequestStatus'] as String
     ..salaryIncApprovedBy = json['salaryIncApprovedBy'] as String
     ..salaryIncApprovedDate = json['salaryIncApprovedDate'] as String

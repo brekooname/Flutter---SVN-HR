@@ -71,6 +71,9 @@ class Const {
   static final APPROVAL_INBOX_ACCTION_ACCEPT="accept";
   static final APPROVAL_INBOX_ACTION_REJECT="reject";
 
+  static final APPROVAL_NOTIFICATION_TYPE="A";
+  static final NOTIFICATION_TYPE="N";
+
 
   static final LOCALE_KEY_USERNAME="username";
   static final LOCALE_KEY_PASSWORD="password";
@@ -190,6 +193,8 @@ class Const {
   static final LOCALE_KEY_SALARY_INCR_TYPE="salaryIncrType";
   static final LOCALE_KEY_SALARY_INC_REQUEST_AMOUNT="salaryIncRequestAmount";
 
-
-
+  static final LOCALE_KEY_ISSUE_DATE="issue_date";
+  static final LOCALE_KEY_EMPLOYEE_NAME="employeeName";
+  static final LOCALE_KEY_EMPLOYMENT_CLASS="employmentClass";
+  static final LOCALE_KEY_EMPLOYMENT_CLOSE="close";
 }

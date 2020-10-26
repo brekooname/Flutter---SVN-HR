@@ -34,4 +34,9 @@ class ApiConnections{
 
   static const String  APPROVAL_INBOX_REJECT="/approvalInboxReject";
 
+  static const String  GET_ALL_NOTIFICATION_LIST="/getListOfAllNotification";
+
+  static const String  GET_NOTIFICATION_OBJECT="/getNotificationObject";
+
+  static const String  CLOSE_NOTIFICATION="/closeNotification";
 }

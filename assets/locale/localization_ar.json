@@ -108,7 +108,12 @@
   "salaryIncCurrentSalary": " Current Salary",
   "salaryIncApprovedAmount": "Approved Amount",
   "salaryIncrType": "Salary Inc Type",
-  "salaryIncRequestAmount": "Salary Inc Request Amount"
+  "salaryIncRequestAmount": "Salary Inc Request Amount",
+
+  "issue_date": "Issue Date",
+  "employeeName": "Employee Name",
+  "employmentClass": "Employee Class",
+  "close": "Close"
 
 
 }
