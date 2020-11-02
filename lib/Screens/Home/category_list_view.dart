@@ -1,7 +1,10 @@
 import 'package:sven_hr/Screens/Leaves/leave_request_screen.dart';
 import 'package:sven_hr/Screens/Leaves/leaves_transaction_screen.dart';
+import 'package:sven_hr/Screens/Login/login_controller.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_request_screen.dart';
+import 'package:sven_hr/Screens/clock_record/clock_record_screen.dart';
 import 'package:sven_hr/localization/app_translations.dart';
+import 'package:sven_hr/models/response/profile_screen_response.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/Screens/Home/models/category.dart';
 import 'package:sven_hr/main.dart';
@@ -28,62 +31,75 @@ class _CategoryListViewState extends State<CategoryListView>
     super.initState();
   }
 
-  void setCategoryListArray() {
+  void getProfileScreens() {
     categoryList = <Category>[
-      Category(
-        imagePath: 'assets/design_course/interFace1.png',
-        index: Const.LOCALE_KEY_VACATION,
-        title: AppTranslations.of(context).text(Const.LOCALE_KEY_VACATION),
-        lessonCount: 24,
-        money: 25,
-        rating: 4.3,
-        icon: Icon(
-          Icons.add,
-          color: AppTheme.nearlyWhite,
-        ),
-      ),
-      Category(
-        imagePath: 'assets/design_course/interFace2.png',
-        index: Const.LOCALE_KEY_LEAVES,
-        title: AppTranslations.of(context).text(Const.LOCALE_KEY_LEAVES),
-        lessonCount: 22,
-        money: 18,
-        rating: 4.6,
-        icon: Icon(
-          Icons.add,
-          color: AppTheme.nearlyWhite,
-        ),
-      ),
-      Category(
-        imagePath: 'assets/design_course/interFace1.png',
-        index: Const.LOCALE_KEY_CLOCK_RECORD,
-        title: AppTranslations.of(context).text(Const.LOCALE_KEY_CLOCK_RECORD),
-        lessonCount: 24,
-        money: 25,
-        rating: 4.3,
-        icon: Icon(
-          Icons.alarm_add,
-          color: AppTheme.nearlyWhite,
-        ),
-      ),
-      Category(
-        imagePath: 'assets/design_course/interFace2.png',
-        index: Const.LOCALE_KEY_LAST_PAYSLIB,
-        title: AppTranslations.of(context).text(Const.LOCALE_KEY_LAST_PAYSLIB),
-        lessonCount: 22,
-        money: 18,
-        rating: 4.6,
-        icon: Icon(
-          Icons.payment,
-          color: AppTheme.nearlyWhite,
-        ),
-      ),
+      // Category(
+      //   imagePath: 'assets/design_course/interFace2.png',
+      //   index: Const.LOCALE_KEY_LAST_PAYSLIB,
+      //   title: AppTranslations.of(context).text(Const.LOCALE_KEY_LAST_PAYSLIB),
+      //   lessonCount: 22,
+      //   money: 18,
+      //   rating: 4.6,
+      //   icon: Icon(
+      //     Icons.payment,
+      //     color: AppTheme.nearlyWhite,
+      //   ),
+      // ),
     ];
+    if (LoginController.listOfProfileScreens != null) {
+      for (ProfileScreenResponse screen
+          in LoginController.listOfProfileScreens) {
+        if (screen.screenName.compareTo(VacationRequestScreen.id) == 0) {
+          Category screen = Category(
+            imagePath: 'assets/design_course/interFace1.png',
+            index: Const.LOCALE_KEY_VACATION,
+            title: AppTranslations.of(context).text(Const.LOCALE_KEY_VACATION),
+            lessonCount: 24,
+            money: 25,
+            rating: 4.3,
+            icon: Icon(
+              Icons.add,
+              color: AppTheme.nearlyWhite,
+            ),
+          );
+          categoryList.add(screen);
+        } else if (screen.screenName.compareTo(LeaveRequestScreen.id) == 0) {
+          Category screen = Category(
+            imagePath: 'assets/design_course/interFace2.png',
+            index: Const.LOCALE_KEY_LEAVES,
+            title: AppTranslations.of(context).text(Const.LOCALE_KEY_LEAVES),
+            lessonCount: 22,
+            money: 18,
+            rating: 4.6,
+            icon: Icon(
+              Icons.add,
+              color: AppTheme.nearlyWhite,
+            ),
+          );
+          categoryList.add(screen);
+        } else if (screen.screenName.compareTo(ClockRecordScreen.id) == 0) {
+          Category screen = Category(
+            imagePath: 'assets/design_course/interFace1.png',
+            index: Const.LOCALE_KEY_CLOCK_RECORD,
+            title:
+                AppTranslations.of(context).text(Const.LOCALE_KEY_CLOCK_RECORD),
+            lessonCount: 24,
+            money: 25,
+            rating: 4.3,
+            icon: Icon(
+              Icons.alarm_add,
+              color: AppTheme.nearlyWhite,
+            ),
+          );
+          categoryList.add(screen);
+        }
+      }
+    }
   }
 
   Future<bool> getData() async {
     await Future.delayed(Duration.zero, () {
-      setCategoryListArray();
+      getProfileScreens();
     });
     return true;
   }
@@ -95,6 +111,8 @@ class _CategoryListViewState extends State<CategoryListView>
       return VacationRequestScreen.id;
     } else if (item.index.compareTo(Const.LOCALE_KEY_LEAVES) == 0) {
       return LeaveRequestScreen.id;
+    }else if (item.index.compareTo(Const.LOCALE_KEY_CLOCK_RECORD) == 0) {
+      return ClockRecordScreen.id;
     }
   }
 

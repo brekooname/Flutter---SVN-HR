@@ -16,7 +16,7 @@ import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
 class LeaveRequestScreen extends StatefulWidget {
-  static String id = "LeaveRequest";
+  static String id = "LeaveRequestScreen";
   @override
   _LeaveRequestScreenState createState() => _LeaveRequestScreenState();
 }

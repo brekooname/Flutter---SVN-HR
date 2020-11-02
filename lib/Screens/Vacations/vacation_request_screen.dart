@@ -16,7 +16,7 @@ import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
 class VacationRequestScreen extends StatefulWidget {
-  static String id = "VacationRequest";
+  static String id = "VacationRequestScreen";
   @override
   _VacationRequestScreenState createState() => _VacationRequestScreenState();
 }

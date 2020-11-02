@@ -113,7 +113,9 @@
   "issue_date": "Issue Date",
   "employeeName": "Employee Name",
   "employmentClass": "Employee Class",
-  "close": "Close"
+  "close": "Close",
 
+  "check_in": "Check In",
+  "check_out": "Check Out"
 
 }

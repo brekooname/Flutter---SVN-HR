@@ -39,4 +39,10 @@ class ApiConnections{
   static const String  GET_NOTIFICATION_OBJECT="/getNotificationObject";
 
   static const String  CLOSE_NOTIFICATION="/closeNotification";
+
+  static const String  GET_LAST_CHECK="/getLastCheck";
+
+  static const String  NEW_CHECK="/checkV2";
+
+  static const String  USER_VERIFICATION="/userVerification";
 }

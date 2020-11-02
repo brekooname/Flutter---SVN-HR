@@ -32,6 +32,9 @@ class Const {
   static final LEAVE_REQUEST_REJECTED_STATUS="1476886117786";
   static final LEAVE_REQUEST_PENDING_STATUS="1469627187735";
 
+  static final String CLOCK_RECORD_TYPE = "1472394229732";
+  static final String RECORD_TYPE_IN = "1474187388526";
+  static final String RECORD_TYPE_OUT = "1474187403434";
 
 
   static final DATE_FORMAT="yyyy-MM-dd";
@@ -197,4 +200,7 @@ class Const {
   static final LOCALE_KEY_EMPLOYEE_NAME="employeeName";
   static final LOCALE_KEY_EMPLOYMENT_CLASS="employmentClass";
   static final LOCALE_KEY_EMPLOYMENT_CLOSE="close";
+
+  static final LOCALE_KEY_CHECK_IN="check_in";
+  static final LOCALE_KEY_CHECK_OUT="check_out";
 }

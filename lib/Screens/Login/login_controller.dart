@@ -29,12 +29,12 @@ class LoginController {
       BuildContext context, String username, String password) async {
     prefs = await SharedPreferences.getInstance();
 
-    //check if user login or not
-    String prefTokenId = prefs.get(Const.SHARED_KEY_TOKEN_ID);
-    if (prefTokenId != null && !prefTokenId.isEmpty) {
-      Navigator.pushNamed(context, NavigationHomeScreen.id);
-      return;
-    }
+    // //check if user login or not
+    // String prefTokenId = prefs.get(Const.SHARED_KEY_TOKEN_ID);
+    // if (prefTokenId != null && !prefTokenId.isEmpty) {
+    //   Navigator.pushNamed(context, NavigationHomeScreen.id);
+    //   return;
+    // }
 
     if (username == null || username.isEmpty) {
       ToastMessage.showErrorMsg(Const.INVALID_USERNAME_MSG);

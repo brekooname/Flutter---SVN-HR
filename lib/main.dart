@@ -11,6 +11,7 @@ import 'package:sven_hr/Screens/Vacations/vacation_request_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/request_details_screen.dart';
+import 'package:sven_hr/Screens/clock_record/clock_record_screen.dart';
 import 'package:sven_hr/Screens/custom_drawer/home_drawer.dart';
 import 'package:sven_hr/Screens/navigation_home_screen.dart';
 import 'package:sven_hr/Screens/Login/login_screen.dart';
@@ -26,13 +27,15 @@ var initialRoute;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //check if user login or not
-  String prefTokenId = prefs.get(Const.SHARED_KEY_TOKEN_ID);
-  if (prefTokenId != null && !prefTokenId.isEmpty) {
-    initialRoute = NavigationHomeScreen.id;
-  } else {
-    initialRoute = LoginScreen.id;
-  }
+  // //check if user login or not
+  // String prefTokenId = prefs.get(Const.SHARED_KEY_TOKEN_ID);
+  // if (prefTokenId != null && !prefTokenId.isEmpty) {
+  //   initialRoute = NavigationHomeScreen.id;
+  // } else {
+  //   initialRoute = LoginScreen.id;
+  // }
+
+  initialRoute = LoginScreen.id;
   await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
@@ -118,6 +121,7 @@ class _MyAppState extends State<MyApp> {
         VacationRequestScreen.id: (context) => VacationRequestScreen(),
         LeaveRequestScreen.id: (context) => LeaveRequestScreen(),
         ApprovalInboxTransactionScreen.id: (context) => ApprovalInboxTransactionScreen(),
+        ClockRecordScreen.id: (context) => ClockRecordScreen(),
       },
       localizationsDelegates: [
         newLocaleDelegate,
