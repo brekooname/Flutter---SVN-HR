@@ -46,7 +46,9 @@ class _SingleSelectionListViewState extends State<SingleSelectionListView> {
       content: Container(
         color: AppTheme.white,
         height: 350,
+        width: 300.0,
         child: ListView.builder(
+          shrinkWrap: true,
           itemBuilder: (ctx, index) {
             return GestureDetector(
               behavior: HitTestBehavior.opaque,

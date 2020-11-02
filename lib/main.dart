@@ -16,6 +16,7 @@ import 'package:sven_hr/Screens/custom_drawer/home_drawer.dart';
 import 'package:sven_hr/Screens/navigation_home_screen.dart';
 import 'package:sven_hr/Screens/Login/login_screen.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
+import 'package:sven_hr/Screens/time_sheet/time_sheet_screen.dart';
 import 'package:sven_hr/localization/app_translations_delegate.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
@@ -122,6 +123,7 @@ class _MyAppState extends State<MyApp> {
         LeaveRequestScreen.id: (context) => LeaveRequestScreen(),
         ApprovalInboxTransactionScreen.id: (context) => ApprovalInboxTransactionScreen(),
         ClockRecordScreen.id: (context) => ClockRecordScreen(),
+        TimeSheetScreen.id: (context) => TimeSheetScreen(),
       },
       localizationsDelegates: [
         newLocaleDelegate,

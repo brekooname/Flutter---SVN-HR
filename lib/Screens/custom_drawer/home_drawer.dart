@@ -5,6 +5,7 @@ import 'package:sven_hr/Screens/Login/login_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
+import 'package:sven_hr/Screens/time_sheet/time_sheet_screen.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/models/response/profile_screen_response.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
@@ -14,9 +15,9 @@ import 'package:sven_hr/utilities/constants.dart';
 class HomeDrawer extends StatefulWidget {
   const HomeDrawer(
       {Key key,
-        this.screenIndex,
-        this.iconAnimationController,
-        this.callBackIndex})
+      this.screenIndex,
+      this.iconAnimationController,
+      this.callBackIndex})
       : super(key: key);
 
   final AnimationController iconAnimationController;
@@ -31,7 +32,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
   List<DrawerList> drawerList;
   String _employeePicLink = "";
   String _employeeNumber = "No Employee Name";
-  SharedPreferences prefs=null;
+  SharedPreferences prefs = null;
   @override
   void initState() {
     getEmployeeDetails();
@@ -39,71 +40,74 @@ class _HomeDrawerState extends State<HomeDrawer> {
     // Future.delayed(Duration.zero, () {
     //   this.setdDrawerListArray();
     // });
-
   }
 
   void getEmployeeDetails() async {
     prefs = await SharedPreferences.getInstance();
     _employeeNumber = prefs.getString(Const.SHARED_KEY_EMPLOYEE_NUMBER) ?? "";
-    _employeePicLink = prefs.getString(Const.SHARED_KEY_EMPLOYEE_PIC_LINK) ?? "";
+    _employeePicLink =
+        prefs.getString(Const.SHARED_KEY_EMPLOYEE_PIC_LINK) ?? "";
   }
 
-  void getProfileScreens(){
-    if(LoginController.listOfProfileScreens!=null){
-      for(ProfileScreenResponse screen in LoginController.listOfProfileScreens){
-        if(screen.screenName.compareTo(ProfilePage.id)==0){
-          DrawerList item=DrawerList(
+  void getProfileScreens() {
+    if (LoginController.listOfProfileScreens != null) {
+      for (ProfileScreenResponse screen
+          in LoginController.listOfProfileScreens) {
+        if (screen.screenName.compareTo(ProfilePage.id) == 0) {
+          DrawerList item = DrawerList(
             index: DrawerIndex.MY_PROFILE,
-            labelName: AppTranslations.of(context)
-                .text(Const.LOCALE_KEY_PROFILE),
+            labelName:
+                AppTranslations.of(context).text(Const.LOCALE_KEY_PROFILE),
             icon: Icon(Icons.account_circle),
           );
           drawerList.add(item);
-        }else if(screen.screenName.compareTo(VacationsTransaction.id)==0){
-          DrawerList item= DrawerList(
+        } else if (screen.screenName.compareTo(VacationsTransaction.id) == 0) {
+          DrawerList item = DrawerList(
             index: DrawerIndex.VACATION,
-            labelName:AppTranslations.of(context)
-                .text(Const.LOCALE_KEY_VACATION),
+            labelName:
+                AppTranslations.of(context).text(Const.LOCALE_KEY_VACATION),
             icon: Icon(Icons.new_releases),
           );
           drawerList.add(item);
-        }else if(screen.screenName.compareTo(LeavesTransaction.id)==0){
-          DrawerList item= DrawerList(
+        } else if (screen.screenName.compareTo(LeavesTransaction.id) == 0) {
+          DrawerList item = DrawerList(
             index: DrawerIndex.LEAVES,
-            labelName: AppTranslations.of(context)
-                .text(Const.LOCALE_KEY_LEAVES),
+            labelName:
+                AppTranslations.of(context).text(Const.LOCALE_KEY_LEAVES),
             icon: Icon(Icons.directions_run),
           );
           drawerList.add(item);
-        }else if(screen.screenName.compareTo(ApprovalInboxTransactionScreen.id)==0){
-          DrawerList item= DrawerList(
+        } else if (screen.screenName
+                .compareTo(ApprovalInboxTransactionScreen.id) ==
+            0) {
+          DrawerList item = DrawerList(
             index: DrawerIndex.APPROVAL_INBOX,
             labelName: AppTranslations.of(context)
                 .text(Const.LOCALE_KEY_APPROVAL_INBOX),
             icon: Icon(Icons.approval),
           );
           drawerList.add(item);
+        } else if (screen.screenName.compareTo(TimeSheetScreen.id) == 0) {
+          DrawerList item = DrawerList(
+            index: DrawerIndex.TIME_SHEET,
+            labelName:
+                AppTranslations.of(context).text(Const.LOCALE_KEY_TIME_SHEET),
+            icon: Icon(Icons.timeline),
+          );
+          drawerList.add(item);
         }
       }
-
     }
   }
+
   void setDrawerListArray() {
     drawerList = <DrawerList>[
       DrawerList(
         index: DrawerIndex.HOME,
-        labelName: AppTranslations.of(context)
-            .text(Const.LOCALE_KEY_HOME),
+        labelName: AppTranslations.of(context).text(Const.LOCALE_KEY_HOME),
         icon: Icon(Icons.home),
       ),
 
-
-      // DrawerList(
-      //   index: DrawerIndex.TIME_SHEET,
-      //   labelName: AppTranslations.of(context)
-      //       .text(Const.LOCALE_KEY_TIME_SHEET),
-      //   icon: Icon(Icons.timeline),
-      // ),
       // DrawerList(
       //   index: DrawerIndex.SALARY_INC_REQUEST,
       //   labelName: AppTranslations.of(context)
@@ -170,11 +174,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
                             1.0 - (widget.iconAnimationController.value) * 0.2),
                         child: RotationTransition(
                           turns: AlwaysStoppedAnimation<double>(Tween<double>(
-                              begin: 0.0, end: 24.0)
-                              .animate(CurvedAnimation(
-                              parent: widget.iconAnimationController,
-                              curve: Curves.fastOutSlowIn))
-                              .value /
+                                      begin: 0.0, end: 24.0)
+                                  .animate(CurvedAnimation(
+                                      parent: widget.iconAnimationController,
+                                      curve: Curves.fastOutSlowIn))
+                                  .value /
                               360),
                           child: Container(
                             height: 120,
@@ -194,8 +198,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                 child: FadeInImage(
                                     image: NetworkImage(_employeePicLink),
                                     placeholder: AssetImage(
-                                        "assets/images/avatar.png")
-                                )),
+                                        "assets/images/avatar.png"))),
                           ),
                         ),
                       );
@@ -241,8 +244,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
             children: <Widget>[
               ListTile(
                 title: Text(
-                  AppTranslations.of(context)
-                      .text(Const.LOCALE_KEY_LOGOUT),
+                  AppTranslations.of(context).text(Const.LOCALE_KEY_LOGOUT),
                   style: TextStyle(
                     fontFamily: AppTheme.fontName,
                     fontWeight: FontWeight.w600,
@@ -306,17 +308,17 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   ),
                   listData.isAssetsImage
                       ? Container(
-                    width: 24,
-                    height: 24,
-                    child: Image.asset(listData.imageName,
-                        color: widget.screenIndex == listData.index
-                            ? Colors.blue
-                            : AppTheme.nearlyBlack),
-                  )
+                          width: 24,
+                          height: 24,
+                          child: Image.asset(listData.imageName,
+                              color: widget.screenIndex == listData.index
+                                  ? Colors.blue
+                                  : AppTheme.nearlyBlack),
+                        )
                       : Icon(listData.icon.icon,
-                      color: widget.screenIndex == listData.index
-                          ? Colors.blue
-                          : AppTheme.nearlyBlack),
+                          color: widget.screenIndex == listData.index
+                              ? Colors.blue
+                              : AppTheme.nearlyBlack),
                   const Padding(
                     padding: EdgeInsets.all(4.0),
                   ),
@@ -336,36 +338,36 @@ class _HomeDrawerState extends State<HomeDrawer> {
             ),
             widget.screenIndex == listData.index
                 ? AnimatedBuilder(
-              animation: widget.iconAnimationController,
-              builder: (BuildContext context, Widget child) {
-                return Transform(
-                  transform: Matrix4.translationValues(
-                      (MediaQuery.of(context).size.width * 0.75 - 64) *
-                          (1.0 -
-                              widget.iconAnimationController.value -
-                              1.0),
-                      0.0,
-                      0.0),
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 8, bottom: 8),
-                    child: Container(
-                      width:
-                      MediaQuery.of(context).size.width * 0.75 - 64,
-                      height: 46,
-                      decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.2),
-                        borderRadius: new BorderRadius.only(
-                          topLeft: Radius.circular(0),
-                          topRight: Radius.circular(28),
-                          bottomLeft: Radius.circular(0),
-                          bottomRight: Radius.circular(28),
+                    animation: widget.iconAnimationController,
+                    builder: (BuildContext context, Widget child) {
+                      return Transform(
+                        transform: Matrix4.translationValues(
+                            (MediaQuery.of(context).size.width * 0.75 - 64) *
+                                (1.0 -
+                                    widget.iconAnimationController.value -
+                                    1.0),
+                            0.0,
+                            0.0),
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 8, bottom: 8),
+                          child: Container(
+                            width:
+                                MediaQuery.of(context).size.width * 0.75 - 64,
+                            height: 46,
+                            decoration: BoxDecoration(
+                              color: Colors.blue.withOpacity(0.2),
+                              borderRadius: new BorderRadius.only(
+                                topLeft: Radius.circular(0),
+                                topRight: Radius.circular(28),
+                                bottomLeft: Radius.circular(0),
+                                bottomRight: Radius.circular(28),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            )
+                      );
+                    },
+                  )
                 : const SizedBox()
           ],
         ),

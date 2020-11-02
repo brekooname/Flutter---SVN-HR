@@ -2,6 +2,7 @@ import 'package:sven_hr/Screens/Leaves/leaves_transaction_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
+import 'package:sven_hr/Screens/time_sheet/time_sheet_screen.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/Screens/custom_drawer/drawer_user_controller.dart';
 import 'package:sven_hr/Screens/custom_drawer/home_drawer.dart';
@@ -84,7 +85,12 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
         setState(() {
           screenView = ApprovalInboxTransactionScreen();
         });
-      } else {
+      }
+      else if (drawerIndex == DrawerIndex.TIME_SHEET) {
+        setState(() {
+          screenView = TimeSheetScreen();
+        });
+      }else {
         //do in your way......
       }
     }
