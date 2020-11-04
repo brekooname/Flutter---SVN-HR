@@ -116,6 +116,19 @@
   "close": "Close",
 
   "check_in": "Check In",
-  "check_out": "Check Out"
+  "check_out": "Check Out",
+
+  "working_hour": "Working Hour: ",
+  "shift_type_hour": "Shift Type Hour: ",
+  "difference_hour": "Difference Hour: ",
+  "start_date": "Start Date :",
+  "end_date": "End Date: ",
+  "add_new_time_sheet": "Add New Time Sheet ",
+
+  "time_sheet_details": "Time Sheet Details",
+
+  "project_name": "Project Name",
+  "add_new_time_sheet_details": "Add New Time Sheet Details",
+  "save": "Save"
 
 }

@@ -54,7 +54,7 @@ class _ApprovalInboxTransactionScreenState
     return ScreenLoader(
       screenName:
           AppTranslations.of(context).text(Const.LOCALE_KEY_APPROVAL_INBOX),
-      screenWidget: VacationScreen(),
+      screenWidget: ApprovalInboxScreen(),
     );
   }
 
@@ -63,7 +63,7 @@ class _ApprovalInboxTransactionScreenState
     return true;
   }
 
-  Widget VacationScreen() {
+  Widget ApprovalInboxScreen() {
     bool _isPressed = false;
     return ModalProgressHUD(
       inAsyncCall: showSpinner,

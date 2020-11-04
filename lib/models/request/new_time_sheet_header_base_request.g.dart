@@ -9,8 +9,8 @@ part of 'new_time_sheet_header_base_request.dart';
 NewTimeSheetHeaderBaseRequest _$NewTimeSheetHeaderBaseRequestFromJson(
     Map<String, dynamic> json) {
   return NewTimeSheetHeaderBaseRequest(
-    json['tokenID'] as String,
-    NewTimeSheetHeaderRequest.fromJson(
+    tokenID: json['tokenID'] as String,
+    timesheetHeader: NewTimeSheetHeaderRequest.fromJson(
         json['timesheetHeader'] as Map<String, dynamic>),
   );
 }

@@ -9,7 +9,7 @@ class NewTimeSheetHeaderBaseRequest{
   NewTimeSheetHeaderRequest timesheetHeader;
 
 
-  NewTimeSheetHeaderBaseRequest(this.tokenID, this.timesheetHeader);
+  NewTimeSheetHeaderBaseRequest({this.tokenID, this.timesheetHeader});
 
   factory NewTimeSheetHeaderBaseRequest.fromJson(Map<String, dynamic> json) => _$NewTimeSheetHeaderBaseRequestFromJson(json);
 

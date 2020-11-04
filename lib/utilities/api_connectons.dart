@@ -47,4 +47,12 @@ class ApiConnections{
   static const String  USER_VERIFICATION="/userVerification";
 
   static const String  TIME_SHEET_HEADER_TRANSACTION="/getListFiltredTimesheets";
+
+  static const String  ADD_TIME_SHEET_HEADER_REQUEST="/addTimesheetHeaderRequest";
+
+  static const String  GET_TIME_SHEET_DETAILS_LIST="/getlistOfTimesheetDetails";
+
+  static const String  GET_PROJECTS_lIST="/getlistOfProjects";
+
+  static const String  ADD_TIME_SHEET_DETAILS="/addTimesheetDetailsRequestV2";
 }

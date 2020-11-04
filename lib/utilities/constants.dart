@@ -27,6 +27,9 @@ class Const {
   static final LEAVE_REQUEST_STATUS="1469626869742";
   static final LEAVE_TYPE="1469627629163";
 
+  static final TIME_SHEET_STATUS="190404416706500";
+
+
   static final LEAVE_REQUEST_CANCELED_STATUS="2014817762395";
   static final LEAVE_REQUEST_APPROVED_STATUS="1469627206328";
   static final LEAVE_REQUEST_REJECTED_STATUS="1476886117786";
@@ -39,6 +42,7 @@ class Const {
 
   static final DATE_FORMAT="yyyy-MM-dd";
   static final DATE_TIME_FORMAT="yyyy-MM-dd HH:mm";
+  static final TIME_FORMAT="HH:mm";
   static final REQUEST_RESPONSE_DISPLAYVALUE="New";
 
 
@@ -203,4 +207,23 @@ class Const {
 
   static final LOCALE_KEY_CHECK_IN="check_in";
   static final LOCALE_KEY_CHECK_OUT="check_out";
+
+  static final LOCALE_KEY_WORKING_HOUR="working_hour";
+  static final LOCALE_KEY_SHIFT_TYPE_HOUR="shift_type_hour";
+  static final LOCALE_KEY_DIFFERENCE_HOUR="difference_hour";
+  static final LOCALE_KEY_START_DATE="start_date";
+  static final LOCALE_KEY_END_DATE="end_date";
+
+  static final LOCALE_KEY_ADD_NEW_TIME_SHEET="add_new_time_sheet";
+
+  static final LOCALE_KEY_TIME_SHEET_DETAILS="time_sheet_details";
+
+  static final LOCALE_KEY_TIME_PROJECT_NAME="project_name";
+
+  static final LOCALE_KEY_ADD_NEW_TIME_SHEET_DETAILS="add_new_time_sheet_details";
+
+  static final LOCALE_KEY_SAVE="save";
+
+
+
 }
