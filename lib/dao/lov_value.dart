@@ -96,7 +96,7 @@ class LovValue {
     String where = col_row_id + "=?";
     List<String> whereArgs = [id];
     List<Map> maps =
-        await helper.queryWord(tableName, columns, where, whereArgs);
+        await helper.queryWhereList(tableName, columns, where, whereArgs);
     if (maps != null && maps.length > 0) {
       return LovValue.fromMap(maps.first);
     }

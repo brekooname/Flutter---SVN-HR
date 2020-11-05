@@ -12,8 +12,10 @@ import 'package:get_mac/get_mac.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:sven_hr/Screens/clock_record/clock_record_controller.dart';
 import 'package:sven_hr/components/flutter_toast_message.dart';
+import 'package:sven_hr/dao/lov_value.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/models/response/last_check_response.dart';
+import 'package:sven_hr/utilities/app_controller.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 import 'dart:async';
@@ -34,6 +36,7 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
   final Connectivity _connectivity = Connectivity();
   // final WifiInfo _wifiInfo = WifiInfo();
   String wifiBSSID = "";
+  String recType='';
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   @override
@@ -98,11 +101,13 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
         if (value != null) {
           if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
             _lastCheck = _clockRecordController.lastCheck;
+            getRecType();
           }
         }
       });
     });
   }
+
   Future _checkGps() async {
     if (!(await Geolocator().isLocationServiceEnabled())) {
       if (Theme.of(context).platform == TargetPlatform.android) {
@@ -111,16 +116,20 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text("Can't get gurrent location"),
-                content:const Text('Please make sure you enable GPS and try again'),
+                content:
+                    const Text('Please make sure you enable GPS and try again'),
                 actions: <Widget>[
-                  FlatButton(child: Text('Ok'),
+                  FlatButton(
+                      child: Text('Ok'),
                       onPressed: () {
                         final AndroidIntent intent = AndroidIntent(
-                            action: 'android.settings.LOCATION_SOURCE_SETTINGS');
+                            action:
+                                'android.settings.LOCATION_SOURCE_SETTINGS');
                         intent.launch();
                         Navigator.of(context, rootNavigator: true).pop();
                         // _gpsService(context);
-                      })],
+                      })
+                ],
               );
             });
       }
@@ -135,6 +144,7 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
     } else
       return true;
   }
+
   void userVerification(String clockType) async {
     buttonSendIsPressed = true;
     showSpinner = true;
@@ -156,6 +166,16 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
     });
   }
 
+  Future<void> getRecType()async{
+     LovValue lovValue=LovValue();
+     lovValue= await  lovValue.getLovsByRowId(_lastCheck.rec_type );
+     if(lovValue.row_id!=null){
+       recType =lovValue.display;
+     }
+     setState(() {
+
+     });
+  }
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -188,95 +208,173 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 30,
                     ),
-                    if (_lastCheck.rec_type != null &&
-                        _lastCheck.rec_type.compareTo(Const.RECORD_TYPE_OUT) ==
-                            0)
-                      Flexible(
-                        flex: 1,
-                        child: GestureDetector(
-                          onTap: () {
 
-                            userVerification(Const.RECORD_TYPE_IN);
-                          },
-                          child: Container(
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: buttonSendIsPressed
-                                  ? AppTheme.nearlyWhite.withOpacity(0.1)
-                                  : AppTheme.nearlyBlue,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(16.0),
-                              ),
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                    color: AppTheme.nearlyBlue.withOpacity(0.5),
-                                    offset: const Offset(1.1, 1.1),
-                                    blurRadius: 10.0),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                AppTranslations.of(context)
-                                    .text(Const.LOCALE_KEY_CHECK_IN),
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                  letterSpacing: 0.0,
-                                  color: AppTheme.nearlyWhite,
+                    Expanded(
+                      flex: 3,
+                      child: Card(
+                        color: AppTheme.kPrimaryLightColor,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: AppTheme.kPrimaryLightColor.withOpacity(0.2),
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(30),
+                                  bottomRight: Radius.circular(30),
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30))),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(AppTranslations.of(context).text(Const.LOCALE_KEY_lAST_CHECK_IN_OUT),
+                                  style: TextStyle(
+                                      color: AppTheme.kPrimaryColor,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 20),
+                                  textAlign: TextAlign.center,
                                 ),
-                              ),
+
+                                Expanded(
+                                  flex: 1,
+                                  child: ListTile(
+                                    title: Text(AppTranslations.of(context)
+                                        .text(Const.LOCALE_KEY_REC_DATE)),
+                                    subtitle: Text(
+                                        _lastCheck.rec_date != null
+                                            ? _lastCheck.rec_date
+                                            : "-"),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: ListTile(
+                                    title: Text(AppTranslations.of(context)
+                                        .text(Const.LOCALE_KEY_REC_TIME)),
+                                    subtitle: Text(
+                                        _lastCheck.rec_time != null
+                                            ? ApplicationController.formatToHours(_lastCheck.rec_time).toString()
+                                            : "-"),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: ListTile(
+                                    title: Text(AppTranslations.of(context)
+                                        .text(Const.LOCALE_KEY_TYPE)),
+                                    subtitle: Text(
+                                        recType),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                    if (_lastCheck.rec_type != null &&
-                        _lastCheck.rec_type.compareTo(Const.RECORD_TYPE_IN) ==
-                            0)
-                      Flexible(
-                        flex: 1,
-                        child: GestureDetector(
-                          onTap: () {
-                            userVerification(Const.RECORD_TYPE_OUT);
-                          },
-                          child: Container(
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: buttonSendIsPressed
-                                  ? AppTheme.nearlyWhite.withOpacity(0.1)
-                                  : AppTheme.nearlyBlue,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(16.0),
-                              ),
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                    color: AppTheme.nearlyBlue.withOpacity(0.5),
-                                    offset: const Offset(1.1, 1.1),
-                                    blurRadius: 10.0),
-                              ],
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: () {
+                          userVerification(Const.RECORD_TYPE_IN);
+                        },
+                        child: Container(
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: buttonSendIsPressed
+                                ? AppTheme.nearlyWhite.withOpacity(0.1)
+                                : AppTheme.nearlyBlue,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(16.0),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                AppTranslations.of(context)
-                                    .text(Const.LOCALE_KEY_CHECK_OUT),
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                  letterSpacing: 0.0,
-                                  color: AppTheme.nearlyWhite,
-                                ),
-                              ),
-                            ),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                  color: AppTheme.nearlyBlue.withOpacity(0.5),
+                                  offset: const Offset(1.1, 1.1),
+                                  blurRadius: 10.0),
+                            ],
                           ),
+                          child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 12),
+                              child: RichText(
+                                text: TextSpan(children: [
+                                  WidgetSpan(
+                                      child: Icon(
+                                    Icons.fingerprint,
+                                    color: AppTheme.white,
+                                  )),
+                                  TextSpan(
+                                    text: AppTranslations.of(context)
+                                        .text(Const.LOCALE_KEY_CHECK_IN),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                      letterSpacing: 0.0,
+                                      color: AppTheme.nearlyWhite,
+                                    ),
+                                  ),
+                                ]),
+                              )),
                         ),
                       ),
-                    const SizedBox(
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: () {
+                          userVerification(Const.RECORD_TYPE_OUT);
+                        },
+                        child: Container(
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: buttonSendIsPressed
+                                ? AppTheme.nearlyWhite.withOpacity(0.1)
+                                : AppTheme.nearlyBlue,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(16.0),
+                            ),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                  color: AppTheme.nearlyBlue.withOpacity(0.5),
+                                  offset: const Offset(1.1, 1.1),
+                                  blurRadius: 10.0),
+                            ],
+                          ),
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: RichText(
+                                text: TextSpan(children: [
+                                  WidgetSpan(
+                                      child: Icon(
+                                    Icons.fingerprint,
+                                    color: AppTheme.white,
+                                  )),
+                                  TextSpan(
+                                    text: AppTranslations.of(context)
+                                        .text(Const.LOCALE_KEY_CHECK_OUT),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                      letterSpacing: 0.0,
+                                      color: AppTheme.nearlyWhite,
+                                    ),
+                                  ),
+                                ]),
+                              )),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
                       height: 16,
                     ),
                     Flexible(
@@ -302,17 +400,26 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                             ],
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              AppTranslations.of(context)
-                                  .text(Const.LOCALE_KEY_CANCEL),
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18,
-                                letterSpacing: 0.0,
-                                color: AppTheme.nearlyWhite,
-                              ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 19),
+                            child: RichText(
+                              text: TextSpan(children: [
+                                WidgetSpan(
+                                    child: Icon(
+                                  Icons.cancel_outlined,
+                                  color: AppTheme.white,
+                                )),
+                                TextSpan(
+                                  text: AppTranslations.of(context)
+                                      .text(Const.LOCALE_KEY_CANCEL),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18,
+                                    letterSpacing: 0.0,
+                                    color: AppTheme.nearlyWhite,
+                                  ),
+                                ),
+                              ]),
                             ),
                           ),
                         ),

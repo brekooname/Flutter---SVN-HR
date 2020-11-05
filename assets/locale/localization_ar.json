@@ -129,6 +129,10 @@
 
   "project_name": "Project Name",
   "add_new_time_sheet_details": "Add New Time Sheet Details",
-  "save": "Save"
+  "save": "Save",
+  "last_check_in_out": "Last Check in/out",
+
+  "rec_date": "Rec Date",
+  "rec_time": "Rec Time"
 
 }

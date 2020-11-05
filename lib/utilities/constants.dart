@@ -223,6 +223,9 @@ class Const {
   static final LOCALE_KEY_ADD_NEW_TIME_SHEET_DETAILS="add_new_time_sheet_details";
 
   static final LOCALE_KEY_SAVE="save";
+  static final LOCALE_KEY_lAST_CHECK_IN_OUT="last_check_in_out";
+  static final LOCALE_KEY_REC_DATE="rec_date";
+  static final LOCALE_KEY_REC_TIME="rec_time";
 
 
 

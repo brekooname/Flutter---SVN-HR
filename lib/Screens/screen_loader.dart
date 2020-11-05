@@ -23,16 +23,16 @@ class _ScreenLoaderState extends State<ScreenLoader> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            MenueTopBar(
-              screenName: this.widget.screenName,
-            ),
-            Expanded(
-              child: this.widget.screenWidget,
-            ),
-          ],
+      children: <Widget>[
+        MenueTopBar(
+          screenName: this.widget.screenName,
         ),
-      ),
+        Expanded(
+          child: this.widget.screenWidget,
+        ),
+      ],
+    ),
+    ),
     );
   }
 }

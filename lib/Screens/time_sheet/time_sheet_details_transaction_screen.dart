@@ -87,10 +87,19 @@ class _TimeSheetDetailsTransactionScreenState
 
   @override
   Widget build(BuildContext context) {
-    return ScreenLoader(
-      screenName:
-          AppTranslations.of(context).text(Const.LOCALE_KEY_TIME_SHEET_DETAILS),
-      screenWidget: TimeSheetDetailsScreen(),
+    return Scaffold(
+      backgroundColor: AppTheme.white,
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: TimeSheetDetailsScreen(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -147,15 +156,27 @@ class _TimeSheetDetailsTransactionScreenState
                                             timeSheetId: timeSheetId,
                                           )),
                                 )
-                                .then((value) => {
-                              getDetailsTransaction()
-                                    });
+                                .then((value) => {getDetailsTransaction()});
                           },
                         ),
                         flex: 1,
+                      ),
+                      Expanded(
+                        child: Text(AppTranslations.of(context)
+                            .text(Const.LOCALE_KEY_TIME_SHEET_DETAILS),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 22,
+                            letterSpacing: 0.27,
+                            color: AppTheme.kPrimaryColor,
+                          ),
+
+                        ),
+                        flex: 3,
                       )
                     ],
-                  )
+                  ),
+                  Divider(color: AppTheme.kPrimaryLightColor,height: 5,)
                 ],
               ),
             ),
@@ -201,9 +222,7 @@ class _TimeSheetDetailsTransactionScreenState
                                           detailId: _detalisList[index],
                                         )),
                               )
-                              .then((value) => {
-                            getDetailsTransaction()
-                                  });
+                              .then((value) => {getDetailsTransaction()});
                         },
                       );
                     },
@@ -273,11 +292,10 @@ class TimeSheetDetailsView extends StatelessWidget {
                   Expanded(
                     flex: 3,
                     child: TextFieldContainer(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(detail.description),
-                      )
-                    ),
+                        child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(detail.description),
+                    )),
                   ),
                 ],
               ),
@@ -498,7 +516,9 @@ class TimeSheetDetailsView extends StatelessWidget {
                                     splashColor:
                                         detailsListItem.getRightColor(),
                                     onPressed: editDetails),
-                                SizedBox(width: 5,),
+                                SizedBox(
+                                  width: 5,
+                                ),
                                 IconButton(
                                     icon: Icon(
                                       Icons.notes,
@@ -508,8 +528,8 @@ class TimeSheetDetailsView extends StatelessWidget {
                                     tooltip: 'search',
                                     hoverColor: detailsListItem.getRightColor(),
                                     splashColor:
-                                    detailsListItem.getRightColor(),
-                                    onPressed: (){
+                                        detailsListItem.getRightColor(),
+                                    onPressed: () {
                                       _asyncConfirmDialog(context);
                                     }),
                               ],
