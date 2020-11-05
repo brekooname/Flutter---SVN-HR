@@ -133,6 +133,18 @@
   "last_check_in_out": "Last Check in/out",
 
   "rec_date": "Rec Date",
-  "rec_time": "Rec Time"
+  "rec_time": "Rec Time",
+
+  "app_settings": "App Settings",
+  "longitude": "Longitude",
+  "latitude": "Latitude",
+  "wifi_name": "Wifi Name",
+  "wifi_bssid": "Wifi BSSID",
+  "wifi_ip": "Wifi IP",
+  "add_location": "Add Location",
+  "add_network": "Add Network",
+  "location_name": "Location Name",
+  "location_range": "Location Range",
+  "wifi_information": "Wifi Information"
 
 }

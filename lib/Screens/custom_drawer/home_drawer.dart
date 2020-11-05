@@ -3,6 +3,7 @@ import 'package:sven_hr/Screens/Leaves/leaves_transaction_screen.dart';
 import 'package:sven_hr/Screens/Login/login_controller.dart';
 import 'package:sven_hr/Screens/Login/login_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
+import 'package:sven_hr/Screens/app_settings/app_settings_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
 import 'package:sven_hr/Screens/time_sheet/time_sheet_screen.dart';
@@ -91,8 +92,16 @@ class _HomeDrawerState extends State<HomeDrawer> {
           DrawerList item = DrawerList(
             index: DrawerIndex.TIME_SHEET,
             labelName:
-                AppTranslations.of(context).text(Const.LOCALE_KEY_TIME_SHEET),
+            AppTranslations.of(context).text(Const.LOCALE_KEY_TIME_SHEET),
             icon: Icon(Icons.timeline),
+          );
+          drawerList.add(item);
+        }else if (screen.screenName.compareTo(AppSettingsScreen.id) == 0) {
+          DrawerList item = DrawerList(
+            index: DrawerIndex.APP_SETTINGS,
+            labelName:
+            AppTranslations.of(context).text(Const.LOCALE_KEY_APP_SETTING),
+            icon: Icon(Icons.settings),
           );
           drawerList.add(item);
         }
@@ -392,7 +401,8 @@ enum DrawerIndex {
   BENEFIT_REQUEST,
   LOAN_REQUEST,
   CLOCK_RECORD,
-  APPROVAL_INBOX
+  APPROVAL_INBOX,
+  APP_SETTINGS
 }
 
 class DrawerList {

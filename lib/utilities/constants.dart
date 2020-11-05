@@ -227,6 +227,22 @@ class Const {
   static final LOCALE_KEY_REC_DATE="rec_date";
   static final LOCALE_KEY_REC_TIME="rec_time";
 
+  static final LOCALE_KEY_APP_SETTING="app_settings";
+
+  static final LOCALE_KEY_LONGITUDE="longitude";
+  static final LOCALE_KEY_LATITUDE="latitude";
+  static final LOCALE_KEY_WIFI_NAME="wifi_name";
+  static final LOCALE_KEY_WIFI_BSSID="wifi_bssid";
+  static final LOCALE_KEY_WIFI_IP="wifi_ip";
+  static final LOCALE_KEY_ADD_LOCATION="add_location";
+  static final LOCALE_KEY_ADD_NETWORK="add_network";
+  static final LOCALE_KEY_LOCATION_NAME="location_name";
+  static final LOCALE_KEY_LOCATION_RANGE="location_range";
+  static final LOCALE_KEY_WIFI_INFORMATION="wifi_information";
+
+
+
+
 
 
 }

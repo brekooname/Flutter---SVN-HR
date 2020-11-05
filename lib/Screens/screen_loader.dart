@@ -18,6 +18,7 @@ class _ScreenLoaderState extends State<ScreenLoader> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: AppTheme.white,
       body: SafeArea(
         child: Column(

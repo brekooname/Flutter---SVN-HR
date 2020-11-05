@@ -21,6 +21,7 @@ import 'package:sven_hr/localization/app_translations_delegate.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
+import 'Screens/app_settings/app_settings_screen.dart';
 import 'localization/application.dart';
 
 var initialRoute;
@@ -124,6 +125,7 @@ class _MyAppState extends State<MyApp> {
         ApprovalInboxTransactionScreen.id: (context) => ApprovalInboxTransactionScreen(),
         ClockRecordScreen.id: (context) => ClockRecordScreen(),
         TimeSheetScreen.id: (context) => TimeSheetScreen(),
+        AppSettingsScreen.id: (context) => AppSettingsScreen(),
       },
       localizationsDelegates: [
         newLocaleDelegate,
