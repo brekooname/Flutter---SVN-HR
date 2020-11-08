@@ -23,10 +23,10 @@ class AppTheme {
   static const Color nearlyBlue = Color(0xFF00B6F0);
   static const Color nearlyGrey = Color(0xFFF8FAFB);
 
-  static const Color approved = Color(0xFF29F284);
-  static const Color declined = Color(0xFFFa2302);
-  static const Color canceled = Color(0xFF1f89ed);
-  static const Color pending = Color(0xFFfcb55d);
+  static const Color green = Color(0xFF29F284);
+  static const Color red = Color(0xFFFa2302);
+  static const Color blue_dark = Color(0xFF1f89ed);
+  static const Color orange = Color(0xFFfcb55d);
 
 
   static const TextTheme textTheme = TextTheme(

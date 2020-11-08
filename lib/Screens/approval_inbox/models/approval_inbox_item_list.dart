@@ -18,7 +18,7 @@ class ApprovalInboxListItem {
           0) {
         return Icon(
           Icons.new_releases_outlined,
-          color: AppTheme.pending,
+          color: AppTheme.orange,
         );
       }
     }
@@ -26,7 +26,7 @@ class ApprovalInboxListItem {
 
   Color getRightColor() {
     if (status.compareTo(Const.REQUEST_RESPONSE_DISPLAYVALUE) == 0) {
-      return AppTheme.pending;
+      return AppTheme.orange;
     }
   }
 

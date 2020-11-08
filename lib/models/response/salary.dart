@@ -72,7 +72,7 @@ class Salary{
   String _permission_method;
 
   @JsonKey(name: 'tax_amt')
-  int _tax_amt;
+  num _tax_amt;
 
   @JsonKey(name: 'total_all')
  double _total_all;
@@ -90,7 +90,7 @@ class Salary{
   String _branch_id_displayValue;
 
   @JsonKey(name: 'extra_wrk_value')
-  int _extra_wrk_value;
+  num _extra_wrk_value;
 
   @JsonKey(name: 'createdby')
   String _createdby;
@@ -364,9 +364,9 @@ class Salary{
     _permission_method = value;
   }
 
-  int get tax_amt => _tax_amt;
+  num get tax_amt => _tax_amt;
 
-  set tax_amt(int value) {
+  set tax_amt(num value) {
     _tax_amt = value;
   }
 
@@ -400,9 +400,9 @@ class Salary{
     _branch_id_displayValue = value;
   }
 
-  int get extra_wrk_value => _extra_wrk_value;
+  num get extra_wrk_value => _extra_wrk_value;
 
-  set extra_wrk_value(int value) {
+  set extra_wrk_value(num value) {
     _extra_wrk_value = value;
   }
 

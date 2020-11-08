@@ -26,28 +26,28 @@ class VacationListItem {
           0) {
         return Icon(
           Icons.done_outline,
-          color: AppTheme.approved,
+          color: AppTheme.green,
         );
       } else if (status.row_id
               .compareTo(Const.VACATION_REQUEST_CANCELED_STATUS) ==
           0) {
         return Icon(
           Icons.cancel,
-          color: AppTheme.canceled,
+          color: AppTheme.blue_dark,
         );
       } else if (status.row_id
               .compareTo(Const.VACATION_REQUEST_DECLINED_STATUS) ==
           0) {
         return Icon(
           Icons.close,
-          color: AppTheme.declined,
+          color: AppTheme.red,
         );
       } else if (status.row_id
               .compareTo(Const.VACATION_REQUEST_PENDING_STATUS) ==
           0) {
         return Icon(
           Icons.query_builder,
-          color: AppTheme.pending,
+          color: AppTheme.orange,
         );
       }
     }
@@ -55,18 +55,18 @@ class VacationListItem {
 
   Color getRightColor() {
     if (status.row_id.compareTo(Const.VACATION_REQUEST_APPROVED_STATUS) == 0) {
-      return AppTheme.approved;
+      return AppTheme.green;
     } else if (status.row_id
             .compareTo(Const.VACATION_REQUEST_CANCELED_STATUS) ==
         0) {
-      return AppTheme.canceled;
+      return AppTheme.blue_dark;
     } else if (status.row_id
             .compareTo(Const.VACATION_REQUEST_DECLINED_STATUS) ==
         0) {
-      return AppTheme.declined;
+      return AppTheme.red;
     } else if (status.row_id.compareTo(Const.VACATION_REQUEST_PENDING_STATUS) ==
         0) {
-      return AppTheme.pending;
+      return AppTheme.orange;
     }
   }
 

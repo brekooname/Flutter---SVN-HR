@@ -2,6 +2,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:sven_hr/Screens/Leaves/leaves_controller.dart';
 import 'package:sven_hr/Screens/Vacations/picker_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_controller.dart';
@@ -83,11 +84,8 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
       startTime = detail.start_time;
       endTime = detail.end_time;
 
-      description=detail.description;
-      descriptionTextController.text=description;
-
-
-
+      description = detail.description;
+      descriptionTextController.text = description;
     }
   }
 
@@ -97,10 +95,10 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
     await _timeSheetController.getProjectList().then((value) {
       setState(() {
         projectListList = _timeSheetController.projectList;
-        if(detail!=null){
-          for(ProjectListResponse pro in projectListList){
-            if(pro.row_id.compareTo(detail.project_id)==0){
-              projectValue=pro;
+        if (detail != null) {
+          for (ProjectListResponse pro in projectListList) {
+            if (pro.row_id.compareTo(detail.project_id) == 0) {
+              projectValue = pro;
               break;
             }
           }
@@ -115,14 +113,15 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
     await _timeSheetController.loadProjectsType().then((value) {
       setState(() {
         statusList.addAll(value);
-        if(detail!=null){
-          for(LovValue lov in statusList){
-            if(lov.row_id.compareTo(detail.status)==0){
-              statusValue=lov;
+        if (detail != null) {
+          for (LovValue lov in statusList) {
+            if (lov.row_id.compareTo(detail.status) == 0) {
+              statusValue = lov;
               break;
             }
           }
-        };
+        }
+        ;
       });
     });
   }
@@ -202,6 +201,7 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
                 padding: const EdgeInsets.all(10.0),
                 child: Form(
                   key: _formKey,
+                  autovalidateMode: AutovalidateMode.disabled,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -235,10 +235,11 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
                               Expanded(
                                 child: DateTimeField(
                                   controller: startTimeController,
-                                  validator: (value) => startTimeController.text == null
-                                      ? AppTranslations.of(context)
-                                          .text(Const.LOCALE_KEY_REQUIRED)
-                                      : null,
+                                  validator: (value) =>
+                                     startTime == null
+                                          ? AppTranslations.of(context)
+                                              .text(Const.LOCALE_KEY_REQUIRED)
+                                          : null,
                                   textAlign: TextAlign.center,
                                   style: AppTheme.subtitle,
                                   format: timeFormat,
@@ -279,10 +280,11 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
                               Expanded(
                                 child: DateTimeField(
                                   controller: endTimeController,
-                                  validator: (value) => endTimeController.text == null
-                                      ? AppTranslations.of(context)
-                                          .text(Const.LOCALE_KEY_REQUIRED)
-                                      : null,
+                                  validator: (value) =>
+                                  endTime == null
+                                          ? AppTranslations.of(context)
+                                              .text(Const.LOCALE_KEY_REQUIRED)
+                                          : null,
                                   textAlign: TextAlign.center,
                                   style: AppTheme.subtitle,
                                   format: timeFormat,
@@ -311,33 +313,83 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
                           ),
                         ),
                       ),
+                      // Expanded(
+                      //   flex: 2,
+                      //   child: TextFieldContainer(
+                      //     child: Row(
+                      //       children: [
+                      //         Expanded(
+                      //           child: DropdownButtonFormField<
+                      //               ProjectListResponse>(
+                      //             decoration: InputDecoration(
+                      //                 enabledBorder: UnderlineInputBorder(
+                      //                     borderSide: BorderSide(
+                      //                         color: Colors.transparent))),
+                      //             hint: Text(AppTranslations.of(context).text(
+                      //                 Const.LOCALE_KEY_TIME_PROJECT_NAME)),
+                      //             isExpanded: true,
+                      //             style:
+                      //                 TextStyle(color: AppTheme.kPrimaryColor),
+                      //             icon: Icon(
+                      //               Icons.menu_open,
+                      //               color: AppTheme.kPrimaryColor,
+                      //               size: 20,
+                      //             ),
+                      //             value: projectValue,
+                      //             validator: (value) => value == null
+                      //                 ? AppTranslations.of(context)
+                      //                     .text(Const.LOCALE_KEY_REQUIRED)
+                      //                 : null,
+                      //             items: projectListList.map<
+                      //                     DropdownMenuItem<
+                      //                         ProjectListResponse>>(
+                      //                 (ProjectListResponse value) {
+                      //               return DropdownMenuItem<
+                      //                   ProjectListResponse>(
+                      //                 value: value,
+                      //                 child: Text(
+                      //                   value.name,
+                      //                 ),
+                      //               );
+                      //             }).toList(),
+                      //             onChanged: (value) {
+                      //               setState(() {
+                      //                 projectValue = value;
+                      //               });
+                      //             },
+                      //             onTap: () {
+                      //               print('pressed');
+                      //             },
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+
                       Expanded(
                         flex: 2,
                         child: TextFieldContainer(
                           child: Row(
                             children: [
                               Expanded(
-                                child: DropdownButtonFormField<
-                                    ProjectListResponse>(
-                                  decoration: InputDecoration(
-                                      enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent))),
+                                child: SearchableDropdown.single(
+                                  value: projectValue,
+                                  icon: Icon(
+                                    Icons.menu_open_sharp,
+                                    color: AppTheme.kPrimaryColor,
+                                    size: 20,
+                                  ),
+                                  clearIcon: Icon(
+                                    Icons.close_sharp,
+                                    color: AppTheme.kPrimaryColor,
+                                    size: 20,
+                                  ),
                                   hint: Text(AppTranslations.of(context).text(
                                       Const.LOCALE_KEY_TIME_PROJECT_NAME)),
                                   isExpanded: true,
                                   style:
                                       TextStyle(color: AppTheme.kPrimaryColor),
-                                  icon: Icon(
-                                    Icons.menu_open,
-                                    color: AppTheme.kPrimaryColor,
-                                    size: 20,
-                                  ),
-                                  value: projectValue,
-                                  validator: (value) => value == null
-                                      ? AppTranslations.of(context)
-                                          .text(Const.LOCALE_KEY_REQUIRED)
-                                      : null,
                                   items: projectListList.map<
                                           DropdownMenuItem<
                                               ProjectListResponse>>(
@@ -355,15 +407,13 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
                                       projectValue = value;
                                     });
                                   },
-                                  onTap: () {
-                                    print('pressed');
-                                  },
                                 ),
                               ),
                             ],
                           ),
                         ),
                       ),
+
                       Expanded(
                         flex: 2,
                         child: TextFieldContainer(
@@ -386,7 +436,7 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
                                     size: 20,
                                   ),
                                   value: statusValue,
-                                  validator: (value) => value == null
+                                  validator: (value) => statusValue == null
                                       ? AppTranslations.of(context)
                                           .text(Const.LOCALE_KEY_REQUIRED)
                                       : null,
@@ -420,7 +470,6 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
                           child: TextField(
                             style: TextStyle(color: AppTheme.kPrimaryColor),
                             controller: descriptionTextController,
-
                             keyboardType: TextInputType.multiline,
                             cursorColor: AppTheme.kPrimaryColor,
                             decoration: InputDecoration(

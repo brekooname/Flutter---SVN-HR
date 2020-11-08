@@ -435,7 +435,7 @@ class TimeSheetDetailsView extends StatelessWidget {
                                       letterSpacing: .3)),
                               Text(
                                   detailsListItem.workingHour != null
-                                      ? detailsListItem.workingHour.toString()
+                                      ? detailsListItem.workingHour.toStringAsFixed(3)
                                       : '',
                                   style: TextStyle(
                                       color: detailsListItem.getRightColor(),

@@ -83,4 +83,9 @@ class ProjectListResponse{
   set is_core_project(String value) {
     _is_core_project = value;
   }
+
+   @override
+  String toString() {
+    return 'ProjectListResponse{_name: $_name}';
+  }
 }

@@ -289,13 +289,13 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                           decoration: BoxDecoration(
                             color: buttonSendIsPressed
                                 ? AppTheme.nearlyWhite.withOpacity(0.1)
-                                : AppTheme.nearlyBlue,
+                                : AppTheme.red,
                             borderRadius: const BorderRadius.all(
                               Radius.circular(16.0),
                             ),
                             boxShadow: <BoxShadow>[
                               BoxShadow(
-                                  color: AppTheme.nearlyBlue.withOpacity(0.5),
+                                  color: AppTheme.red.withOpacity(0.5),
                                   offset: const Offset(1.1, 1.1),
                                   blurRadius: 10.0),
                             ],
@@ -339,13 +339,13 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                           decoration: BoxDecoration(
                             color: buttonSendIsPressed
                                 ? AppTheme.nearlyWhite.withOpacity(0.1)
-                                : AppTheme.nearlyBlue,
+                                : AppTheme.green,
                             borderRadius: const BorderRadius.all(
                               Radius.circular(16.0),
                             ),
                             boxShadow: <BoxShadow>[
                               BoxShadow(
-                                  color: AppTheme.nearlyBlue.withOpacity(0.5),
+                                  color: AppTheme.green.withOpacity(0.5),
                                   offset: const Offset(1.1, 1.1),
                                   blurRadius: 10.0),
                             ],

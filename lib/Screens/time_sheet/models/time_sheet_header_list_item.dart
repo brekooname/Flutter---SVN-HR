@@ -15,12 +15,12 @@ class TimeSheetHeaderListItem {
   Icon getRightIcon() {
     return Icon(
       Icons.timelapse_outlined,
-      color: AppTheme.canceled,
+      color: AppTheme.blue_dark,
     );
   }
 
   Color getRightColor() {
-    return AppTheme.canceled;
+    return AppTheme.blue_dark;
   }
 
 }

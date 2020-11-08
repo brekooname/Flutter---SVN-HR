@@ -29,13 +29,13 @@ Salary _$SalaryFromJson(Map<String, dynamic> json) {
     ..comp_commit_flg = json['comp_commit_flg'] as String
     ..loans_value = json['loans_value'] as int
     ..permission_method = json['permission_method'] as String
-    ..tax_amt = json['tax_amt'] as int
+    ..tax_amt = json['tax_amt'] as num
     ..total_all = (json['total_all'] as num).toDouble()
     ..effective_end_date = json['effective_end_date'] as String
     ..branch_id = json['branch_id'] as String
     ..branch_id_code = json['branch_id_code'] as String
     ..branch_id_displayValue = json['branch_id_displayValue'] as String
-    ..extra_wrk_value = json['extra_wrk_value'] as int
+    ..extra_wrk_value = json['extra_wrk_value'] as num
     ..createdby = json['createdby'] as String
     ..total_ded = (json['total_ded'] as num).toDouble()
     ..paid_amt = json['paid_amt'] as int
