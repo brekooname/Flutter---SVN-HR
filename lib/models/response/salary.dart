@@ -12,7 +12,7 @@ class Salary{
   String _bank_account_id;
 
   @JsonKey(name: 'taxabale_salary')
-  double _taxabale_salary;
+  num _taxabale_salary;
 
   @JsonKey(name: 'job_id')
   String _job_id;
@@ -33,7 +33,7 @@ class Salary{
   String _salary_cycle_displayValue;
 
   @JsonKey(name: 'net_salary')
-  double _net_salary;
+  num _net_salary;
 
   @JsonKey(name: 'original_date_of_hire')
   String _original_date_of_hire;
@@ -48,16 +48,16 @@ class Salary{
   int _retroactive_amt;
 
   @JsonKey(name: 'hour_value')
-  double _hour_value;
+  num _hour_value;
 
   @JsonKey(name: 'updatedate')
   String _updatedate;
 
   @JsonKey(name: 'exemptions_amt')
-  double _exemptions_amt;
+  num _exemptions_amt;
 
   @JsonKey(name: 'unpaid_days_amount')
-  double _unpaid_days_amount;
+  num _unpaid_days_amount;
 
   @JsonKey(name: 'status')
   String _status;
@@ -75,7 +75,7 @@ class Salary{
   num _tax_amt;
 
   @JsonKey(name: 'total_all')
- double _total_all;
+  num _total_all;
 
   @JsonKey(name: 'effective_end_date')
   String _effective_end_date;
@@ -96,13 +96,13 @@ class Salary{
   String _createdby;
 
   @JsonKey(name: 'total_ded')
-  double _total_ded;
+  num _total_ded;
 
   @JsonKey(name: 'paid_amt')
   int _paid_amt;
 
   @JsonKey(name: 'cycle_close_balance')
-  double _cycle_close_balance;
+  num _cycle_close_balance;
 
   @JsonKey(name: 'payroll_cycle')
   String _payroll_cycle;
@@ -171,7 +171,7 @@ class Salary{
   String _row_id;
 
   @JsonKey(name: 'day_value')
-  double _day_value;
+  num _day_value;
 
   @JsonKey(name: 'unpaid_days')
   int _unpaid_days;
@@ -244,9 +244,9 @@ class Salary{
   }
 
 
-  double get taxabale_salary => _taxabale_salary;
+  num get taxabale_salary => _taxabale_salary;
 
-  set taxabale_salary(double value) {
+  set taxabale_salary(num value) {
     _taxabale_salary = value;
   }
 
@@ -286,9 +286,9 @@ class Salary{
     _salary_cycle_displayValue = value;
   }
 
-  double get net_salary => _net_salary;
+  num get net_salary => _net_salary;
 
-  set net_salary(double value) {
+  set net_salary(num value) {
     _net_salary = value;
   }
 
@@ -316,9 +316,9 @@ class Salary{
     _retroactive_amt = value;
   }
 
-  double get hour_value => _hour_value;
+  num get hour_value => _hour_value;
 
-  set hour_value(double value) {
+  set hour_value(num value) {
     _hour_value = value;
   }
 
@@ -328,15 +328,15 @@ class Salary{
     _updatedate = value;
   }
 
-  double get exemptions_amt => _exemptions_amt;
+  num get exemptions_amt => _exemptions_amt;
 
-  set exemptions_amt(double value) {
+  set exemptions_amt(num value) {
     _exemptions_amt = value;
   }
 
-  double get unpaid_days_amount => _unpaid_days_amount;
+  num get unpaid_days_amount => _unpaid_days_amount;
 
-  set unpaid_days_amount(double value) {
+  set unpaid_days_amount(num value) {
     _unpaid_days_amount = value;
   }
 
@@ -370,9 +370,9 @@ class Salary{
     _tax_amt = value;
   }
 
-  double get total_all => _total_all;
+  num get total_all => _total_all;
 
-  set total_all(double value) {
+  set total_all(num value) {
     _total_all = value;
   }
 
@@ -412,9 +412,9 @@ class Salary{
     _createdby = value;
   }
 
-  double get total_ded => _total_ded;
+  num get total_ded => _total_ded;
 
-  set total_ded(double value) {
+  set total_ded(num value) {
     _total_ded = value;
   }
 
@@ -424,9 +424,9 @@ class Salary{
     _paid_amt = value;
   }
 
-  double get cycle_close_balance => _cycle_close_balance;
+  num get cycle_close_balance => _cycle_close_balance;
 
-  set cycle_close_balance(double value) {
+  set cycle_close_balance(num value) {
     _cycle_close_balance = value;
   }
 
@@ -562,9 +562,9 @@ class Salary{
     _row_id = value;
   }
 
-  double get day_value => _day_value;
+  num get day_value => _day_value;
 
-  set day_value(double value) {
+  set day_value(num value) {
     _day_value = value;
   }
 

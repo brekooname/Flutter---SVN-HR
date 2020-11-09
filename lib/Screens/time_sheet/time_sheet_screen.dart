@@ -464,7 +464,7 @@ class TimeSheetView extends StatelessWidget {
                                       letterSpacing: .3)),
                               Text(
                                   headerListItem.workingHour != null
-                                      ? headerListItem.workingHour.toString()
+                                      ? headerListItem.workingHour.toStringAsFixed(3)
                                       : '',
                                   style: TextStyle(
                                       color: headerListItem.getRightColor(),
@@ -524,7 +524,7 @@ class TimeSheetView extends StatelessWidget {
                                       letterSpacing: .3)),
                               Text(
                                   headerListItem.differenceHour != null
-                                      ? headerListItem.differenceHour.toString()
+                                      ? headerListItem.differenceHour.toStringAsFixed(3)
                                       : '',
                                   style: TextStyle(
                                       color: headerListItem.getRightColor(),

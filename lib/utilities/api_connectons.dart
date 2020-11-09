@@ -55,4 +55,8 @@ class ApiConnections{
   static const String  GET_PROJECTS_lIST="/getlistOfProjects";
 
   static const String  ADD_TIME_SHEET_DETAILS="/addTimesheetDetailsRequestV2";
+
+  static const String  ADD_NEW_LOCATION="/addNewLocation";
+
+  static const String  ADD_NEW_NETWORK="/addNewNetwork";
 }

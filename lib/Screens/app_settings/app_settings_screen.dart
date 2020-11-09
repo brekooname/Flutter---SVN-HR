@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sven_hr/Screens/app_settings/app_settings_controller.dart';
 import 'package:sven_hr/Screens/screen_loader.dart';
+import 'package:sven_hr/components/flutter_toast_message.dart';
 import 'package:sven_hr/components/text_field_container.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/services/location.dart';
@@ -26,13 +28,14 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
   double longitude;
   String wifiName;
   String wifiBSSID;
-  String WifiIP;
+  String wifiIP;
   bool buttonSendIsPressed = false;
   String locationName;
-  String locationRange;
+  num locationRange;
   AnimationController _controller;
   Animation _animation;
   FocusNode _focusNode = FocusNode();
+  APPSettingsController _appSettingsController;
 
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
   final Connectivity _connectivity = Connectivity();
@@ -87,6 +90,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
 
   @override
   void initState() {
+    _appSettingsController = APPSettingsController();
     initConnectivity();
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
@@ -146,10 +150,10 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
         }
 
         try {
-          WifiIP = await _connectivity.getWifiIP();
+          wifiIP = await _connectivity.getWifiIP();
         } on PlatformException catch (e) {
           print(e.toString());
-          WifiIP = "Failed to get Wifi IP";
+          wifiIP = "Failed to get Wifi IP";
         }
 
         setState(() {
@@ -167,6 +171,54 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
     }
   }
 
+  void addNewLocation() async {
+    if(longitude ==null || latitude ==null ){
+      ToastMessage.showErrorMsg(Const.LONGITUDE_LATITUDE_CANT_EMPTY);
+      return;
+    }
+    buttonSendIsPressed = true;
+    await _appSettingsController
+        .addNewLocation(
+            latitude: latitude.toString(),
+            longitude: longitude.toString(),
+            locationRange: locationRange,
+            locationName: locationName)
+        .then((value) {
+      if (value == null) {
+        ToastMessage.showErrorMsg(Const.REQUEST_FAILED);
+      } else if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
+        ToastMessage.showSuccessMsg(Const.VACATION_SENT_SUCCESSFULLY);
+        // Navigator.pop(context);
+      } else {
+        ToastMessage.showErrorMsg(value);
+      }
+      buttonSendIsPressed = false;
+      setState(() {});
+    });
+  }
+
+  void addNewNetwork() async {
+    buttonSendIsPressed = true;
+    await _appSettingsController
+        .addNewNetwork(
+      wifiBSSID: wifiBSSID,
+      wifiName: wifiName,
+      wifiIP: wifiIP,
+    )
+        .then((value) {
+      if (value == null) {
+        ToastMessage.showErrorMsg(Const.REQUEST_FAILED);
+      } else if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
+        ToastMessage.showSuccessMsg(Const.VACATION_SENT_SUCCESSFULLY);
+        // Navigator.pop(context);
+      } else {
+        ToastMessage.showErrorMsg(value);
+      }
+      buttonSendIsPressed = false;
+      setState(() {});
+    });
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -174,6 +226,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
 
     super.dispose();
   }
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -184,281 +237,304 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
         height: MediaQuery.of(context).size.height / 2,
         width: MediaQuery.of(context).size.width,
         margin: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Flexible(
-              flex: 1,
-              child: Container(
-                decoration: BoxDecoration(
-                    color: AppTheme.kPrimaryLightColor.withOpacity(0.9),
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30))),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        AppTranslations.of(context)
-                            .text(Const.LOCALE_KEY_LOCATION),
-                        style: TextStyle(
-                            color: AppTheme.kPrimaryColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 20),
-                        textAlign: TextAlign.center,
-                      ),
-                      Row(
-                        children: [
-                          Flexible(
-                            flex: 1,
-                            child: ListTile(
-                              title: Text(AppTranslations.of(context)
-                                  .text(Const.LOCALE_KEY_LATITUDE)),
-                              subtitle: Text(
-                                  latitude != null ? latitude.toString() : "-"),
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: AppTheme.kPrimaryLightColor.withOpacity(0.9),
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(30),
+                            bottomRight: Radius.circular(30),
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_LOCATION),
+                              style: TextStyle(
+                                  color: AppTheme.kPrimaryColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20),
+                              textAlign: TextAlign.center,
                             ),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Flexible(
-                            flex: 1,
-                            child: ListTile(
-                              title: Text(AppTranslations.of(context)
-                                  .text(Const.LOCALE_KEY_LONGITUDE)),
-                              subtitle: Text(longitude != null
-                                  ? longitude.toString()
-                                  : "-"),
+                            Row(
+                              children: [
+                                Flexible(
+                                  flex: 1,
+                                  child: ListTile(
+                                    title: Text(AppTranslations.of(context)
+                                        .text(Const.LOCALE_KEY_LATITUDE)),
+                                    subtitle: Text(
+                                        latitude != null ? latitude.toString() : "-"),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  child: ListTile(
+                                    title: Text(AppTranslations.of(context)
+                                        .text(Const.LOCALE_KEY_LONGITUDE)),
+                                    subtitle: Text(longitude != null
+                                        ? longitude.toString()
+                                        : "-"),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                IconButton(
+                                    icon: Icon(
+                                      Icons.location_on_outlined,
+                                      color: AppTheme.kPrimaryColor,
+                                    ),
+                                    onPressed: () async {
+                                      await getCurrentLocation();
+                                    }),
+                              ],
                             ),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          IconButton(
-                              icon: Icon(
-                                Icons.location_on_outlined,
-                                color: AppTheme.kPrimaryColor,
+                            Flexible(
+                              flex: 1,
+                              child: TextFieldContainer(
+                                child: TextFormField(
+                                  validator: (value) => locationName == null
+                                      ? AppTranslations.of(context)
+                                          .text(Const.LOCALE_KEY_REQUIRED)
+                                      : null,
+                                  cursorColor: AppTheme.kPrimaryColor,
+                                  decoration: InputDecoration(
+                                    hintText: AppTranslations.of(context)
+                                        .text(Const.LOCALE_KEY_LOCATION_NAME),
+                                    border: InputBorder.none,
+                                    suffixIcon: IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: AppTheme.kPrimaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      locationName = value;
+                                    });
+                                  },
+                                ),
                               ),
-                              onPressed: () async {
-                                await getCurrentLocation();
-                              }),
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: TextFieldContainer(
+                                child: TextFormField(
+                                  validator: (value) => locationRange == null
+                                      ? AppTranslations.of(context)
+                                      .text(Const.LOCALE_KEY_REQUIRED)
+                                      : null,
+                                  keyboardType: TextInputType.number,
+                                  cursorColor: AppTheme.kPrimaryColor,
+                                  decoration: InputDecoration(
+                                    hintText: AppTranslations.of(context)
+                                        .text(Const.LOCALE_KEY_LOCATION_RANGE),
+                                    border: InputBorder.none,
+                                    suffixIcon: IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.format_list_numbered,
+                                        color: AppTheme.kPrimaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      locationRange = value as num;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 20, right: 20),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (_formKey.currentState.validate()) {
+                                      _formKey.currentState.save();
+                                      addNewLocation();
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      color: buttonSendIsPressed
+                                          ? AppTheme.nearlyWhite.withOpacity(0.1)
+                                          : AppTheme.nearlyBlue,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(16.0),
+                                      ),
+                                      boxShadow: <BoxShadow>[
+                                        BoxShadow(
+                                            color:
+                                                AppTheme.nearlyBlue.withOpacity(0.5),
+                                            offset: const Offset(1.1, 1.1),
+                                            blurRadius: 10.0),
+                                      ],
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        AppTranslations.of(context)
+                                            .text(Const.LOCALE_KEY_ADD_LOCATION),
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18,
+                                          letterSpacing: 0.0,
+                                          color: AppTheme.nearlyWhite,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Flexible(
+                  flex: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: AppTheme.kPrimaryLightColor.withOpacity(0.9),
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(30),
+                            bottomRight: Radius.circular(30),
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_WIFI_INFORMATION),
+                            style: TextStyle(
+                                color: AppTheme.kPrimaryColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20),
+                            textAlign: TextAlign.center,
+                          ),
+                          // Flexible(
+                          //   flex: 1,
+                          //   child: ListTile(
+                          //     title: Text(AppTranslations.of(context)
+                          //         .text(Const.LOCALE_KEY_STATUS)),
+                          //     subtitle: Text(_connectionStatus != null
+                          //         ? _connectionStatus.toString()
+                          //         : "-"),
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   width: 5,
+                          // ),
+                          Flexible(
+                            flex: 1,
+                            child: ListTile(
+                              title: Text(AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_WIFI_NAME)),
+                              subtitle: Text(
+                                  wifiName != null ? wifiName.toString() : "-"),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: ListTile(
+                              title: Text(AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_WIFI_BSSID)),
+                              subtitle: Text(
+                                  wifiBSSID != null ? wifiBSSID.toString() : "-"),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: ListTile(
+                              title: Text(AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_WIFI_IP)),
+                              subtitle:
+                                  Text(wifiIP != null ? wifiIP.toString() : "-"),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 20, right: 20),
+                              child: GestureDetector(
+                                onTap: () {
+                                  addNewNetwork();
+                                },
+                                child: Container(
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: buttonSendIsPressed
+                                        ? AppTheme.nearlyWhite.withOpacity(0.1)
+                                        : AppTheme.nearlyBlue,
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(16.0),
+                                    ),
+                                    boxShadow: <BoxShadow>[
+                                      BoxShadow(
+                                          color:
+                                              AppTheme.nearlyBlue.withOpacity(0.5),
+                                          offset: const Offset(1.1, 1.1),
+                                          blurRadius: 10.0),
+                                    ],
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      AppTranslations.of(context)
+                                          .text(Const.LOCALE_KEY_ADD_NETWORK),
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18,
+                                        letterSpacing: 0.0,
+                                        color: AppTheme.nearlyWhite,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       ),
-                      Flexible(
-                        flex: 1,
-                        child: TextFieldContainer(
-                          child: TextField(
-                            cursorColor: AppTheme.kPrimaryColor,
-                            decoration: InputDecoration(
-                              hintText: AppTranslations.of(context)
-                                  .text(Const.LOCALE_KEY_LOCATION_NAME),
-                              border: InputBorder.none,
-                              suffixIcon: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.edit,
-                                  color: AppTheme.kPrimaryColor,
-                                ),
-                              ),
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                locationName = value;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: TextFieldContainer(
-                          child: TextField(
-                            keyboardType: TextInputType.number,
-                            cursorColor: AppTheme.kPrimaryColor,
-                            decoration: InputDecoration(
-                              hintText: AppTranslations.of(context)
-                                  .text(Const.LOCALE_KEY_LOCATION_RANGE),
-                              border: InputBorder.none,
-                              suffixIcon: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.format_list_numbered,
-                                  color: AppTheme.kPrimaryColor,
-                                ),
-                              ),
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                locationName = value;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: buttonSendIsPressed
-                                    ? AppTheme.nearlyWhite.withOpacity(0.1)
-                                    : AppTheme.nearlyBlue,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(16.0),
-                                ),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                      color:
-                                          AppTheme.nearlyBlue.withOpacity(0.5),
-                                      offset: const Offset(1.1, 1.1),
-                                      blurRadius: 10.0),
-                                ],
-                              ),
-                              child: Center(
-                                child: Text(
-                                  AppTranslations.of(context)
-                                      .text(Const.LOCALE_KEY_ADD_LOCATION),
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18,
-                                    letterSpacing: 0.0,
-                                    color: AppTheme.nearlyWhite,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-            SizedBox(
-              height: 5,
-            ),
-            Flexible(
-              flex: 1,
-              child: Container(
-                decoration: BoxDecoration(
-                    color: AppTheme.kPrimaryLightColor.withOpacity(0.9),
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30))),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        AppTranslations.of(context)
-                            .text(Const.LOCALE_KEY_WIFI_INFORMATION),
-                        style: TextStyle(
-                            color: AppTheme.kPrimaryColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 20),
-                        textAlign: TextAlign.center,
-                      ),
-                      // Flexible(
-                      //   flex: 1,
-                      //   child: ListTile(
-                      //     title: Text(AppTranslations.of(context)
-                      //         .text(Const.LOCALE_KEY_STATUS)),
-                      //     subtitle: Text(_connectionStatus != null
-                      //         ? _connectionStatus.toString()
-                      //         : "-"),
-                      //   ),
-                      // ),
-                      // SizedBox(
-                      //   width: 5,
-                      // ),
-                      Flexible(
-                        flex: 1,
-                        child: ListTile(
-                          title: Text(AppTranslations.of(context)
-                              .text(Const.LOCALE_KEY_WIFI_NAME)),
-                          subtitle: Text(
-                              wifiName != null ? wifiName.toString() : "-"),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: ListTile(
-                          title: Text(AppTranslations.of(context)
-                              .text(Const.LOCALE_KEY_WIFI_BSSID)),
-                          subtitle: Text(
-                              wifiBSSID != null ? wifiBSSID.toString() : "-"),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: ListTile(
-                          title: Text(AppTranslations.of(context)
-                              .text(Const.LOCALE_KEY_WIFI_IP)),
-                          subtitle:
-                              Text(WifiIP != null ? WifiIP.toString() : "-"),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: buttonSendIsPressed
-                                    ? AppTheme.nearlyWhite.withOpacity(0.1)
-                                    : AppTheme.nearlyBlue,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(16.0),
-                                ),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                      color:
-                                          AppTheme.nearlyBlue.withOpacity(0.5),
-                                      offset: const Offset(1.1, 1.1),
-                                      blurRadius: 10.0),
-                                ],
-                              ),
-                              child: Center(
-                                child: Text(
-                                  AppTranslations.of(context)
-                                      .text(Const.LOCALE_KEY_ADD_NETWORK),
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18,
-                                    letterSpacing: 0.0,
-                                    color: AppTheme.nearlyWhite,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

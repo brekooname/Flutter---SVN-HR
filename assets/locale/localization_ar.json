@@ -145,6 +145,13 @@
   "add_network": "Add Network",
   "location_name": "Location Name",
   "location_range": "Location Range",
-  "wifi_information": "Wifi Information"
+  "wifi_information": "Wifi Information",
+
+  "longitude_latitude_cant_empty": "Longitude Latitude can not be empty",
+
+  "are_you_sure": "'Are you sure?",
+  "do_you_want": "Do you want to exit an App",
+  "yes": "Yes",
+  "no": "No"
 
 }

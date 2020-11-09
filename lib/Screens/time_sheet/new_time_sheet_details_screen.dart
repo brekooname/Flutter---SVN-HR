@@ -189,42 +189,41 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
   @override
   Widget build(BuildContext context) {
     final timeFormat = DateFormat(Const.TIME_FORMAT);
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
 
-    return ModalProgressHUD(
-      inAsyncCall: showSpinner,
-      child: Container(
-        color: AppTheme.nearlyWhite,
-        child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
+    return Scaffold(
+        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomPadding: false,
+        backgroundColor: AppTheme.nearlyWhite,
+        body: ModalProgressHUD(
+          inAsyncCall: showSpinner,
+          child: Container(
+            child: SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
                 child: Form(
                   key: _formKey,
                   autovalidateMode: AutovalidateMode.disabled,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                     mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Text(
-                            AppTranslations.of(context).text(
-                                Const.LOCALE_KEY_ADD_NEW_TIME_SHEET_DETAILS),
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 22,
-                              letterSpacing: 0.27,
-                              color: AppTheme.kPrimaryColor,
-                            ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30,bottom: 20),
+                        child: Text(
+                          AppTranslations.of(context).text(
+                              Const.LOCALE_KEY_ADD_NEW_TIME_SHEET_DETAILS),
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 22,
+                            letterSpacing: 0.27,
+                            color: AppTheme.kPrimaryColor,
                           ),
                         ),
                       ),
                       Expanded(
-                        flex: 2,
+                        flex: 1,
                         child: TextFieldContainer(
                           child: Row(
                             children: [
@@ -269,7 +268,7 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
                         ),
                       ),
                       Expanded(
-                        flex: 2,
+                        flex: 1,
                         child: TextFieldContainer(
                           child: Row(
                             children: [
@@ -313,62 +312,8 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
                           ),
                         ),
                       ),
-                      // Expanded(
-                      //   flex: 2,
-                      //   child: TextFieldContainer(
-                      //     child: Row(
-                      //       children: [
-                      //         Expanded(
-                      //           child: DropdownButtonFormField<
-                      //               ProjectListResponse>(
-                      //             decoration: InputDecoration(
-                      //                 enabledBorder: UnderlineInputBorder(
-                      //                     borderSide: BorderSide(
-                      //                         color: Colors.transparent))),
-                      //             hint: Text(AppTranslations.of(context).text(
-                      //                 Const.LOCALE_KEY_TIME_PROJECT_NAME)),
-                      //             isExpanded: true,
-                      //             style:
-                      //                 TextStyle(color: AppTheme.kPrimaryColor),
-                      //             icon: Icon(
-                      //               Icons.menu_open,
-                      //               color: AppTheme.kPrimaryColor,
-                      //               size: 20,
-                      //             ),
-                      //             value: projectValue,
-                      //             validator: (value) => value == null
-                      //                 ? AppTranslations.of(context)
-                      //                     .text(Const.LOCALE_KEY_REQUIRED)
-                      //                 : null,
-                      //             items: projectListList.map<
-                      //                     DropdownMenuItem<
-                      //                         ProjectListResponse>>(
-                      //                 (ProjectListResponse value) {
-                      //               return DropdownMenuItem<
-                      //                   ProjectListResponse>(
-                      //                 value: value,
-                      //                 child: Text(
-                      //                   value.name,
-                      //                 ),
-                      //               );
-                      //             }).toList(),
-                      //             onChanged: (value) {
-                      //               setState(() {
-                      //                 projectValue = value;
-                      //               });
-                      //             },
-                      //             onTap: () {
-                      //               print('pressed');
-                      //             },
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
-
                       Expanded(
-                        flex: 2,
+                        flex: 1,
                         child: TextFieldContainer(
                           child: Row(
                             children: [
@@ -413,9 +358,8 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
                           ),
                         ),
                       ),
-
                       Expanded(
-                        flex: 2,
+                        flex: 1,
                         child: TextFieldContainer(
                           child: Row(
                             children: [
@@ -465,11 +409,12 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
                         ),
                       ),
                       Expanded(
-                        flex: 3,
+                        flex: 2,
                         child: TextFieldContainer(
                           child: TextField(
                             style: TextStyle(color: AppTheme.kPrimaryColor),
                             controller: descriptionTextController,
+                            maxLines: null,
                             keyboardType: TextInputType.multiline,
                             cursorColor: AppTheme.kPrimaryColor,
                             decoration: InputDecoration(
@@ -492,94 +437,97 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () {
-                                buttonClosedIsPressed = true;
-                                setState(() {});
-                                Navigator.pop(context);
-                              },
-                              child: Container(
-                                width: 48,
-                                height: 48,
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 25),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () {
+                                  buttonClosedIsPressed = true;
+                                  setState(() {});
+                                  Navigator.pop(context);
+                                },
                                 child: Container(
-                                  decoration: BoxDecoration(
-                                    color: buttonClosedIsPressed
-                                        ? AppTheme.kPrimaryColor
-                                            .withOpacity(0.1)
-                                        : AppTheme.nearlyWhite,
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(16.0),
+                                  width: 48,
+                                  height: 48,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: buttonClosedIsPressed
+                                          ? AppTheme.kPrimaryColor
+                                              .withOpacity(0.1)
+                                          : AppTheme.nearlyWhite,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(16.0),
+                                      ),
+                                      border: Border.all(
+                                          color: AppTheme.grey.withOpacity(0.2)),
                                     ),
-                                    border: Border.all(
-                                        color: AppTheme.grey.withOpacity(0.2)),
-                                  ),
-                                  child: Icon(
-                                    Icons.close,
-                                    color: AppTheme.nearlyBlue,
-                                    size: 28,
+                                    child: Icon(
+                                      Icons.close,
+                                      color: AppTheme.nearlyBlue,
+                                      size: 28,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (_formKey.currentState.validate()) {
-                                    _formKey.currentState.save();
-                                    saveTimeSheetRequest();
-                                  }
-                                },
-                                child: Container(
-                                  height: 48,
-                                  decoration: BoxDecoration(
-                                    color: buttonSendIsPressed
-                                        ? AppTheme.nearlyWhite.withOpacity(0.1)
-                                        : AppTheme.nearlyBlue,
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(16.0),
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (_formKey.currentState.validate()) {
+                                      _formKey.currentState.save();
+                                      saveTimeSheetRequest();
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 48,
+                                    decoration: BoxDecoration(
+                                      color: buttonSendIsPressed
+                                          ? AppTheme.nearlyWhite.withOpacity(0.1)
+                                          : AppTheme.nearlyBlue,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(16.0),
+                                      ),
+                                      boxShadow: <BoxShadow>[
+                                        BoxShadow(
+                                            color: AppTheme.nearlyBlue
+                                                .withOpacity(0.5),
+                                            offset: const Offset(1.1, 1.1),
+                                            blurRadius: 10.0),
+                                      ],
                                     ),
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                          color: AppTheme.nearlyBlue
-                                              .withOpacity(0.5),
-                                          offset: const Offset(1.1, 1.1),
-                                          blurRadius: 10.0),
-                                    ],
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      AppTranslations.of(context)
-                                          .text(Const.LOCALE_KEY_SAVE),
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 18,
-                                        letterSpacing: 0.0,
-                                        color: AppTheme.nearlyWhite,
+                                    child: Center(
+                                      child: Text(
+                                        AppTranslations.of(context)
+                                            .text(Const.LOCALE_KEY_SAVE),
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18,
+                                          letterSpacing: 0.0,
+                                          color: AppTheme.nearlyWhite,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-            )),
-      ),
-    );
+            ),
+          ),
+        ));
   }
 }

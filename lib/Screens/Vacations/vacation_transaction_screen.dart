@@ -43,9 +43,12 @@ class _VacationsTransactionState extends State<VacationsTransaction>
   }
 
   void getLastMonthVacationTransaction() async {
+    // setState(() {
+    //   showSpinner=true;
+    // });
     await _vacationTransactionController.getDefualtSearch().then((value) {
       setState(() {
-        print(value);
+        showSpinner = false;
       });
     });
   }
@@ -79,7 +82,7 @@ class _VacationsTransactionState extends State<VacationsTransaction>
   }
 
   Future<bool> getData() async {
-    await Future<dynamic>.delayed(const Duration(milliseconds: 10));
+    // await Future<dynamic>.delayed(const Duration(milliseconds: 10));
     return true;
   }
 
@@ -89,6 +92,12 @@ class _VacationsTransactionState extends State<VacationsTransaction>
       screenName: AppTranslations.of(context).text(Const.LOCALE_KEY_VACATION),
       screenWidget: VacationScreen(),
     );
+  }
+
+  @override
+  dispose() {
+    animationController.dispose(); // you need this
+    super.dispose();
   }
 
   Widget VacationScreen() {
@@ -359,10 +368,11 @@ class _VacationsTransactionState extends State<VacationsTransaction>
                               : _vacationTransactionController
                                   .vacationList.length;
                       final Animation<double> animation =
-                          Tween<double>(begin: 0.0, end: 1.0).animate(
+                          Tween<double>(begin: 0.0, end: 1).animate(
                               CurvedAnimation(
                                   parent: animationController,
-                                  curve: Interval((1 / count) * index, 1.0,
+                                  curve: Interval(
+                                      (0.5 / count) * index, 0.5,
                                       curve: Curves.fastOutSlowIn)));
                       animationController.forward();
 

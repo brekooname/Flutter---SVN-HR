@@ -325,7 +325,7 @@ class TimeSheetDetailsView extends StatelessWidget {
                   color: AppTheme.kPrimaryLightColor.withOpacity(0.4),
                 ),
                 width: double.infinity,
-                height: 175,
+                height: 180,
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 child: Row(
@@ -490,14 +490,18 @@ class TimeSheetDetailsView extends StatelessWidget {
                                       color: detailsListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
-                              Text(
-                                  detailsListItem.projectName != null
-                                      ? detailsListItem.projectName.toString()
-                                      : '',
-                                  style: TextStyle(
-                                      color: detailsListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
+                              Expanded(
+                                child: Text(
+                                    detailsListItem.projectName != null
+                                        ? detailsListItem.projectName.toString()
+                                        : '',
+                                    overflow: TextOverflow.clip,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                        color: detailsListItem.getRightColor(),
+                                        fontSize: 13,
+                                        letterSpacing: .3)),
+                              ),
                             ],
                           ),
                           Expanded(

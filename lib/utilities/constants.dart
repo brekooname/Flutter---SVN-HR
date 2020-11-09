@@ -21,6 +21,8 @@ class Const {
   static final VACATION_REQUEST_PENDING_STATUS="1469456728756";
 
 
+
+
   static final VACATION_REQUEST_LOCATION_INTERNAL="207684107300700";
   static final VACATION_REQUEST_LOCATION_EXTERNAL="207698843063200";
 
@@ -240,6 +242,13 @@ class Const {
   static final LOCALE_KEY_LOCATION_RANGE="location_range";
   static final LOCALE_KEY_WIFI_INFORMATION="wifi_information";
 
+  static final LONGITUDE_LATITUDE_CANT_EMPTY="longitude_latitude_cant_empty";
+
+
+  static final LOCALE_KEY_YES="yes";
+  static final LOCALE_KEY_NO="no";
+  static final LOCALE_KEY_ARE_YOU_SURE="are_you_sure";
+  static final LOCALE_KEY_DO_YOU_WANT="do_you_want";
 
 
 
