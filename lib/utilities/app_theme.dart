@@ -74,6 +74,7 @@ class AppTheme {
     fontSize: 14,
     letterSpacing: -0.04,
     color: kPrimaryColor,
+    decoration: TextDecoration.none
   );
 
   static const TextStyle body2 = TextStyle(

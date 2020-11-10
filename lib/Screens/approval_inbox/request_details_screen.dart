@@ -62,8 +62,14 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
       if (value == null) {
         ToastMessage.showErrorMsg(Const.REQUEST_FAILED);
       } else if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
-        ToastMessage.showSuccessMsg(Const.VACATION_SENT_SUCCESSFULLY);
-        Navigator.pop(context,value);
+        if (action.compareTo(Const.APPROVAL_INBOX_ACCTION_ACCEPT) == 0) {
+          ToastMessage.showSuccessMsg(
+              AppTranslations.of(context).text(Const.LOCALE_KEY_APRROVED_MSG));
+        } else {
+          ToastMessage.showSuccessMsg(
+              AppTranslations.of(context).text(Const.LOCALE_KEY_REJECTED_MSG));
+        }
+        Navigator.pop(context, value);
       } else {
         ToastMessage.showErrorMsg(value);
       }
@@ -72,7 +78,6 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
       setState(() {});
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,16 +92,35 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Text(
-                    AppTranslations.of(context)
-                        .text(Const.LOCALE_KEY_REQUEST_DETAILS),
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 22,
-                      letterSpacing: 0.27,
-                      color: AppTheme.kPrimaryColor,
-                    ),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: AppTheme.kPrimaryColor,
+                        ),
+                        tooltip: 'search',
+                        hoverColor: AppTheme.kPrimaryColor,
+                        splashColor: AppTheme.kPrimaryColor,
+                        onPressed: () async {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Text(
+                        AppTranslations.of(context)
+                            .text(Const.LOCALE_KEY_REQUEST_DETAILS),
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 22,
+                          letterSpacing: 0.27,
+                          color: AppTheme.kPrimaryColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Expanded(
@@ -125,7 +149,6 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                 fontSize: 20),
                             textAlign: TextAlign.center,
                           ),
-
                           Row(
                             children: [
                               Expanded(
@@ -145,14 +168,14 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   title: Text(AppTranslations.of(context)
                                       .text(Const.LOCALE_KEY_REQUEST_DATE)),
                                   subtitle: Text(this
-                                      .widget
-                                      .approvalInboxItenm
-                                      .approval_request_date !=
-                                      null
+                                              .widget
+                                              .approvalInboxItenm
+                                              .approval_request_date !=
+                                          null
                                       ? this
-                                      .widget
-                                      .approvalInboxItenm
-                                      .approval_request_date
+                                          .widget
+                                          .approvalInboxItenm
+                                          .approval_request_date
                                       : "-"),
                                 ),
                               ),
@@ -202,9 +225,10 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
                                         .text(Const.LOCALE_KEY_TO)),
-                                    subtitle: Text(_requestDetails.endDate != null
-                                        ? _requestDetails.endDate
-                                        : "Date .."),
+                                    subtitle: Text(
+                                        _requestDetails.endDate != null
+                                            ? _requestDetails.endDate
+                                            : "Date .."),
                                   ),
                                 ),
                               ],
@@ -306,7 +330,7 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                             .compareTo(Const.APPROVAL_INBOX_LEAVE_TYPE) ==
                         0)
                   Expanded(
-                    flex:7,
+                    flex: 7,
                     child: Card(
                       color: AppTheme.kPrimaryLightColor,
                       child: Container(
@@ -339,9 +363,10 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
                                         .text(Const.LOCALE_KEY_TO)),
-                                    subtitle: Text(_requestDetails.endDate != null
-                                        ? _requestDetails.endDate
-                                        : "Date .."),
+                                    subtitle: Text(
+                                        _requestDetails.endDate != null
+                                            ? _requestDetails.endDate
+                                            : "Date .."),
                                   ),
                                 ),
                               ],
@@ -439,10 +464,10 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
                                         .text(Const.LOCALE_KEY_LOAN_AMOUNT)),
-                                    subtitle: Text(
-                                        _requestDetails.loanAmount != null
-                                            ? _requestDetails.loanAmount.toString()
-                                            : "-"),
+                                    subtitle: Text(_requestDetails.loanAmount !=
+                                            null
+                                        ? _requestDetails.loanAmount.toString()
+                                        : "-"),
                                   ),
                                 ),
                                 Expanded(
@@ -464,8 +489,8 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(
-                                            Const.LOCALE_KEY_LOAN_PAYMENT_METHOD)),
+                                        .text(Const
+                                            .LOCALE_KEY_LOAN_PAYMENT_METHOD)),
                                     subtitle: Text(
                                         _requestDetails.loanPaymentMethod !=
                                                 null
@@ -478,7 +503,8 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_LOAN_PAYMENT_DUEDATE)),
+                                        .text(Const
+                                            .LOCALE_KEY_LOAN_PAYMENT_DUEDATE)),
                                     subtitle: Text(
                                         _requestDetails.loanPaymentDueDate !=
                                                 null
@@ -495,8 +521,7 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(
-                                            Const.LOCALE_KEY_LOAN_TYPES)),
+                                        .text(Const.LOCALE_KEY_LOAN_TYPES)),
                                     subtitle: Text(_requestDetails.loanTypes !=
                                             null
                                         ? _requestDetails.loanTypes.toString()
@@ -507,7 +532,8 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_LOAN_APPROVED_AMOUNT)),
+                                        .text(Const
+                                            .LOCALE_KEY_LOAN_APPROVED_AMOUNT)),
                                     subtitle: Text(
                                         _requestDetails.loanApprovedAmount !=
                                                 null
@@ -524,10 +550,9 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                     ),
                   ),
 
-
                 if (_requestDetails.approvalInboxType != null &&
                     _requestDetails.approvalInboxType
-                        .compareTo(Const.APPROVAL_INBOX_EXTRA_WORK_TYPE) ==
+                            .compareTo(Const.APPROVAL_INBOX_EXTRA_WORK_TYPE) ==
                         0)
                   Expanded(
                     flex: 7,
@@ -551,7 +576,8 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_EXTRA_WORK_UNIT)),
+                                        .text(
+                                            Const.LOCALE_KEY_EXTRA_WORK_UNIT)),
                                     subtitle: Text(
                                         _requestDetails.extraWorkUnit != null
                                             ? _requestDetails.extraWorkUnit
@@ -562,11 +588,14 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_EXTRA_WORK_UNIT_QUANTITY)),
-                                    subtitle: Text(
-                                        _requestDetails.extraWorkUnitQuantity != null
-                                            ? _requestDetails.extraWorkUnitQuantity.toString()
-                                            : "-"),
+                                        .text(Const
+                                            .LOCALE_KEY_EXTRA_WORK_UNIT_QUANTITY)),
+                                    subtitle: Text(_requestDetails
+                                                .extraWorkUnitQuantity !=
+                                            null
+                                        ? _requestDetails.extraWorkUnitQuantity
+                                            .toString()
+                                        : "-"),
                                   ),
                                 ),
                               ],
@@ -577,13 +606,12 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(
-                                        Const.LOCALE_KEY_EXTRA_WOR_DAY_TYPE)),
+                                        .text(Const
+                                            .LOCALE_KEY_EXTRA_WOR_DAY_TYPE)),
                                     subtitle: Text(
-                                        _requestDetails.extraWorkDayType !=
-                                            null
+                                        _requestDetails.extraWorkDayType != null
                                             ? _requestDetails.extraWorkDayType
-                                            .toString()
+                                                .toString()
                                             : "-"),
                                   ),
                                 ),
@@ -591,12 +619,12 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_EXTRA_WORK_REASON)),
+                                        .text(Const
+                                            .LOCALE_KEY_EXTRA_WORK_REASON)),
                                     subtitle: Text(
-                                        _requestDetails.extraWorkReason !=
-                                            null
+                                        _requestDetails.extraWorkReason != null
                                             ? _requestDetails.extraWorkReason
-                                            .toString()
+                                                .toString()
                                             : "-"),
                                   ),
                                 ),
@@ -608,11 +636,13 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(
-                                        Const.LOCALE_KEY_EXTRA_WORK_PAYROLL_CYCLE)),
-                                    subtitle: Text(_requestDetails.extraWorkPayrollCycle !=
-                                        null
-                                        ? _requestDetails.extraWorkPayrollCycle.toString()
+                                        .text(Const
+                                            .LOCALE_KEY_EXTRA_WORK_PAYROLL_CYCLE)),
+                                    subtitle: Text(_requestDetails
+                                                .extraWorkPayrollCycle !=
+                                            null
+                                        ? _requestDetails.extraWorkPayrollCycle
+                                            .toString()
                                         : "-"),
                                   ),
                                 ),
@@ -620,13 +650,14 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_EXTRA_WORK_REQUEST_DATE)),
-                                    subtitle: Text(
-                                        _requestDetails.extraWorkRequestDate !=
+                                        .text(Const
+                                            .LOCALE_KEY_EXTRA_WORK_REQUEST_DATE)),
+                                    subtitle: Text(_requestDetails
+                                                .extraWorkRequestDate !=
                                             null
-                                            ? _requestDetails.extraWorkRequestDate
+                                        ? _requestDetails.extraWorkRequestDate
                                             .toString()
-                                            : "-"),
+                                        : "-"),
                                   ),
                                 ),
                               ],
@@ -639,7 +670,7 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
 
                 if (_requestDetails.approvalInboxType != null &&
                     _requestDetails.approvalInboxType
-                        .compareTo(Const.APPROVAL_INBOX_EXPENSE_TYPE) ==
+                            .compareTo(Const.APPROVAL_INBOX_EXPENSE_TYPE) ==
                         0)
                   Expanded(
                     flex: 7,
@@ -666,7 +697,8 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                         .text(Const.LOCALE_KEY_EXPENSE_AMOUNT)),
                                     subtitle: Text(
                                         _requestDetails.expenseAmount != null
-                                            ? _requestDetails.expenseAmount.toString()
+                                            ? _requestDetails.expenseAmount
+                                                .toString()
                                             : "-"),
                                   ),
                                 ),
@@ -674,7 +706,8 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_EXPENSE_CURRANCY)),
+                                        .text(
+                                            Const.LOCALE_KEY_EXPENSE_CURRANCY)),
                                     subtitle: Text(
                                         _requestDetails.expenseCurrancy != null
                                             ? _requestDetails.expenseCurrancy
@@ -689,13 +722,11 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(
-                                        Const.LOCALE_KEY_EXPENSE_DATE)),
+                                        .text(Const.LOCALE_KEY_EXPENSE_DATE)),
                                     subtitle: Text(
-                                        _requestDetails.expenseDate !=
-                                            null
+                                        _requestDetails.expenseDate != null
                                             ? _requestDetails.expenseDate
-                                            .toString()
+                                                .toString()
                                             : "-"),
                                   ),
                                 ),
@@ -703,12 +734,13 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_EXPENSE_REQUEST_DATE)),
+                                        .text(Const
+                                            .LOCALE_KEY_EXPENSE_REQUEST_DATE)),
                                     subtitle: Text(
                                         _requestDetails.expenseRequestDate !=
-                                            null
+                                                null
                                             ? _requestDetails.expenseRequestDate
-                                            .toString()
+                                                .toString()
                                             : "-"),
                                   ),
                                 ),
@@ -720,15 +752,16 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(
-                                        Const.LOCALE_KEY_EXPENSE_APPROVED_AMOUNT)),
-                                    subtitle: Text(_requestDetails.expenseApprovedAmount !=
-                                        null
-                                        ? _requestDetails.expenseApprovedAmount.toString()
+                                        .text(Const
+                                            .LOCALE_KEY_EXPENSE_APPROVED_AMOUNT)),
+                                    subtitle: Text(_requestDetails
+                                                .expenseApprovedAmount !=
+                                            null
+                                        ? _requestDetails.expenseApprovedAmount
+                                            .toString()
                                         : "-"),
                                   ),
                                 ),
-
                               ],
                             ),
                           ],
@@ -739,7 +772,7 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
 
                 if (_requestDetails.approvalInboxType != null &&
                     _requestDetails.approvalInboxType
-                        .compareTo(Const.APPROVAL_INBOX_DOCUEMNT_TYPE) ==
+                            .compareTo(Const.APPROVAL_INBOX_DOCUEMNT_TYPE) ==
                         0)
                   Expanded(
                     flex: 7,
@@ -764,21 +797,24 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
                                         .text(Const.LOCALE_KEY_DOCUMENT_TYPE)),
-                                    subtitle: Text(
-                                        _requestDetails.documentDocumentType != null
-                                            ? _requestDetails.documentDocumentType
-                                            : "-"),
+                                    subtitle: Text(_requestDetails
+                                                .documentDocumentType !=
+                                            null
+                                        ? _requestDetails.documentDocumentType
+                                        : "-"),
                                   ),
                                 ),
                                 Expanded(
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_DOCUMENT_REQUEST_DATE)),
-                                    subtitle: Text(
-                                        _requestDetails.documentRequestdate != null
-                                            ? _requestDetails.documentRequestdate
-                                            : "-"),
+                                        .text(Const
+                                            .LOCALE_KEY_DOCUMENT_REQUEST_DATE)),
+                                    subtitle: Text(_requestDetails
+                                                .documentRequestdate !=
+                                            null
+                                        ? _requestDetails.documentRequestdate
+                                        : "-"),
                                   ),
                                 ),
                               ],
@@ -791,7 +827,7 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
 
                 if (_requestDetails.approvalInboxType != null &&
                     _requestDetails.approvalInboxType
-                        .compareTo(Const.APPROVAL_INBOX_BENEFIT_TYPE) ==
+                            .compareTo(Const.APPROVAL_INBOX_BENEFIT_TYPE) ==
                         0)
                   Expanded(
                     flex: 7,
@@ -815,22 +851,27 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_EMP_BENEFIT_REQUEST_AMT)),
-                                    subtitle: Text(
-                                        _requestDetails.empBenefitRequestAmt != null
-                                            ? _requestDetails.empBenefitRequestAmt.toString()
-                                            : "-"),
+                                        .text(Const
+                                            .LOCALE_KEY_EMP_BENEFIT_REQUEST_AMT)),
+                                    subtitle: Text(_requestDetails
+                                                .empBenefitRequestAmt !=
+                                            null
+                                        ? _requestDetails.empBenefitRequestAmt
+                                            .toString()
+                                        : "-"),
                                   ),
                                 ),
                                 Expanded(
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_EMP_BENEFIT_UNIT_PRICE)),
-                                    subtitle: Text(
-                                        _requestDetails.empBenefitUnitPrice != null
-                                            ? _requestDetails.empBenefitUnitPrice
-                                            : "-"),
+                                        .text(Const
+                                            .LOCALE_KEY_EMP_BENEFIT_UNIT_PRICE)),
+                                    subtitle: Text(_requestDetails
+                                                .empBenefitUnitPrice !=
+                                            null
+                                        ? _requestDetails.empBenefitUnitPrice
+                                        : "-"),
                                   ),
                                 ),
                               ],
@@ -841,27 +882,28 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(
-                                        Const.LOCALE_KEY_EMP_BENEFIT_REQUEST_DATE)),
-                                    subtitle: Text(
-                                        _requestDetails.empBenefitRequestDate !=
+                                        .text(Const
+                                            .LOCALE_KEY_EMP_BENEFIT_REQUEST_DATE)),
+                                    subtitle: Text(_requestDetails
+                                                .empBenefitRequestDate !=
                                             null
-                                            ? _requestDetails.empBenefitRequestDate
+                                        ? _requestDetails.empBenefitRequestDate
                                             .toString()
-                                            : "-"),
+                                        : "-"),
                                   ),
                                 ),
                                 Expanded(
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_EMP_BENEFIT_TRANS_STATUS)),
-                                    subtitle: Text(
-                                        _requestDetails.empBenefitTransStatus !=
+                                        .text(Const
+                                            .LOCALE_KEY_EMP_BENEFIT_TRANS_STATUS)),
+                                    subtitle: Text(_requestDetails
+                                                .empBenefitTransStatus !=
                                             null
-                                            ? _requestDetails.empBenefitTransStatus
+                                        ? _requestDetails.empBenefitTransStatus
                                             .toString()
-                                            : "-"),
+                                        : "-"),
                                   ),
                                 ),
                               ],
@@ -873,8 +915,8 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                   ),
 
                 if (_requestDetails.approvalInboxType != null &&
-                    _requestDetails.approvalInboxType
-                        .compareTo(Const.APPROVAL_INBOX_LEAVE_ENCASHMENT_TYPE) ==
+                    _requestDetails.approvalInboxType.compareTo(
+                            Const.APPROVAL_INBOX_LEAVE_ENCASHMENT_TYPE) ==
                         0)
                   Expanded(
                     flex: 7,
@@ -898,22 +940,27 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_LEAVE_ENCASHMENT_FROM_DATE)),
-                                    subtitle: Text(
-                                        _requestDetails.leaveEncashmentFromDate != null
-                                            ? _requestDetails.leaveEncashmentFromDate
-                                            : "-"),
+                                        .text(Const
+                                            .LOCALE_KEY_LEAVE_ENCASHMENT_FROM_DATE)),
+                                    subtitle: Text(_requestDetails
+                                                .leaveEncashmentFromDate !=
+                                            null
+                                        ? _requestDetails
+                                            .leaveEncashmentFromDate
+                                        : "-"),
                                   ),
                                 ),
                                 Expanded(
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_LEAVE_ENCASHMENT_TO_DATE)),
-                                    subtitle: Text(
-                                        _requestDetails.leaveEncashmentToDate != null
-                                            ? _requestDetails.leaveEncashmentToDate
-                                            : "-"),
+                                        .text(Const
+                                            .LOCALE_KEY_LEAVE_ENCASHMENT_TO_DATE)),
+                                    subtitle: Text(_requestDetails
+                                                .leaveEncashmentToDate !=
+                                            null
+                                        ? _requestDetails.leaveEncashmentToDate
+                                        : "-"),
                                   ),
                                 ),
                               ],
@@ -924,14 +971,14 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(
-                                        Const.LOCALE_KEY_LEAVE_ENCASHMENT_AMOUNT)),
-                                    subtitle: Text(
-                                        _requestDetails.leaveEncashmentAmount !=
+                                        .text(Const
+                                            .LOCALE_KEY_LEAVE_ENCASHMENT_AMOUNT)),
+                                    subtitle: Text(_requestDetails
+                                                .leaveEncashmentAmount !=
                                             null
-                                            ? _requestDetails.leaveEncashmentAmount
+                                        ? _requestDetails.leaveEncashmentAmount
                                             .toString()
-                                            : "-"),
+                                        : "-"),
                                   ),
                                 ),
                               ],
@@ -944,7 +991,7 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
 
                 if (_requestDetails.approvalInboxType != null &&
                     _requestDetails.approvalInboxType
-                        .compareTo(Const.APPROVAL_INBOX_SALARY_INC_TYPE) ==
+                            .compareTo(Const.APPROVAL_INBOX_SALARY_INC_TYPE) ==
                         0)
                   Expanded(
                     flex: 7,
@@ -968,20 +1015,25 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_SALARY_INC_REQUEST_AMOUNT)),
-                                    subtitle: Text(
-                                        _requestDetails.salaryIncRequestAmount != null
-                                            ? _requestDetails.salaryIncRequestAmount.toString()
-                                            : "-"),
+                                        .text(Const
+                                            .LOCALE_KEY_SALARY_INC_REQUEST_AMOUNT)),
+                                    subtitle: Text(_requestDetails
+                                                .salaryIncRequestAmount !=
+                                            null
+                                        ? _requestDetails.salaryIncRequestAmount
+                                            .toString()
+                                        : "-"),
                                   ),
                                 ),
                                 Expanded(
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_SALARY_INC_CURRENCY)),
+                                        .text(Const
+                                            .LOCALE_KEY_SALARY_INC_CURRENCY)),
                                     subtitle: Text(
-                                        _requestDetails.salaryIncCurrency != null
+                                        _requestDetails.salaryIncCurrency !=
+                                                null
                                             ? _requestDetails.salaryIncCurrency
                                             : "-"),
                                   ),
@@ -994,26 +1046,27 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(
-                                        Const.LOCALE_KEY_SALARY_INC_CURRENT_SALARY)),
-                                    subtitle: Text(
-                                        _requestDetails.salaryIncCurrentSalary !=
+                                        .text(Const
+                                            .LOCALE_KEY_SALARY_INC_CURRENT_SALARY)),
+                                    subtitle: Text(_requestDetails
+                                                .salaryIncCurrentSalary !=
                                             null
-                                            ? _requestDetails.salaryIncCurrentSalary
+                                        ? _requestDetails.salaryIncCurrentSalary
                                             .toString()
-                                            : "-"),
+                                        : "-"),
                                   ),
                                 ),
                                 Expanded(
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_SALARY_INCR_TYPE)),
+                                        .text(
+                                            Const.LOCALE_KEY_SALARY_INCR_TYPE)),
                                     subtitle: Text(
                                         _requestDetails.salaryIncIncrType !=
-                                            null
+                                                null
                                             ? _requestDetails.salaryIncIncrType
-                                            .toString()
+                                                .toString()
                                             : "-"),
                                   ),
                                 ),
@@ -1025,32 +1078,33 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(
-                                        Const.LOCALE_KEY_SALARY_INC_APPROVED_AMOUNT)),
-                                    subtitle: Text(
-                                        _requestDetails.salaryIncApprovedAmount !=
+                                        .text(Const
+                                            .LOCALE_KEY_SALARY_INC_APPROVED_AMOUNT)),
+                                    subtitle: Text(_requestDetails
+                                                .salaryIncApprovedAmount !=
                                             null
-                                            ? _requestDetails.salaryIncApprovedAmount
+                                        ? _requestDetails
+                                            .salaryIncApprovedAmount
                                             .toString()
-                                            : "-"),
+                                        : "-"),
                                   ),
                                 ),
                                 Expanded(
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_SALARY_INC_REQUEST_DATE)),
-                                    subtitle: Text(
-                                        _requestDetails.salaryIncRequestDate !=
+                                        .text(Const
+                                            .LOCALE_KEY_SALARY_INC_REQUEST_DATE)),
+                                    subtitle: Text(_requestDetails
+                                                .salaryIncRequestDate !=
                                             null
-                                            ? _requestDetails.salaryIncRequestDate
+                                        ? _requestDetails.salaryIncRequestDate
                                             .toString()
-                                            : "-"),
+                                        : "-"),
                                   ),
                                 ),
                               ],
                             ),
-
                           ],
                         ),
                       ),
@@ -1064,37 +1118,7 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          buttonClosedIsPressed = true;
-                          setState(() {});
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          width: 48,
-                          height: 48,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: buttonClosedIsPressed
-                                  ? AppTheme.kPrimaryColor.withOpacity(0.1)
-                                  : AppTheme.nearlyWhite,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(16.0),
-                              ),
-                              border: Border.all(
-                                  color: AppTheme.grey.withOpacity(0.2)),
-                            ),
-                            child: Icon(
-                              Icons.close,
-                              color: AppTheme.nearlyBlue,
-                              size: 28,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
+
                       Expanded(
                         flex: 1,
                         child: GestureDetector(

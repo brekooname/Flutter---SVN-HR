@@ -250,7 +250,16 @@ class Const {
   static final LOCALE_KEY_ARE_YOU_SURE="are_you_sure";
   static final LOCALE_KEY_DO_YOU_WANT="do_you_want";
 
+  static final LOCALE_KEY_ACTION_BY="action_by";
 
+
+  static final LOCALE_KEY_SEND_VACATION_APRROVED="send_vacation_approved";
+  static final LOCALE_KEY_SEND_VACATION_REJECTED="send_vacation_rejected";
+  static final LOCALE_KEY_SEND_LEAVE_APRROVED="send_leave_approved";
+  static final LOCALE_KEY_SEND_LEAVE_REJECTED="send_leave_rejected";
+  static final LOCALE_KEY_APRROVED_MSG="approved_msg";
+  static final LOCALE_KEY_REJECTED_MSG="rejected_msg";
+  static final LOCALE_KEY_NOTIFICATION_DETAILS="notification_details";
 
 
 

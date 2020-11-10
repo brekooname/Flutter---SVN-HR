@@ -205,206 +205,212 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
                   key: _formKey,
                   autovalidateMode: AutovalidateMode.disabled,
                   child: Column(
-                     mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
+
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30,bottom: 20),
-                        child: Text(
-                          AppTranslations.of(context).text(
-                              Const.LOCALE_KEY_ADD_NEW_TIME_SHEET_DETAILS),
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 22,
-                            letterSpacing: 0.27,
-                            color: AppTheme.kPrimaryColor,
+                      Expanded(
+                        flex: 1,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.arrow_back,
+                                color: AppTheme.kPrimaryColor,
+                              ),
+                              tooltip: 'search',
+                              hoverColor: AppTheme.kPrimaryColor,
+                              splashColor: AppTheme.kPrimaryColor,
+                              onPressed: () async {
+                                Navigator.pop(context);
+                              },
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            Text(
+                              AppTranslations.of(context).text(
+                                  Const.LOCALE_KEY_ADD_NEW_TIME_SHEET_DETAILS),
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 22,
+                                letterSpacing: 0.27,
+                                color: AppTheme.kPrimaryColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: TextFieldContainer(
+                          child: DateTimeField(
+                            decoration: InputDecoration(
+                              suffixIcon: Icon(
+                                Icons.lock_clock,
+                                color: AppTheme.kPrimaryColor,
+                              ),
+                              hintText: AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_LEAVE_START_TIME),
+                              border: InputBorder.none,
+                            ),
+                            controller: startTimeController,
+                            validator: (value) =>
+                               startTime == null
+                                    ? AppTranslations.of(context)
+                                        .text(Const.LOCALE_KEY_REQUIRED)
+                                    : null,
+                            textAlign: TextAlign.left,
+                            style: AppTheme.subtitle,
+                            format: timeFormat,
+                            onChanged: (value) {
+                              setState(() {
+                                if (value != null) {
+                                  startTime = ApplicationController
+                                      .formatTimetoNum(value.hour,
+                                          value.minute, value.minute);
+                                  startTimeController.text =
+                                      timeFormat.format(value);
+                                }
+                              });
+                            },
+                            onShowPicker: (context, currentValue) async {
+                              final time = await showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.fromDateTime(
+                                    currentValue ?? DateTime.now()),
+                              );
+                              return DateTimeField.convert(time);
+                            },
                           ),
                         ),
                       ),
-                      Expanded(
+                      Flexible(
                         flex: 1,
                         child: TextFieldContainer(
-                          child: Row(
-                            children: [
-                              Text(
-                                  AppTranslations.of(context)
-                                      .text(Const.LOCALE_KEY_LEAVE_START_TIME),
-                                  style: AppTheme.subtitle),
-                              Expanded(
-                                child: DateTimeField(
-                                  controller: startTimeController,
-                                  validator: (value) =>
-                                     startTime == null
-                                          ? AppTranslations.of(context)
-                                              .text(Const.LOCALE_KEY_REQUIRED)
-                                          : null,
-                                  textAlign: TextAlign.center,
-                                  style: AppTheme.subtitle,
-                                  format: timeFormat,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      if (value != null) {
-                                        startTime = ApplicationController
-                                            .formatTimetoNum(value.hour,
-                                                value.minute, value.minute);
-                                        startTimeController.text =
-                                            timeFormat.format(value);
-                                      }
-                                    });
-                                  },
-                                  onShowPicker: (context, currentValue) async {
-                                    final time = await showTimePicker(
-                                      context: context,
-                                      initialTime: TimeOfDay.fromDateTime(
-                                          currentValue ?? DateTime.now()),
-                                    );
-                                    return DateTimeField.convert(time);
-                                  },
-                                ),
+                          child: DateTimeField(
+                            decoration: InputDecoration(
+                              suffixIcon: Icon(
+                                Icons.lock_clock,
+                                color: AppTheme.kPrimaryColor,
                               ),
-                            ],
+                              hintText: AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_LEAVE_END_TIME),
+                              border: InputBorder.none,
+                            ),
+                            controller: endTimeController,
+                            validator: (value) =>
+                            endTime == null
+                                    ? AppTranslations.of(context)
+                                        .text(Const.LOCALE_KEY_REQUIRED)
+                                    : null,
+                            textAlign: TextAlign.left,
+                            style: AppTheme.subtitle,
+                            format: timeFormat,
+                            onChanged: (value) {
+                              setState(() {
+                                if (value != null) {
+                                  endTime = ApplicationController
+                                      .formatTimetoNum(value.hour,
+                                          value.minute, value.second);
+                                  endTimeController.text =
+                                      timeFormat.format(value);
+                                }
+                              });
+                            },
+                            onShowPicker: (context, currentValue) async {
+                              final time = await showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.fromDateTime(
+                                    currentValue ?? DateTime.now()),
+                              );
+                              return DateTimeField.convert(time);
+                            },
                           ),
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
+                      Flexible(
+                        flex: 0,
                         child: TextFieldContainer(
-                          child: Row(
-                            children: [
-                              Text(
-                                  AppTranslations.of(context)
-                                      .text(Const.LOCALE_KEY_LEAVE_END_TIME),
-                                  style: AppTheme.subtitle),
-                              Expanded(
-                                child: DateTimeField(
-                                  controller: endTimeController,
-                                  validator: (value) =>
-                                  endTime == null
-                                          ? AppTranslations.of(context)
-                                              .text(Const.LOCALE_KEY_REQUIRED)
-                                          : null,
-                                  textAlign: TextAlign.center,
-                                  style: AppTheme.subtitle,
-                                  format: timeFormat,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      if (value != null) {
-                                        endTime = ApplicationController
-                                            .formatTimetoNum(value.hour,
-                                                value.minute, value.second);
-                                        endTimeController.text =
-                                            timeFormat.format(value);
-                                      }
-                                    });
-                                  },
-                                  onShowPicker: (context, currentValue) async {
-                                    final time = await showTimePicker(
-                                      context: context,
-                                      initialTime: TimeOfDay.fromDateTime(
-                                          currentValue ?? DateTime.now()),
-                                    );
-                                    return DateTimeField.convert(time);
-                                  },
+                          child: SearchableDropdown.single(
+                            underline: Padding(
+                            padding: EdgeInsets.all(5),
+                          ),
+                            value: projectValue,
+                            icon: Icon(
+                              Icons.menu_open_sharp,
+                              color: AppTheme.kPrimaryColor,
+
+                            ),
+                            clearIcon: Icon(
+                              Icons.close_sharp,
+                              color: AppTheme.kPrimaryColor,
+                              size: 20,
+                            ),
+                            hint: Text(AppTranslations.of(context).text(
+                                Const.LOCALE_KEY_TIME_PROJECT_NAME)),
+                            isExpanded: true,
+                            style:
+                                TextStyle(color: AppTheme.kPrimaryColor),
+                            items: projectListList.map<
+                                    DropdownMenuItem<
+                                        ProjectListResponse>>(
+                                (ProjectListResponse value) {
+                              return DropdownMenuItem<
+                                  ProjectListResponse>(
+                                value: value,
+                                child: Text(
+                                  value.name,
                                 ),
-                              ),
-                            ],
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                projectValue = value;
+                              });
+                            },
                           ),
                         ),
                       ),
-                      Expanded(
+                      Flexible(
                         flex: 1,
                         child: TextFieldContainer(
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: SearchableDropdown.single(
-                                  value: projectValue,
-                                  icon: Icon(
-                                    Icons.menu_open_sharp,
-                                    color: AppTheme.kPrimaryColor,
-                                    size: 20,
-                                  ),
-                                  clearIcon: Icon(
-                                    Icons.close_sharp,
-                                    color: AppTheme.kPrimaryColor,
-                                    size: 20,
-                                  ),
-                                  hint: Text(AppTranslations.of(context).text(
-                                      Const.LOCALE_KEY_TIME_PROJECT_NAME)),
-                                  isExpanded: true,
-                                  style:
-                                      TextStyle(color: AppTheme.kPrimaryColor),
-                                  items: projectListList.map<
-                                          DropdownMenuItem<
-                                              ProjectListResponse>>(
-                                      (ProjectListResponse value) {
-                                    return DropdownMenuItem<
-                                        ProjectListResponse>(
-                                      value: value,
-                                      child: Text(
-                                        value.name,
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      projectValue = value;
-                                    });
-                                  },
+                          child: DropdownButtonFormField<LovValue>(
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                            ),
+                            hint: Text(AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_STATUS)),
+                            isExpanded: true,
+                            style:
+                                TextStyle(color: AppTheme.kPrimaryColor),
+                            icon: Icon(
+                              Icons.menu_open,
+                              color: AppTheme.kPrimaryColor,
+                              size: 20,
+                            ),
+                            value: statusValue,
+                            validator: (value) => statusValue == null
+                                ? AppTranslations.of(context)
+                                    .text(Const.LOCALE_KEY_REQUIRED)
+                                : null,
+                            items: statusList
+                                .map<DropdownMenuItem<LovValue>>(
+                                    (LovValue value) {
+                              return DropdownMenuItem<LovValue>(
+                                value: value,
+                                child: Text(
+                                  value.display,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: TextFieldContainer(
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: DropdownButtonFormField<LovValue>(
-                                  decoration: InputDecoration(
-                                      enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent))),
-                                  hint: Text(AppTranslations.of(context)
-                                      .text(Const.LOCALE_KEY_STATUS)),
-                                  isExpanded: true,
-                                  style:
-                                      TextStyle(color: AppTheme.kPrimaryColor),
-                                  icon: Icon(
-                                    Icons.menu_open,
-                                    color: AppTheme.kPrimaryColor,
-                                    size: 20,
-                                  ),
-                                  value: statusValue,
-                                  validator: (value) => statusValue == null
-                                      ? AppTranslations.of(context)
-                                          .text(Const.LOCALE_KEY_REQUIRED)
-                                      : null,
-                                  items: statusList
-                                      .map<DropdownMenuItem<LovValue>>(
-                                          (LovValue value) {
-                                    return DropdownMenuItem<LovValue>(
-                                      value: value,
-                                      child: Text(
-                                        value.display,
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      statusValue = value;
-                                    });
-                                  },
-                                  onTap: () {
-                                    print('pressed');
-                                  },
-                                ),
-                              ),
-                            ],
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                statusValue = value;
+                              });
+                            },
+                            onTap: () {
+                              print('pressed');
+                            },
                           ),
                         ),
                       ),
@@ -437,88 +443,48 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
                           ),
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 25),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () {
-                                  buttonClosedIsPressed = true;
-                                  setState(() {});
-                                  Navigator.pop(context);
-                                },
-                                child: Container(
-                                  width: 48,
-                                  height: 48,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: buttonClosedIsPressed
-                                          ? AppTheme.kPrimaryColor
-                                              .withOpacity(0.1)
-                                          : AppTheme.nearlyWhite,
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(16.0),
-                                      ),
-                                      border: Border.all(
-                                          color: AppTheme.grey.withOpacity(0.2)),
-                                    ),
-                                    child: Icon(
-                                      Icons.close,
-                                      color: AppTheme.nearlyBlue,
-                                      size: 28,
-                                    ),
+                      Flexible(
+                        child: GestureDetector(
+                          onTap: () {
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
+                              saveTimeSheetRequest();
+                            }
+                          },
+                          child: Padding(
+                            padding:  const EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 10),
+                            child: Container(
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: buttonSendIsPressed
+                                    ? AppTheme.nearlyWhite.withOpacity(0.1)
+                                    : AppTheme.nearlyBlue,
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(16.0),
+                                ),
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                      color: AppTheme.nearlyBlue
+                                          .withOpacity(0.5),
+                                      offset: const Offset(1.1, 1.1),
+                                      blurRadius: 10.0),
+                                ],
+                              ),
+                              child: Center(
+                                child: Text(
+                                  AppTranslations.of(context)
+                                      .text(Const.LOCALE_KEY_SAVE),
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18,
+                                    letterSpacing: 0.0,
+                                    color: AppTheme.nearlyWhite,
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    if (_formKey.currentState.validate()) {
-                                      _formKey.currentState.save();
-                                      saveTimeSheetRequest();
-                                    }
-                                  },
-                                  child: Container(
-                                    height: 48,
-                                    decoration: BoxDecoration(
-                                      color: buttonSendIsPressed
-                                          ? AppTheme.nearlyWhite.withOpacity(0.1)
-                                          : AppTheme.nearlyBlue,
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(16.0),
-                                      ),
-                                      boxShadow: <BoxShadow>[
-                                        BoxShadow(
-                                            color: AppTheme.nearlyBlue
-                                                .withOpacity(0.5),
-                                            offset: const Offset(1.1, 1.1),
-                                            blurRadius: 10.0),
-                                      ],
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        AppTranslations.of(context)
-                                            .text(Const.LOCALE_KEY_SAVE),
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18,
-                                          letterSpacing: 0.0,
-                                          color: AppTheme.nearlyWhite,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
+                            ),
                           ),
                         ),
                       ),

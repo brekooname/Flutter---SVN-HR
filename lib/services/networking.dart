@@ -16,7 +16,7 @@ class NetworkHelper {
       body: jsonEncode(map),
     );
     if (response.statusCode == 200) {
-      String data = response.body;
+      String data = utf8.decode(response.bodyBytes);
       // print(response.body);
       return jsonDecode(data);
     } else {

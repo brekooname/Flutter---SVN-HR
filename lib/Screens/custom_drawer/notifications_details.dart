@@ -60,7 +60,7 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
       if (value == null) {
         ToastMessage.showErrorMsg(Const.REQUEST_FAILED);
       } else if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
-        ToastMessage.showSuccessMsg(Const.VACATION_SENT_SUCCESSFULLY);
+        // ToastMessage.showSuccessMsg(Const.VACATION_SENT_SUCCESSFULLY);
         Navigator.pop(context, value);
       } else {
         ToastMessage.showErrorMsg(value);
@@ -84,16 +84,35 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Text(
-                    AppTranslations.of(context)
-                        .text(Const.LOCALE_KEY_REQUEST_DETAILS),
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 22,
-                      letterSpacing: 0.27,
-                      color: AppTheme.kPrimaryColor,
-                    ),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: AppTheme.kPrimaryColor,
+                        ),
+                        tooltip: 'search',
+                        hoverColor: AppTheme.kPrimaryColor,
+                        splashColor: AppTheme.kPrimaryColor,
+                        onPressed: () async {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Text(
+                        AppTranslations.of(context)
+                            .text(Const.LOCALE_KEY_NOTIFICATION_DETAILS),
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 22,
+                          letterSpacing: 0.27,
+                          color: AppTheme.kPrimaryColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Expanded(
@@ -187,7 +206,7 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
                                       .text(Const.LOCALE_KEY_EMPLOYEE_NAME)),
                                   subtitle: Text(
                                       _notificationDetail.employeeName != null
-                                          ? _notificationDetail.requestStatus
+                                          ? _notificationDetail.employeeName
                                           : "-"),
                                 ),
                               ),
@@ -204,6 +223,22 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
                               ),
                             ],
                           ),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: ListTile(
+                                  title: Text(AppTranslations.of(context)
+                                      .text(Const.LOCALE_KEY_ACTION_BY)),
+                                  subtitle: Text(
+                                      _notificationDetail.action_user_name != null
+                                          ? _notificationDetail.action_user_name
+                                          : "-"),
+                                ),
+                              ),
+
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -212,83 +247,43 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
                 ///////----------------------
                 Expanded(
                   flex: 1,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          buttonClosedIsPressed = true;
-                          setState(() {});
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          width: 48,
-                          height: 48,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: buttonClosedIsPressed
-                                  ? AppTheme.kPrimaryColor.withOpacity(0.1)
-                                  : AppTheme.nearlyWhite,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(16.0),
-                              ),
-                              border: Border.all(
-                                  color: AppTheme.grey.withOpacity(0.2)),
-                            ),
-                            child: Icon(
-                              Icons.close,
-                              color: AppTheme.nearlyBlue,
-                              size: 28,
+                  child: GestureDetector(
+                    onTap: () {
+                      closeNotification();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: buttonSendIsPressed
+                              ? AppTheme.nearlyWhite.withOpacity(0.1)
+                              : AppTheme.nearlyBlue,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(16.0),
+                          ),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                color: AppTheme.nearlyBlue.withOpacity(0.5),
+                                offset: const Offset(1.1, 1.1),
+                                blurRadius: 10.0),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_EMPLOYMENT_CLOSE),
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                              letterSpacing: 0.0,
+                              color: AppTheme.nearlyWhite,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: GestureDetector(
-                          onTap: () {
-                            closeNotification();
-                          },
-                          child: Container(
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: buttonSendIsPressed
-                                  ? AppTheme.nearlyWhite.withOpacity(0.1)
-                                  : AppTheme.nearlyBlue,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(16.0),
-                              ),
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                    color: AppTheme.nearlyBlue.withOpacity(0.5),
-                                    offset: const Offset(1.1, 1.1),
-                                    blurRadius: 10.0),
-                              ],
-                            ),
-                            child: Center(
-                              child: Text(
-                                AppTranslations.of(context)
-                                    .text(Const.LOCALE_KEY_EMPLOYMENT_CLOSE),
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                  letterSpacing: 0.0,
-                                  color: AppTheme.nearlyWhite,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ],

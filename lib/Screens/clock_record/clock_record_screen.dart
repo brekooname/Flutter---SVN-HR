@@ -193,19 +193,35 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                   children: [
                     Flexible(
                       flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Text(
-                          AppTranslations.of(context)
-                              .text(Const.LOCALE_KEY_CLOCK_RECORD),
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 22,
-                            letterSpacing: 0.27,
-                            color: AppTheme.kPrimaryColor,
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: AppTheme.kPrimaryColor,
+                            ),
+                            tooltip: 'search',
+                            hoverColor: AppTheme.kPrimaryColor,
+                            splashColor: AppTheme.kPrimaryColor,
+                            onPressed: () async {
+                              Navigator.pop(context);
+                            },
                           ),
-                        ),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          Text(
+                            AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_CLOCK_RECORD),
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 22,
+                              letterSpacing: 0.27,
+                              color: AppTheme.kPrimaryColor,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(
@@ -289,13 +305,13 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                           decoration: BoxDecoration(
                             color: buttonSendIsPressed
                                 ? AppTheme.nearlyWhite.withOpacity(0.1)
-                                : AppTheme.red,
+                                : AppTheme.green,
                             borderRadius: const BorderRadius.all(
                               Radius.circular(16.0),
                             ),
                             boxShadow: <BoxShadow>[
                               BoxShadow(
-                                  color: AppTheme.red.withOpacity(0.5),
+                                  color: AppTheme.green.withOpacity(0.1),
                                   offset: const Offset(1.1, 1.1),
                                   blurRadius: 10.0),
                             ],
@@ -339,13 +355,13 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                           decoration: BoxDecoration(
                             color: buttonSendIsPressed
                                 ? AppTheme.nearlyWhite.withOpacity(0.1)
-                                : AppTheme.green,
+                                : AppTheme.red,
                             borderRadius: const BorderRadius.all(
                               Radius.circular(16.0),
                             ),
                             boxShadow: <BoxShadow>[
                               BoxShadow(
-                                  color: AppTheme.green.withOpacity(0.5),
+                                  color: AppTheme.red.withOpacity(0.1),
                                   offset: const Offset(1.1, 1.1),
                                   blurRadius: 10.0),
                             ],
@@ -371,57 +387,6 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                                   ),
                                 ]),
                               )),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          height: 48,
-                          decoration: BoxDecoration(
-                            color: buttonSendIsPressed
-                                ? AppTheme.nearlyWhite.withOpacity(0.1)
-                                : AppTheme.nearlyBlue,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(16.0),
-                            ),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  color: AppTheme.nearlyBlue.withOpacity(0.5),
-                                  offset: const Offset(1.1, 1.1),
-                                  blurRadius: 10.0),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 19),
-                            child: RichText(
-                              text: TextSpan(children: [
-                                WidgetSpan(
-                                    child: Icon(
-                                  Icons.cancel_outlined,
-                                  color: AppTheme.white,
-                                )),
-                                TextSpan(
-                                  text: AppTranslations.of(context)
-                                      .text(Const.LOCALE_KEY_CANCEL),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18,
-                                    letterSpacing: 0.0,
-                                    color: AppTheme.nearlyWhite,
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
                         ),
                       ),
                     ),

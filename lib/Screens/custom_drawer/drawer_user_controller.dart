@@ -183,6 +183,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
                                       icon: widget.animatedIconData != null
                                           ? widget.animatedIconData
                                           : AnimatedIcons.arrow_menu,
+                                      size: 30,
                                       progress: iconAnimationController),
                               onTap: () {
                                 FocusScope.of(context)

@@ -138,29 +138,7 @@ class _TimeSheetDetailsTransactionScreenState
                         ),
                         flex: 1,
                       ),
-                      Flexible(
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.add,
-                            color: AppTheme.kPrimaryColor,
-                          ),
-                          tooltip: 'search',
-                          hoverColor: AppTheme.kPrimaryColor,
-                          splashColor: AppTheme.kPrimaryColor,
-                          onPressed: () async {
-                            Navigator.of(context)
-                                .push(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          NewTimeSheetDetailsScreen(
-                                            timeSheetId: timeSheetId,
-                                          )),
-                                )
-                                .then((value) => {getDetailsTransaction()});
-                          },
-                        ),
-                        flex: 1,
-                      ),
+
                       Expanded(
                         child: Text(AppTranslations.of(context)
                             .text(Const.LOCALE_KEY_TIME_SHEET_DETAILS),
@@ -172,8 +150,31 @@ class _TimeSheetDetailsTransactionScreenState
                           ),
 
                         ),
-                        flex: 3,
-                      )
+                        flex: 4,
+                      ),
+                      Flexible(
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.add_circle_outline,
+                            color: AppTheme.red,semanticLabel: "test",
+                          ),
+                          tooltip: 'add',
+                          hoverColor: AppTheme.kPrimaryColor,
+                          splashColor: AppTheme.kPrimaryColor,
+                          onPressed: () async {
+                            Navigator.of(context)
+                                .push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      NewTimeSheetDetailsScreen(
+                                        timeSheetId: timeSheetId,
+                                      )),
+                            )
+                                .then((value) => {getDetailsTransaction()});
+                          },
+                        ),
+                        flex: 1,
+                      ),
                     ],
                   ),
                   Divider(color: AppTheme.kPrimaryLightColor,height: 5,)

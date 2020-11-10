@@ -42,6 +42,8 @@ class _MenueTopBarState extends State<MenueTopBar> {
           notificationList = _notificationController.notificationList;
           if (notificationList != null && notificationList.length > 0) {
             counter = notificationList.length;
+          }else{
+            counter=0;
           }
         }
       });
@@ -53,7 +55,7 @@ class _MenueTopBarState extends State<MenueTopBar> {
     return SizedBox(
       // height: AppBar().preferredSize.height,
       child: Container(
-        height: 70,
+        height:  AppBar().preferredSize.height,
         width: double.infinity,
         decoration: BoxDecoration(
             color: AppTheme.kPrimaryColor.withOpacity(0.7),
@@ -220,7 +222,8 @@ class _MenueTopBarState extends State<MenueTopBar> {
               if (value != null)
                 {
                   if (value.toString().compareTo(Const.SYSTEM_SUCCESS_MSG) == 0)
-                    {getLastNotifications()}
+
+                  {getLastNotifications()}
                 }
             });
   }

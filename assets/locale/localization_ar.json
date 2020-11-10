@@ -152,6 +152,16 @@
   "are_you_sure": "'Are you sure?",
   "do_you_want": "Do you want to exit an App",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+
+  "action_by": "Action By :",
+
+  "send_vacation_approved": "Vacation is successfully approved",
+  "send_vacation_rejected": "Vacation is successfully rejected ",
+  "send_leave_approved": "Leave is successfully approved",
+  "send_leave_rejected": "Leave  is successfully rejected",
+  "approved_msg": "Successfully approved",
+  "rejected_msg": "Successfully rejected ",
+  "notification_details": "Notification Details"
 
 }

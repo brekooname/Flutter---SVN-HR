@@ -31,8 +31,8 @@
   "status": "Status :",
   "type": "Type :",
   "filter_by": "Filter by :",
-  "from": "From : ",
-  "to": "To :",
+  "from": "From ",
+  "to": "To ",
 
   "select_type": "Select Type",
   "select_location": "Select Location",
@@ -153,5 +153,15 @@
   "are_you_sure": "Are you sure?",
   "do_you_want": "Do you want to exit an App",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+
+  "action_by": "Action By :",
+
+  "approved_msg": "Successfully approved",
+  "rejected_msg": "Successfully rejected ",
+  "send_leave_approved": "Leave is successfully approved",
+  "send_leave_rejected": "Leave  is successfully rejected",
+  "send_vacation_approved": "Vacation is successfully approved",
+  "send_vacation_rejected": "Vacation is successfully rejected ",
+  "notification_details": "Notification Details"
 }
