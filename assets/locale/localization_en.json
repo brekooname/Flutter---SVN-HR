@@ -163,5 +163,10 @@
   "send_leave_rejected": "Leave  is successfully rejected",
   "send_vacation_approved": "Vacation is successfully approved",
   "send_vacation_rejected": "Vacation is successfully rejected ",
-  "notification_details": "Notification Details"
+  "notification_details": "Notification Details",
+
+  "change_password": "Change Password",
+  "new_password": "New Password",
+  "old_password": "Old Password",
+  "confirmed_password": "Confirmed Password"
 }

@@ -262,5 +262,10 @@ class Const {
   static final LOCALE_KEY_NOTIFICATION_DETAILS="notification_details";
 
 
+  static final LOCALE_KEY_CHANGE_PASSWORD="change_password";
+  static final LOCALE_KEY_NEW_PASSWORD="new_password";
+  static final LOCALE_KEY_OLD_PASSWORD="old_password";
+  static final LOCALE_KEY_CONFRIMED_PASSWORD="confirmed_password";
+
 
 }

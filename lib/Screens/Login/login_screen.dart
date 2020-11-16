@@ -54,6 +54,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               RoundedPasswordField(
+                text: AppTranslations.of(context)
+                    .text(Const.LOCALE_KEY_PASSWORD),
                 onChanged: (value) {
                   _password = value;
                 },

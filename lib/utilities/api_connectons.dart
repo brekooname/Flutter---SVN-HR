@@ -59,4 +59,6 @@ class ApiConnections{
   static const String  ADD_NEW_LOCATION="/addNewLocation";
 
   static const String  ADD_NEW_NETWORK="/addNewNetwork";
+
+  static const String  CHANGE_PASSWORD="/changePassword";
 }
