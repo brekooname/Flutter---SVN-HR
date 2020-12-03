@@ -6,7 +6,7 @@ class ApiConnections{
 //  static const String url="http://157.56.182.203:8080/NetsuiteHR/api";
   static const String url="http://192.168.20.23:8080/Sven/api";
 
-  static const String login="/login";
+  static const String login="/newlogin";
 
   static const String vacation_transaction="/getFilteredVacation2";
 
@@ -61,4 +61,8 @@ class ApiConnections{
   static const String  ADD_NEW_NETWORK="/addNewNetwork";
 
   static const String  CHANGE_PASSWORD="/changePassword";
+
+  static const String  ADD_EXTRA_WORK="/addExtraWorkRequestV2";
+
+  static const String  ADD_EXPENSE="/addExpenseRequestV2";
 }

@@ -338,7 +338,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
                               flex: 1,
                               child: TextFieldContainer(
                                 child: TextFormField(
-                                  validator: (value) => locationRange == null
+                                  validator: (value) => value == null
                                       ? AppTranslations.of(context)
                                       .text(Const.LOCALE_KEY_REQUIRED)
                                       : null,
@@ -358,7 +358,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
                                   ),
                                   onChanged: (value) {
                                     setState(() {
-                                      locationRange = value as num;
+                                      locationRange = num.tryParse(value);
                                     });
                                   },
                                 ),

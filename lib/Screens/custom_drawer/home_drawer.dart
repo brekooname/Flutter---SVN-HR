@@ -42,7 +42,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
   String _employeeNumber = "No Employee Name";
   SharedPreferences prefs = null;
   bool showSpinner = false;
-  var newPasswordTextController ;
+  var newPasswordTextController;
   var oldPasswordTextController;
   var confirmedPasswordTextController;
   EmployeeProfileController _employeeProfileController;
@@ -106,15 +106,15 @@ class _HomeDrawerState extends State<HomeDrawer> {
           DrawerList item = DrawerList(
             index: DrawerIndex.TIME_SHEET,
             labelName:
-            AppTranslations.of(context).text(Const.LOCALE_KEY_TIME_SHEET),
+                AppTranslations.of(context).text(Const.LOCALE_KEY_TIME_SHEET),
             icon: Icon(Icons.timeline),
           );
           drawerList.add(item);
-        }else if (screen.screenName.compareTo(AppSettingsScreen.id) == 0) {
+        } else if (screen.screenName.compareTo(AppSettingsScreen.id) == 0) {
           DrawerList item = DrawerList(
             index: DrawerIndex.APP_SETTINGS,
             labelName:
-            AppTranslations.of(context).text(Const.LOCALE_KEY_APP_SETTING),
+                AppTranslations.of(context).text(Const.LOCALE_KEY_APP_SETTING),
             icon: Icon(Icons.settings),
           );
           drawerList.add(item);
@@ -170,24 +170,24 @@ class _HomeDrawerState extends State<HomeDrawer> {
     ];
     getProfileScreens();
   }
+
   void changePassword() async {
     showSpinner = true;
-    _employeeProfileController= EmployeeProfileController();
-    newPasswordTextController = new TextEditingController();
-    oldPasswordTextController = new TextEditingController();
-    confirmedPasswordTextController = new TextEditingController();
+    _employeeProfileController = EmployeeProfileController();
+    // newPasswordTextController = new TextEditingController();
+    // oldPasswordTextController = new TextEditingController();
+    // confirmedPasswordTextController = new TextEditingController();
 
     await _employeeProfileController
         .changePasswordRequest(
-        oldPassword: oldPasswordTextController.text,
-        newPassword: newPasswordTextController.text,
-        confirmedPassword:confirmedPasswordTextController.text
-    )
+            oldPassword: oldPasswordTextController.text,
+            newPassword: newPasswordTextController.text,
+            confirmedPassword: confirmedPasswordTextController.text)
         .then((value) {
       if (value == null) {
         ToastMessage.showErrorMsg(Const.REQUEST_FAILED);
       } else if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
-        ToastMessage.showSuccessMsg(Const.VACATION_SENT_SUCCESSFULLY);
+        ToastMessage.showSuccessMsg(Const.CHANGE_PASSWORD_SUCCESSFULLY);
         Navigator.pop(context);
       } else {
         ToastMessage.showErrorMsg(value);
@@ -198,13 +198,16 @@ class _HomeDrawerState extends State<HomeDrawer> {
   }
 
   Future _changePasswordDialog(BuildContext context) async {
+    newPasswordTextController = new TextEditingController();
+    oldPasswordTextController = new TextEditingController();
+    confirmedPasswordTextController = new TextEditingController();
     return await showDialog(
         context: context,
         builder: (ctx) {
           return AlertDialog(
             content: Container(
               color: AppTheme.white,
-              height: MediaQuery.of(context).size.height/2,
+              height: MediaQuery.of(context).size.height / 2,
               width: MediaQuery.of(context).size.width,
               child: ModalProgressHUD(
                 inAsyncCall: showSpinner,
@@ -214,7 +217,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
                     key: _formKey,
                     autovalidateMode: AutovalidateMode.disabled,
                     child: Column(
-
                       children: [
                         Flexible(
                           flex: 1,
@@ -236,12 +238,12 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                 width: 6,
                               ),
                               Text(
-                                AppTranslations.of(context).text(
-                                    Const.LOCALE_KEY_CHANGE_PASSWORD),
+                                AppTranslations.of(context)
+                                    .text(Const.LOCALE_KEY_CHANGE_PASSWORD),
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
-                                  fontSize:18,
+                                  fontSize: 18,
                                   letterSpacing: 0.27,
                                   color: AppTheme.kPrimaryColor,
                                 ),
@@ -249,7 +251,9 @@ class _HomeDrawerState extends State<HomeDrawer> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Flexible(
                           flex: 1,
                           child: TextFieldContainer(
@@ -260,7 +264,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
                             ),
                           ),
                         ),
-
                         Flexible(
                           flex: 1,
                           child: TextFieldContainer(
@@ -271,7 +274,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
                             ),
                           ),
                         ),
-
                         Flexible(
                           flex: 1,
                           child: TextFieldContainer(
@@ -282,8 +284,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
                             ),
                           ),
                         ),
-
-
                         Flexible(
                           child: GestureDetector(
                             onTap: () {
@@ -293,7 +293,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                               }
                             },
                             child: Padding(
-                              padding:  const EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 25, vertical: 10),
                               child: Container(
                                 height: 48,
@@ -407,13 +407,20 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8, left: 4),
                     child: RichText(
-                      text: TextSpan(
-                          text: AppTranslations.of(context).text(Const.LOCALE_KEY_CHANGE_PASSWORD)+" ?",
-                          style: TextStyle(color: AppTheme.kPrimaryColor),
-                          recognizer:TapGestureRecognizer()..onTap=()async{
-                           await _changePasswordDialog(context);
-                          }
-                      ),
+                      text: TextSpan(children: [
+                        WidgetSpan(
+                          child: Icon(Icons.lock_open, size: 14,color: AppTheme.red,),
+                        ),
+                        TextSpan(
+                            text: AppTranslations.of(context)
+                                    .text(Const.LOCALE_KEY_CHANGE_PASSWORD),
+                            style: TextStyle(color: AppTheme.kPrimaryColor),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                await _changePasswordDialog(context);
+                              }),
+
+                      ]),
                     ),
                   ),
                 ],

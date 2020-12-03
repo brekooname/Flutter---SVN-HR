@@ -3,6 +3,7 @@ import 'package:sven_hr/Screens/Leaves/leaves_transaction_screen.dart';
 import 'package:sven_hr/Screens/Login/login_controller.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_request_screen.dart';
 import 'package:sven_hr/Screens/clock_record/clock_record_screen.dart';
+import 'package:sven_hr/Screens/expense/expense_request_screen.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/models/response/profile_screen_response.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
@@ -63,7 +64,8 @@ class _CategoryListViewState extends State<CategoryListView>
             ),
           );
           categoryList.add(screen);
-        } else if (screen.screenName.compareTo(LeaveRequestScreen.id) == 0) {
+        }
+        else if (screen.screenName.compareTo(LeaveRequestScreen.id) == 0) {
           Category screen = Category(
             imagePath: 'assets/design_course/interFace2.png',
             index: Const.LOCALE_KEY_LEAVES,
@@ -92,6 +94,21 @@ class _CategoryListViewState extends State<CategoryListView>
             ),
           );
           categoryList.add(screen);
+        }else if (screen.screenName.compareTo(ExpenseRequestScreen.id) == 0) {
+          Category screen = Category(
+            imagePath: 'assets/design_course/interFace1.png',
+            index: Const.LOCALE_KEY_EXPENSE_REQUEST,
+            title:
+            AppTranslations.of(context).text(Const.LOCALE_KEY_EXPENSE_REQUEST),
+            lessonCount: 24,
+            money: 25,
+            rating: 4.3,
+            icon: Icon(
+              Icons.add,
+              color: AppTheme.nearlyWhite,
+            ),
+          );
+          categoryList.add(screen);
         }
       }
     }
@@ -113,6 +130,8 @@ class _CategoryListViewState extends State<CategoryListView>
       return LeaveRequestScreen.id;
     }else if (item.index.compareTo(Const.LOCALE_KEY_CLOCK_RECORD) == 0) {
       return ClockRecordScreen.id;
+    }else if (item.index.compareTo(Const.LOCALE_KEY_EXPENSE_REQUEST) == 0) {
+      return ExpenseRequestScreen.id;
     }
   }
 

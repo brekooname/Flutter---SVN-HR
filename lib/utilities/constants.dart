@@ -6,6 +6,8 @@ class Const {
   static final INVALID_USERNAME_MSG="Invalid Username";
   static final INVALID_PASSWORD_MSG="Invalid Password";
   static final VACATION_SENT_SUCCESSFULLY="Request sent successfully";
+  static final CHANGE_PASSWORD_SUCCESSFULLY="your Password Successfully Updated";
+
   static final REQUEST_FAILED="Request Failed";
   static final SYSTEM_MSG_CODE="err_MSG";
   static final LOV_LOAD_FAILED="LOV load falied";
@@ -41,6 +43,10 @@ class Const {
   static final String RECORD_TYPE_IN = "1474187388526";
   static final String RECORD_TYPE_OUT = "1474187403434";
 
+
+  static final String DAY_TYPE = "1473061128097";
+  static final String EMPLOYEE_EXTRA_WORK_UNIT = "1476106827305";
+  static final String CURRENCY = "1465809340094";
 
   static final DATE_FORMAT="yyyy-MM-dd";
   static final DATE_TIME_FORMAT="yyyy-MM-dd HH:mm";
@@ -266,6 +272,5 @@ class Const {
   static final LOCALE_KEY_NEW_PASSWORD="new_password";
   static final LOCALE_KEY_OLD_PASSWORD="old_password";
   static final LOCALE_KEY_CONFRIMED_PASSWORD="confirmed_password";
-
 
 }

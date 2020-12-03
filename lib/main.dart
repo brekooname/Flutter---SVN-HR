@@ -13,6 +13,7 @@ import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen
 import 'package:sven_hr/Screens/approval_inbox/request_details_screen.dart';
 import 'package:sven_hr/Screens/clock_record/clock_record_screen.dart';
 import 'package:sven_hr/Screens/custom_drawer/home_drawer.dart';
+import 'package:sven_hr/Screens/expense/expense_request_screen.dart';
 import 'package:sven_hr/Screens/navigation_home_screen.dart';
 import 'package:sven_hr/Screens/Login/login_screen.dart';
 import 'package:sven_hr/Screens/profile/change_password_screen.dart';
@@ -128,6 +129,7 @@ class _MyAppState extends State<MyApp> {
         TimeSheetScreen.id: (context) => TimeSheetScreen(),
         AppSettingsScreen.id: (context) => AppSettingsScreen(),
         ChangePasswordScreen.id: (context) => ChangePasswordScreen(),
+        ExpenseRequestScreen.id: (context) => ExpenseRequestScreen(),
       },
       localizationsDelegates: [
         newLocaleDelegate,
