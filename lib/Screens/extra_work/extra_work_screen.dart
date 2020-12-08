@@ -5,6 +5,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:sven_hr/Screens/Vacations/picker_screen.dart';
 import 'package:sven_hr/Screens/expense/expense_controller.dart';
+import 'package:sven_hr/Screens/extra_work/extra_work_controller.dart';
 import 'package:sven_hr/components/flutter_toast_message.dart';
 import 'package:sven_hr/components/multi_selectionlist_vew.dart';
 import 'package:sven_hr/components/text_field_container.dart';
@@ -13,13 +14,13 @@ import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
-class ExpenseRequestScreen extends StatefulWidget {
-  static String id = "ExpenseRequestScreen";
+class ExtraWorkScreen extends StatefulWidget {
+  static String id = "ExtraWorkScreen";
   @override
-  _ExpenseRequestScreenState createState() => _ExpenseRequestScreenState();
+  _ExtraWorkScreenState createState() => _ExtraWorkScreenState();
 }
 
-class _ExpenseRequestScreenState extends State<ExpenseRequestScreen>
+class _ExtraWorkScreenState extends State<ExtraWorkScreen>
     with TickerProviderStateMixin {
   final double infoHeight = 364.0;
   AnimationController animationController;
@@ -27,19 +28,18 @@ class _ExpenseRequestScreenState extends State<ExpenseRequestScreen>
   double opacity1 = 0.0;
   double opacity2 = 0.0;
   double opacity3 = 0.0;
-  LovValue currencyValue;
-  ExpenseController _expenseController;
-  List<LovValue> currencyList;
-  String expenseDate;
-  num expenseAmount;
+  ExtraWorkController _extraWorkController;
+  List<LovValue> dayTypeList;
+  LovValue dayTypeValue;
+  List<LovValue> unitList;
+  LovValue unitValue;
+  num unitQuantity;
   bool buttonClosedIsPressed = false;
   bool buttonSendIsPressed = false;
   String notes;
   bool showSpinner = false;
   List<String> attachmentsPaths = List();
   var attachmentTextController = new TextEditingController();
-  var expenseDateController = new TextEditingController();
-
   @override
   void initState() {
     animationController = AnimationController(
@@ -48,39 +48,49 @@ class _ExpenseRequestScreenState extends State<ExpenseRequestScreen>
         parent: animationController,
         curve: Interval(0, 1.0, curve: Curves.fastOutSlowIn)));
     setData();
-    _expenseController = ExpenseController();
-    loadCurrency();
+    _extraWorkController = ExtraWorkController();
+    loadUnit();
+    loadDayType();
     super.initState();
   }
 
-  void loadCurrency() async {
-    currencyList = List();
+  void loadDayType() async {
+    dayTypeList = List();
 
-    await _expenseController.loadCurrency().then((value) {
+    await _extraWorkController.loadDayType().then((value) {
       setState(() {
-        currencyList.addAll(value);
-        // locationValue = locationList[0];
+        dayTypeList.addAll(value);
       });
     });
   }
 
-  void sendExpenseValidation() async {
-    if (currencyValue != null && expenseDate != null && expenseAmount != null) {
-      await sendExpenseRequest();
+  void loadUnit() async {
+    unitList = List();
+
+    await _extraWorkController.loadUnit().then((value) {
+      setState(() {
+        unitList.addAll(value);
+      });
+    });
+  }
+
+  void sendExtraWorkValidation() async {
+    if (dayTypeValue != null && unitValue != null && unitQuantity != null) {
+      await sendExtraWorkRequest();
     }
   }
 
-  void sendExpenseRequest() async {
+  void sendExtraWorkRequest() async {
     buttonSendIsPressed = true;
     showSpinner = true;
 
-    await _expenseController
-        .sendExpenseRequest(
-            currency: currencyValue.row_id,
-            expenseDate: expenseDate,
-            expenseAmount: expenseAmount,
-            description: notes,
-    filePaths: attachmentsPaths)
+    await _extraWorkController
+        .sendExtraWorkRequest(
+            dayType: dayTypeValue.row_id,
+            unit: unitValue.row_id,
+            unitQuantity: unitQuantity,
+            notes: notes,
+        filePaths: attachmentsPaths)
         .then((value) {
       if (value == null) {
         ToastMessage.showErrorMsg(Const.REQUEST_FAILED);
@@ -156,7 +166,7 @@ class _ExpenseRequestScreenState extends State<ExpenseRequestScreen>
                                 ),
                                 Text(
                                   AppTranslations.of(context)
-                                      .text(Const.LOCALE_KEY_EXPENSE_REQUEST),
+                                      .text(Const.LOCALE_KEY_EXTRA_WORK_REQUEST),
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
@@ -169,40 +179,87 @@ class _ExpenseRequestScreenState extends State<ExpenseRequestScreen>
                             ),
                           ),
                           Flexible(
-                            flex: 0,
+                            flex: 1,
                             child: TextFieldContainer(
-                              child: SearchableDropdown.single(
-                                underline: Padding(
-                                  padding: EdgeInsets.all(5),
+                              child: DropdownButtonFormField<LovValue>(
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
                                 ),
-                                // value: currencyValue,
-                                icon: Icon(
-                                  Icons.menu_open_sharp,
-                                  color: AppTheme.kPrimaryColor,
-                                ),
-                                clearIcon: Icon(
-                                  Icons.close_sharp,
-                                  color: AppTheme.kPrimaryColor,
-                                  size: 20,
-                                ),
-                                hint: Text(AppTranslations.of(context)
-                                    .text(Const.LOCALE_KEY_EXPENSE_CURRANCY)),
+                                hint: Text(AppTranslations.of(context).text(
+                                    Const.LOCALE_KEY_EXTRA_WORK_DAY_TYPE)),
                                 isExpanded: true,
-                                style: TextStyle(color: AppTheme.kPrimaryColor),
-                                items: currencyList
+                                style: TextStyle(
+                                    color: AppTheme.kPrimaryColor),
+                                icon: Icon(
+                                  Icons.menu_open,
+                                  color: AppTheme.kPrimaryColor,
+                                  size: 25,
+                                ),
+                                value: dayTypeValue,
+                                validator: (value) => value == null
+                                    ? AppTranslations.of(context)
+                                    .text(Const.LOCALE_KEY_REQUIRED)
+                                    : null,
+                                items: dayTypeList
                                     .map<DropdownMenuItem<LovValue>>(
                                         (LovValue value) {
-                                  return DropdownMenuItem<LovValue>(
-                                    value: value,
-                                    child: Text(
-                                      value.display,
-                                    ),
-                                  );
-                                }).toList(),
+                                      return DropdownMenuItem<LovValue>(
+                                        value: value,
+                                        child: Text(
+                                          value.display,
+                                        ),
+                                      );
+                                    }).toList(),
                                 onChanged: (value) {
                                   setState(() {
-                                    currencyValue = value;
+                                    dayTypeValue = value;
                                   });
+                                },
+                                onTap: () {
+                                  print('pressed');
+                                },
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: TextFieldContainer(
+                              child: DropdownButtonFormField<LovValue>(
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                ),
+                                hint: Text(AppTranslations.of(context).text(
+                                    Const.LOCALE_KEY_EXTRA_WORK_UNIT)),
+                                isExpanded: true,
+                                style: TextStyle(
+                                    color: AppTheme.kPrimaryColor),
+                                icon: Icon(
+                                  Icons.menu_open,
+                                  color: AppTheme.kPrimaryColor,
+                                  size: 25,
+                                ),
+                                value: unitValue,
+                                validator: (value) => value == null
+                                    ? AppTranslations.of(context)
+                                    .text(Const.LOCALE_KEY_REQUIRED)
+                                    : null,
+                                items: unitList
+                                    .map<DropdownMenuItem<LovValue>>(
+                                        (LovValue value) {
+                                      return DropdownMenuItem<LovValue>(
+                                        value: value,
+                                        child: Text(
+                                          value.display,
+                                        ),
+                                      );
+                                    }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    unitValue = value;
+                                  });
+                                },
+                                onTap: () {
+                                  print('pressed');
                                 },
                               ),
                             ),
@@ -211,7 +268,7 @@ class _ExpenseRequestScreenState extends State<ExpenseRequestScreen>
                             flex: 1,
                             child: TextFieldContainer(
                               child: TextFormField(
-                                validator: (value) => expenseAmount == null
+                                validator: (value) => unitQuantity == null
                                     ? AppTranslations.of(context)
                                         .text(Const.LOCALE_KEY_REQUIRED)
                                     : null,
@@ -219,7 +276,7 @@ class _ExpenseRequestScreenState extends State<ExpenseRequestScreen>
                                 cursorColor: AppTheme.kPrimaryColor,
                                 decoration: InputDecoration(
                                   hintText: AppTranslations.of(context)
-                                      .text(Const.LOCALE_KEY_EXPENSE_AMOUNT),
+                                      .text(Const.LOCALE_KEY_EXTRA_WORK_UNIT_QUANTITY),
                                   border: InputBorder.none,
                                   suffixIcon: IconButton(
                                     onPressed: () {},
@@ -231,51 +288,12 @@ class _ExpenseRequestScreenState extends State<ExpenseRequestScreen>
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    expenseAmount = num.tryParse(value);
+                                    unitQuantity = num.tryParse(value);
                                   });
                                 },
                               ),
                             ),
                           ),
-                          Flexible(
-                            flex: 1,
-                            child: TextFieldContainer(
-                              child: DateTimeField(
-                                controller: expenseDateController,
-                                validator: (value) => value == null
-                                    ? AppTranslations.of(context)
-                                    .text(Const.LOCALE_KEY_REQUIRED)
-                                    : null,
-                                style: AppTheme.subtitle,
-                                decoration: InputDecoration(
-                                  suffixIcon: Icon(
-                                    Icons.calendar_today,
-                                    color: AppTheme.kPrimaryColor,
-                                  ),
-                                  hintText: AppTranslations.of(context)
-                                      .text(Const.LOCALE_KEY_EXPENSE_DATE),
-                                  border: InputBorder.none,
-                                ),
-                                format: format,
-                                onChanged: (value) {
-                                  setState(() {
-                                    if (value != null) {
-                                      expenseDate = format.format(value);
-
-                                    }
-                                  });
-                                },
-                                onShowPicker: (context, currentValue) {
-                                  return showDatePicker(
-                                      context: context,
-                                      firstDate: DateTime(1900),
-                                      initialDate: currentValue ?? DateTime.now(),
-                                      lastDate: DateTime(2100));
-                                },
-                              ),
-                            ),
-                          ),
-
                           Flexible(
                             flex: 1,
                             child: TextFieldContainer(
@@ -362,7 +380,7 @@ class _ExpenseRequestScreenState extends State<ExpenseRequestScreen>
                               onTap: () {
                                 if (_formKey.currentState.validate()) {
                                   _formKey.currentState.save();
-                                  sendExpenseValidation();
+                                  sendExtraWorkValidation();
                                 }
                               },
                               child: Padding(

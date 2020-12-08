@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sven_hr/Screens/Home/popular_course_list_view.dart';
+import 'package:sven_hr/Screens/Home/actions_list_view.dart';
+import 'package:sven_hr/Screens/Vacations/vacation_transaction_controller.dart';
+import 'package:sven_hr/Screens/circular_charts/circular_default_pie.dart';
 import 'package:sven_hr/localization/app_translations.dart';
+import 'package:sven_hr/models/chart_sample_data.dart';
+import 'package:sven_hr/models/response/employee_vacation_response.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/Screens/Home/category_list_view.dart';
 import 'package:sven_hr/utilities/constants.dart';
@@ -24,6 +28,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void initState() {
     animationController = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
+    LoadEmployeeVacationsBalance();
     super.initState();
   }
 
@@ -41,29 +46,26 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return ScreenLoader(
-      screenName:  AppTranslations.of(context)
-          .text(Const.LOCALE_KEY_HOME),
+      screenName: AppTranslations.of(context).text(Const.LOCALE_KEY_HOME),
       screenWidget: homeScreen(),
     );
   }
 
   Widget homeScreen() {
-    return SingleChildScrollView(
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: <Widget>[
-            getSearchBarUI(),
-            CategoryListView(
-              callBack: () {
-                moveTo();
-              },
-            ),
-            Flexible(
-              child: getPopularCourseUI(),
-            ),
-          ],
-        ),
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      child: Column(
+        children: <Widget>[
+          // getSearchBarUI(),
+          getVacationPieChart(),
+          getPopularCourseUI()
+          // CategoryListView(
+          //   callBack: () {
+          //     moveTo();
+          //   },
+          // ),
+
+        ],
       ),
     );
   }
@@ -109,13 +111,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             helperStyle: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-
                             ),
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
                               letterSpacing: 0.2,
-                              color:AppTheme.kPrimaryColor.withOpacity(0.4),
+                              color: AppTheme.kPrimaryColor.withOpacity(0.4),
                             ),
                           ),
                           onEditingComplete: () {},
@@ -125,39 +126,85 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     SizedBox(
                       width: 60,
                       height: 60,
-                      child: Icon(Icons.search, color:AppTheme.kPrimaryColor.withOpacity(0.4)),
+                      child: Icon(Icons.search,
+                          color: AppTheme.kPrimaryColor.withOpacity(0.4)),
                     )
                   ],
                 ),
               ),
             ),
           ),
-
         ],
       ),
     );
   }
 
+
+
+  void LoadEmployeeVacationsBalance() async {
+    List<EmployeeVacationResponse> employeeVactionsList;
+    VacationTransactionController _vacationTransactionController=VacationTransactionController();
+
+    employeeVactionsList = List();
+
+    await _vacationTransactionController
+        .loadEmployeeVacationsBalance()
+        .then((value) {
+      setState(() {
+        if (value != null && value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
+          employeeVactionsList =
+              _vacationTransactionController.employeeVactions;
+
+          for (EmployeeVacationResponse intervales in employeeVactionsList) {
+            ChartSampleData chartSampleData = ChartSampleData(
+                x: intervales.vacation_type_name, y: intervales.remaining_balance);
+            chartData.add(chartSampleData);
+          }
+        }
+      });
+    });
+  }
+  List<ChartSampleData> chartData = <ChartSampleData>[];
+
+  Widget getVacationPieChart() {
+    return Flexible(
+      flex: 1,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+
+          decoration: BoxDecoration(
+            color: AppTheme.kPrimaryLightColor.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(29),
+          ),
+          child: CircularDefaultPie(
+            title: AppTranslations.of(context).text(Const.LOCALE_KEY_VACATION),
+            pieData: chartData,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget getPopularCourseUI() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0, left: 18, right: 16),
+    return Expanded(
+      flex: 1,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            AppTranslations.of(context)
-                .text(Const.LOCALE_KEY_ANNOUNCEMENTS),
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 22,
-              letterSpacing: 0.27,
-              color: AppTheme.darkerText,
-            ),
-          ),
+          // Text(
+          //   AppTranslations.of(context).text(Const.LOCALE_KEY_ANNOUNCEMENTS),
+          //   textAlign: TextAlign.left,
+          //   style: TextStyle(
+          //     fontWeight: FontWeight.w600,
+          //     fontSize: 22,
+          //     letterSpacing: 0.27,
+          //     color: AppTheme.darkerText,
+          //   ),
+          // ),
           Flexible(
-            child: PopularCourseListView(
+            child: ActionsListView(
               callBack: () {
                 moveTo();
               },

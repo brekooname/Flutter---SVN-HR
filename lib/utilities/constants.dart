@@ -5,7 +5,7 @@ class Const {
   static final SYSTEM_VACATION_TRANSACTION_CODE="vacationTransactions";
   static final INVALID_USERNAME_MSG="Invalid Username";
   static final INVALID_PASSWORD_MSG="Invalid Password";
-  static final VACATION_SENT_SUCCESSFULLY="Request sent successfully";
+  static final REQUEST_SENT_SUCCESSFULLY="Request sent successfully";
   static final CHANGE_PASSWORD_SUCCESSFULLY="your Password Successfully Updated";
 
   static final REQUEST_FAILED="Request Failed";
@@ -174,7 +174,7 @@ class Const {
 
   static final LOCALE_KEY_EXTRA_WORK_UNIT="extraWorkUnit";
   static final LOCALE_KEY_EXTRA_WORK_UNIT_QUANTITY="extraWorkUnitQuantity";
-  static final LOCALE_KEY_EXTRA_WOR_DAY_TYPE="extraWorkDayType";
+  static final LOCALE_KEY_EXTRA_WORK_DAY_TYPE="extraWorkDayType";
   static final LOCALE_KEY_EXTRA_WORK_REASON="extraWorkReason";
   static final LOCALE_KEY_EXTRA_WORK_PAYROLL_CYCLE="extraWorkPayrollCycle";
   static final LOCALE_KEY_EXTRA_WORK_REQUEST_DATE="extraWorkRequestDate";
@@ -272,5 +272,10 @@ class Const {
   static final LOCALE_KEY_NEW_PASSWORD="new_password";
   static final LOCALE_KEY_OLD_PASSWORD="old_password";
   static final LOCALE_KEY_CONFRIMED_PASSWORD="confirmed_password";
+
+  static final LOCALE_KEY_SEND_Request="send_request";
+
+  static final LOCALE_KEY_MY_VACTIONS="my_vacations";
+  static final LOCALE_KEY_MY_LEAVES="my_leaves";
 
 }

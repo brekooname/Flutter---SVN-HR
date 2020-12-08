@@ -1,22 +1,29 @@
+import 'package:sven_hr/Screens/Leaves/leave_request_screen.dart';
+import 'package:sven_hr/Screens/Login/login_controller.dart';
+import 'package:sven_hr/Screens/Vacations/vacation_request_screen.dart';
+import 'package:sven_hr/Screens/clock_record/clock_record_screen.dart';
+import 'package:sven_hr/Screens/expense/expense_request_screen.dart';
+import 'package:sven_hr/Screens/extra_work/extra_work_screen.dart';
 import 'package:sven_hr/Screens/home/models/category.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/main.dart';
 import 'package:flutter/material.dart';
+import 'package:sven_hr/models/response/profile_screen_response.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
-class PopularCourseListView extends StatefulWidget {
-  const PopularCourseListView({Key key, this.callBack}) : super(key: key);
+class ActionsListView extends StatefulWidget {
+  const ActionsListView({Key key, this.callBack}) : super(key: key);
 
   final Function callBack;
   @override
-  _PopularCourseListViewState createState() => _PopularCourseListViewState();
+  _ActionsListViewState createState() => _ActionsListViewState();
 }
 
-class _PopularCourseListViewState extends State<PopularCourseListView>
+class _ActionsListViewState extends State<ActionsListView>
     with TickerProviderStateMixin {
   AnimationController animationController;
-  List<Category> popularCourseList;
+  List<Category> actionsList;
   @override
   void initState() {
     animationController = AnimationController(
@@ -25,7 +32,7 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
   }
 
   void setPopularCourseListArray() {
-    popularCourseList = <Category>[
+    actionsList = <Category>[
       Category(
         imagePath: 'assets/design_course/interFace3.png',
         title: AppTranslations.of(context).text(Const.LOCALE_KEY_HOLIDAYS),
@@ -56,12 +63,90 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
       ),
     ];
   }
+
+  void getProfileScreens() {
+    actionsList = <Category>[
+      // Category(
+      //   imagePath: 'assets/design_course/interFace2.png',
+      //   index: Const.LOCALE_KEY_LAST_PAYSLIB,
+      //   title: AppTranslations.of(context).text(Const.LOCALE_KEY_LAST_PAYSLIB),
+      //   lessonCount: 22,
+      //   money: 18,
+      //   rating: 4.6,
+      //   icon: Icon(
+      //     Icons.payment,
+      //     color: AppTheme.nearlyWhite,
+      //   ),
+      // ),
+    ];
+    if (LoginController.listOfProfileScreens != null) {
+      for (ProfileScreenResponse screen
+      in LoginController.listOfProfileScreens) {
+        if (screen.screenName.compareTo(VacationRequestScreen.id) == 0) {
+          Category screen = Category(
+            imagePath: 'assets/design_course/vacation.png',
+            index: Const.LOCALE_KEY_VACATION,
+            title: AppTranslations.of(context).text(Const.LOCALE_KEY_VACATION),
+          );
+          actionsList.add(screen);
+        }
+        else if (screen.screenName.compareTo(LeaveRequestScreen.id) == 0) {
+          Category screen = Category(
+            imagePath: 'assets/design_course/leave.png',
+            index: Const.LOCALE_KEY_LEAVES,
+            title: AppTranslations.of(context).text(Const.LOCALE_KEY_LEAVES),
+          );
+          actionsList.add(screen);
+        } else if (screen.screenName.compareTo(ClockRecordScreen.id) == 0) {
+          Category screen = Category(
+            imagePath: 'assets/design_course/clock_record.png',
+            index: Const.LOCALE_KEY_CLOCK_RECORD,
+            title:
+            AppTranslations.of(context).text(Const.LOCALE_KEY_CLOCK_RECORD),
+          );
+          actionsList.add(screen);
+        }else if (screen.screenName.compareTo(ExpenseRequestScreen.id) == 0) {
+          Category screen = Category(
+            imagePath: 'assets/design_course/expense.png',
+            index: Const.LOCALE_KEY_EXPENSE_REQUEST,
+            title:
+            AppTranslations.of(context).text(Const.LOCALE_KEY_EXPENSE_REQUEST),
+          );
+          actionsList.add(screen);
+        }else if (screen.screenName.compareTo(ExtraWorkScreen.id) == 0) {
+          Category screen = Category(
+            imagePath: 'assets/design_course/extra_work.png',
+            index: Const.LOCALE_KEY_EXTRA_WORK_REQUEST,
+            title:
+            AppTranslations.of(context).text(Const.LOCALE_KEY_EXTRA_WORK_REQUEST),
+          );
+          actionsList.add(screen);
+        }
+      }
+    }
+  }
+
   Future<bool> getData() async {
-    await
-    Future.delayed(Duration.zero, () {
-      setPopularCourseListArray();
+    await Future.delayed(Duration.zero, () {
+      getProfileScreens();
     });
     return true;
+  }
+
+  String moveTo(Category item) {
+    if (item == null) return '';
+
+    if (item.index.compareTo(Const.LOCALE_KEY_VACATION) == 0) {
+      return VacationRequestScreen.id;
+    } else if (item.index.compareTo(Const.LOCALE_KEY_LEAVES) == 0) {
+      return LeaveRequestScreen.id;
+    }else if (item.index.compareTo(Const.LOCALE_KEY_CLOCK_RECORD) == 0) {
+      return ClockRecordScreen.id;
+    }else if (item.index.compareTo(Const.LOCALE_KEY_EXPENSE_REQUEST) == 0) {
+      return ExpenseRequestScreen.id;
+    }else if (item.index.compareTo(Const.LOCALE_KEY_EXTRA_WORK_REQUEST) == 0) {
+      return ExtraWorkScreen.id;
+    }
   }
 
   @override
@@ -79,9 +164,9 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               children: List<Widget>.generate(
-               popularCourseList.length,
+               actionsList.length,
                 (int index) {
-                  final int count = popularCourseList.length;
+                  final int count = actionsList.length;
                   final Animation<double> animation =
                       Tween<double>(begin: 0.0, end: 1.0).animate(
                     CurvedAnimation(
@@ -93,9 +178,9 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
                   animationController.forward();
                   return CategoryView(
                     callback: () {
-                      widget.callBack();
+                      Navigator.pushNamed(context, moveTo(actionsList[index]));
                     },
-                    category: popularCourseList[index],
+                    category: actionsList[index],
                     animation: animation,
                     animationController: animationController,
                   );
@@ -129,6 +214,99 @@ class CategoryView extends StatelessWidget {
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   return AnimatedBuilder(
+  //     animation: animationController,
+  //     builder: (BuildContext context, Widget child) {
+  //       return FadeTransition(
+  //         opacity: animation,
+  //         child: Transform(
+  //           transform: Matrix4.translationValues(
+  //               100 * (1.0 - animation.value), 0.0, 0.0),
+  //           child: InkWell(
+  //             splashColor: Colors.transparent,
+  //             onTap: () {
+  //               callback();
+  //             },
+  //             child: SizedBox(
+  //               width: 200,
+  //               child: Stack(
+  //                 children: <Widget>[
+  //                   Container(
+  //                     child: Row(
+  //                       children: <Widget>[
+  //                         const SizedBox(
+  //                           width: 28,
+  //                         ),
+  //                         Expanded(
+  //                           child: Container(
+  //                             decoration: BoxDecoration(
+  //                               color: AppTheme.nearlyGrey,
+  //                               borderRadius: const BorderRadius.all(
+  //                                   Radius.circular(16.0)),
+  //                             ),
+  //                             child: Row(
+  //                               children: <Widget>[
+  //                                 const SizedBox(
+  //                                   width: 28 + 24.0,
+  //                                 ),
+  //                                 Expanded(
+  //                                   child: Container(
+  //                                     child: Column(
+  //                                       children: <Widget>[
+  //                                         Padding(
+  //                                           padding:
+  //                                           const EdgeInsets.only(top: 16),
+  //                                           child: Text(
+  //                                             category.title,
+  //                                             textAlign: TextAlign.center,
+  //                                             style: TextStyle(
+  //                                               fontWeight: FontWeight.w600,
+  //                                               fontSize: 16,
+  //                                               letterSpacing: 0.27,
+  //                                               color: AppTheme.darkerText,
+  //                                             ),
+  //                                           ),
+  //                                         ),
+  //
+  //                                       ],
+  //                                     ),
+  //                                   ),
+  //                                 ),
+  //                               ],
+  //                             ),
+  //                           ),
+  //                         )
+  //                       ],
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     child: Padding(
+  //                       padding: const EdgeInsets.only(
+  //                           top: 24, bottom: 24, left: 24, right:24),
+  //                       child: Row(
+  //                         children: <Widget>[
+  //                           ClipRRect(
+  //                             borderRadius:
+  //                             const BorderRadius.all(Radius.circular(16.0)),
+  //                             child: AspectRatio(
+  //                                 aspectRatio: 1.0,
+  //                                 child: Image.asset(category.imagePath)),
+  //                           )
+  //                         ],
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -190,47 +368,16 @@ class CategoryView extends StatelessWidget {
                                                 bottom: 8),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                              MainAxisAlignment
+                                                  .spaceBetween,
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                              CrossAxisAlignment.center,
                                               children: <Widget>[
-                                                Text(
-                                                  '${category.lessonCount} lesson',
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w200,
-                                                    fontSize: 12,
-                                                    letterSpacing: 0.27,
-                                                    color: AppTheme
-                                                        .grey,
-                                                  ),
-                                                ),
+
                                                 Container(
                                                   child: Row(
-                                                    children: <Widget>[
-                                                      Text(
-                                                        '${category.rating}',
-                                                        textAlign:
-                                                            TextAlign.left,
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w200,
-                                                          fontSize: 18,
-                                                          letterSpacing: 0.27,
-                                                          color:
-                                                          AppTheme
-                                                                  .grey,
-                                                        ),
-                                                      ),
-                                                      Icon(
-                                                        Icons.star,
-                                                        color:
-                                                        AppTheme
-                                                                .nearlyBlue,
-                                                        size: 20,
-                                                      ),
-                                                    ],
+
+
                                                   ),
                                                 )
                                               ],
@@ -256,11 +403,11 @@ class CategoryView extends StatelessWidget {
                     Container(
                       child: Padding(
                         padding:
-                            const EdgeInsets.only(top: 24, right: 16, left: 16),
+                        const EdgeInsets.only(top: 24, right: 16, left: 16),
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(16.0)),
+                            const BorderRadius.all(Radius.circular(16.0)),
                             boxShadow: <BoxShadow>[
                               BoxShadow(
                                   color: AppTheme.grey
@@ -271,9 +418,9 @@ class CategoryView extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(16.0)),
+                            const BorderRadius.all(Radius.circular(16.0)),
                             child: AspectRatio(
-                                aspectRatio: 1.28,
+                                aspectRatio: 1,
                                 child: Image.asset(category.imagePath)),
                           ),
                         ),

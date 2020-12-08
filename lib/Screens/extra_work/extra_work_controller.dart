@@ -1,43 +1,52 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sven_hr/dao/lov_value.dart';
-import 'package:sven_hr/models/request/expense_base_request.dart';
-import 'package:sven_hr/models/request/expense_request.dart';
+import 'package:sven_hr/models/request/extra_work_base_request.dart';
+import 'package:sven_hr/models/request/extra_work_request.dart';
 import 'package:sven_hr/services/multi_part_file_upload.dart';
 import 'package:sven_hr/services/networking.dart';
 import 'package:sven_hr/utilities/api_connectons.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
-class ExpenseController {
-  Future<List<LovValue>> loadCurrency() async {
+class ExtraWorkController {
+  Future<List<LovValue>> loadDayType() async {
     LovValue lov = LovValue();
     try {
-      return lov.getLovsByParentId(Const.CURRENCY);
+      return lov.getLovsByParentId(Const.DAY_TYPE);
     } catch (e) {
       print(e);
     }
   }
 
-  Future<String> sendExpenseRequest(
-      {String currency,
-      num expenseAmount,
-      String expenseDate,
-      String description,
+  Future<List<LovValue>> loadUnit() async {
+    LovValue lov = LovValue();
+    try {
+      return lov.getLovsByParentId(Const.EMPLOYEE_EXTRA_WORK_UNIT);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<String> sendExtraWorkRequest(
+      {String dayType,
+      String unit,
+      num unitQuantity,
+      String notes,
       List<String> filePaths}) async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    var url = ApiConnections.url + ApiConnections.ADD_EXPENSE;
+    var url = ApiConnections.url + ApiConnections.ADD_EXTRA_WORK;
 
-    ExpenseRequest expenseRequest = ExpenseRequest();
-    expenseRequest.currency_id = currency;
-    expenseRequest.expense_amount = expenseAmount;
-    expenseRequest.expense_date = expenseDate;
-    expenseRequest.description = description;
-    expenseRequest.employee_id = prefs.getString(Const.SHARED_KEY_EMPLOYEE_ID);
+    ExtraWorkRequest extraWorkRequest = ExtraWorkRequest();
+    extraWorkRequest.employee_id =
+        prefs.getString(Const.SHARED_KEY_EMPLOYEE_ID);
+    extraWorkRequest.day_type = dayType;
+    extraWorkRequest.unit = unit;
+    extraWorkRequest.unit_quantity = unitQuantity;
+    extraWorkRequest.extra_details = notes;
 
-    ExpenseBaseRequest request =
-        ExpenseBaseRequest(tokenID: tokenId, expenseTrans: expenseRequest);
+    ExtraWorkBaseRequest request = ExtraWorkBaseRequest(
+        tokenID: tokenId, extraWorkTrans: extraWorkRequest);
 
-    print(expenseRequest.toJson().toString());
     NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
     var userData = await helper.getData();
     if (userData != null &&

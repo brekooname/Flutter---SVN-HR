@@ -187,7 +187,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
       if (value == null) {
         ToastMessage.showErrorMsg(Const.REQUEST_FAILED);
       } else if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
-        ToastMessage.showSuccessMsg(Const.VACATION_SENT_SUCCESSFULLY);
+        ToastMessage.showSuccessMsg(Const.REQUEST_SENT_SUCCESSFULLY);
         // Navigator.pop(context);
       } else {
         ToastMessage.showErrorMsg(value);
@@ -209,7 +209,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
       if (value == null) {
         ToastMessage.showErrorMsg(Const.REQUEST_FAILED);
       } else if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
-        ToastMessage.showSuccessMsg(Const.VACATION_SENT_SUCCESSFULLY);
+        ToastMessage.showSuccessMsg(Const.REQUEST_SENT_SUCCESSFULLY);
         // Navigator.pop(context);
       } else {
         ToastMessage.showErrorMsg(value);

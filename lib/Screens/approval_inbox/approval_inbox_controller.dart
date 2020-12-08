@@ -118,6 +118,8 @@ class ApprovalInboxController {
     }
     ApprovalInboxInputRequest inboxInputRequest = ApprovalInboxInputRequest();
     inboxInputRequest.approvedInboxId = requestInput.approvalInboxID;
+    inboxInputRequest.payrolCycle=requestInput.extraWorkPayrollCycleId;
+    inboxInputRequest.approvedAmount=requestInput.expenseApprovedAmount;
 
     // if(requestInput.approvalInboxType!=null){
     //   if(requestInput.approvalInboxType.compareTo(Const.APPROVAL_INBOX_LOAN_TYPE)==0){

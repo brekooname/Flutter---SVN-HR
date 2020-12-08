@@ -121,7 +121,7 @@ class LoginController {
     prefs.setString(
         Const.SHARED_KEY_TELEPHONE_NUMBER, employee.telephoneNumber);
     prefs.setString(
-        Const.SHARED_KEY_EMPLOYEE_PIC_LINK, employee.employee_profile_pic_link);
+        Const.SHARED_KEY_EMPLOYEE_PIC_LINK, ApiConnections.host+employee.employee_profile_pic_link);
     prefs.setString(Const.SHARED_KEY_EMPLOYEE_NAME, employee.employeeName);
     prefs.setString(
         Const.SHARED_KEY_REPORTING_MANAGER, employee.reportingManager);

@@ -72,7 +72,7 @@ class _TimeSheetScreenState extends State<TimeSheetScreen>
       if (value == null) {
         ToastMessage.showErrorMsg(Const.REQUEST_FAILED);
       } else if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
-        ToastMessage.showSuccessMsg(Const.VACATION_SENT_SUCCESSFULLY);
+        ToastMessage.showSuccessMsg(Const.REQUEST_SENT_SUCCESSFULLY);
         Navigator.of(context, rootNavigator: true).pop(value);
       } else {
         ToastMessage.showErrorMsg(value);

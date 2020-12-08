@@ -167,6 +167,12 @@
   "change_password": "Change Password",
   "new_password": "New Password",
   "old_password": "Old Password",
-  "confirmed_password": "Confirmed Password"
+  "confirmed_password": "Confirmed Password",
+
+
+  "send_request": "Send Request",
+
+  "my_vacations": "My Vacations",
+  "send_request": "My Leaves"
 
 }

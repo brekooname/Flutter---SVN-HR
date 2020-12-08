@@ -9,7 +9,7 @@ class ExtraWorkBaseRequest{
   ExtraWorkRequest extraWorkTrans;
 
 
-  ExtraWorkBaseRequest(this.tokenID, this.extraWorkTrans);
+  ExtraWorkBaseRequest({this.tokenID, this.extraWorkTrans});
 
   factory ExtraWorkBaseRequest.fromJson(Map<String, dynamic> json) =>
       _$ExtraWorkBaseRequestFromJson(json);

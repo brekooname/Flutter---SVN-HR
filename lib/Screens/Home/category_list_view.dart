@@ -4,6 +4,7 @@ import 'package:sven_hr/Screens/Login/login_controller.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_request_screen.dart';
 import 'package:sven_hr/Screens/clock_record/clock_record_screen.dart';
 import 'package:sven_hr/Screens/expense/expense_request_screen.dart';
+import 'package:sven_hr/Screens/extra_work/extra_work_screen.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/models/response/profile_screen_response.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
@@ -52,7 +53,7 @@ class _CategoryListViewState extends State<CategoryListView>
           in LoginController.listOfProfileScreens) {
         if (screen.screenName.compareTo(VacationRequestScreen.id) == 0) {
           Category screen = Category(
-            imagePath: 'assets/design_course/interFace1.png',
+            imagePath: 'assets/design_course/vacation.png',
             index: Const.LOCALE_KEY_VACATION,
             title: AppTranslations.of(context).text(Const.LOCALE_KEY_VACATION),
             lessonCount: 24,
@@ -67,7 +68,7 @@ class _CategoryListViewState extends State<CategoryListView>
         }
         else if (screen.screenName.compareTo(LeaveRequestScreen.id) == 0) {
           Category screen = Category(
-            imagePath: 'assets/design_course/interFace2.png',
+            imagePath: 'assets/design_course/leave.png',
             index: Const.LOCALE_KEY_LEAVES,
             title: AppTranslations.of(context).text(Const.LOCALE_KEY_LEAVES),
             lessonCount: 22,
@@ -81,7 +82,7 @@ class _CategoryListViewState extends State<CategoryListView>
           categoryList.add(screen);
         } else if (screen.screenName.compareTo(ClockRecordScreen.id) == 0) {
           Category screen = Category(
-            imagePath: 'assets/design_course/interFace1.png',
+            imagePath: 'assets/design_course/clock_record.png',
             index: Const.LOCALE_KEY_CLOCK_RECORD,
             title:
                 AppTranslations.of(context).text(Const.LOCALE_KEY_CLOCK_RECORD),
@@ -96,10 +97,25 @@ class _CategoryListViewState extends State<CategoryListView>
           categoryList.add(screen);
         }else if (screen.screenName.compareTo(ExpenseRequestScreen.id) == 0) {
           Category screen = Category(
-            imagePath: 'assets/design_course/interFace1.png',
+            imagePath: 'assets/design_course/expense.png',
             index: Const.LOCALE_KEY_EXPENSE_REQUEST,
             title:
             AppTranslations.of(context).text(Const.LOCALE_KEY_EXPENSE_REQUEST),
+            lessonCount: 24,
+            money: 25,
+            rating: 4.3,
+            icon: Icon(
+              Icons.add,
+              color: AppTheme.nearlyWhite,
+            ),
+          );
+          categoryList.add(screen);
+        }else if (screen.screenName.compareTo(ExtraWorkScreen.id) == 0) {
+          Category screen = Category(
+            imagePath: 'assets/design_course/extra_work.png',
+            index: Const.LOCALE_KEY_EXTRA_WORK_REQUEST,
+            title:
+            AppTranslations.of(context).text(Const.LOCALE_KEY_EXTRA_WORK_REQUEST),
             lessonCount: 24,
             money: 25,
             rating: 4.3,
@@ -132,6 +148,8 @@ class _CategoryListViewState extends State<CategoryListView>
       return ClockRecordScreen.id;
     }else if (item.index.compareTo(Const.LOCALE_KEY_EXPENSE_REQUEST) == 0) {
       return ExpenseRequestScreen.id;
+    }else if (item.index.compareTo(Const.LOCALE_KEY_EXTRA_WORK_REQUEST) == 0) {
+      return ExtraWorkScreen.id;
     }
   }
 
@@ -213,7 +231,7 @@ class CategoryView extends StatelessWidget {
                 callback();
               },
               child: SizedBox(
-                width: 280,
+                width: 200,
                 child: Stack(
                   children: <Widget>[
                     Container(
@@ -255,22 +273,22 @@ class CategoryView extends StatelessWidget {
                                           const Expanded(
                                             child: SizedBox(),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 16, right: 16),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: AppTheme.nearlyBlue,
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(8.0)),
-                                              ),
-                                              child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(4.0),
-                                                  child: category.icon),
-                                            ),
-                                          ),
+                                          // Padding(
+                                          //   padding: const EdgeInsets.only(
+                                          //       bottom: 16, right: 16),
+                                          //   child: Container(
+                                          //     decoration: BoxDecoration(
+                                          //       color: AppTheme.nearlyBlue,
+                                          //       borderRadius:
+                                          //           const BorderRadius.all(
+                                          //               Radius.circular(8.0)),
+                                          //     ),
+                                          //     child: Padding(
+                                          //         padding:
+                                          //             const EdgeInsets.all(4.0),
+                                          //         child: category.icon),
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                     ),

@@ -3,8 +3,10 @@ class ApiConnections{
   ApiConnections._();
 
   // static const String url="http://176.67.58.26:19090/Sven/api";
-//  static const String url="http://157.56.182.203:8080/NetsuiteHR/api";
-  static const String url="http://192.168.20.23:8080/Sven/api";
+ static const String host="http://157.56.182.203:8080";
+  static const String url=host+"/NetsuiteHR/api";
+//   static const String host="http://192.168.20.23:8080";
+//   static const String url=host+"/Sven/api";
 
   static const String login="/newlogin";
 
@@ -30,7 +32,7 @@ class ApiConnections{
 
   static const String  GET_APPROVAL_INBOX="/getApprovalObject";
 
-  static const String  APPROVALS_INBOX_ACCEPT="/approvalInboxAccept";
+  static const String  APPROVALS_INBOX_ACCEPT="/approvalInboxAcceptV2";
 
   static const String  APPROVAL_INBOX_REJECT="/approvalInboxReject";
 

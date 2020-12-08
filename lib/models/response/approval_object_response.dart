@@ -138,6 +138,12 @@ class ApprovalObjectResponse{
   @JsonKey(name: 'extraWorkPayrollCycle')
   String _extraWorkPayrollCycle;
 
+  @JsonKey(name: 'extraWorkPayrollCycleId')
+  String _extraWorkPayrollCycleId;
+
+  @JsonKey(name: 'extraWorkPayrollCycleDisplay')
+  String _extraWorkPayrollCycleDisplay;
+
   @JsonKey(name: 'extraWorkRequestDate')
   String _extraWorkRequestDate;
 
@@ -668,5 +674,17 @@ class ApprovalObjectResponse{
 
   set vacationNewBalance(num value) {
     _vacationNewBalance = value;
+  }
+
+  String get extraWorkPayrollCycleDisplay => _extraWorkPayrollCycleDisplay;
+
+  set extraWorkPayrollCycleDisplay(String value) {
+    _extraWorkPayrollCycleDisplay = value;
+  }
+
+  String get extraWorkPayrollCycleId => _extraWorkPayrollCycleId;
+
+  set extraWorkPayrollCycleId(String value) {
+    _extraWorkPayrollCycleId = value;
   }
 }

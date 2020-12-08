@@ -47,6 +47,10 @@ ApprovalObjectResponse _$ApprovalObjectResponseFromJson(
     ..extraWorkDayType = json['extraWorkDayType'] as String
     ..extraWorkReason = json['extraWorkReason'] as String
     ..extraWorkPayrollCycle = json['extraWorkPayrollCycle'] as String
+
+    ..extraWorkPayrollCycleDisplay = json['extraWorkPayrollCycleDisplay'] as String
+    ..extraWorkPayrollCycleId = json['extraWorkPayrollCycleId'] as String
+
     ..extraWorkRequestDate = json['extraWorkRequestDate'] as String
     ..expenseCurrancy = json['expenseCurrancy'] as String
     ..expenseAmount = json['expenseAmount'] as num
@@ -125,6 +129,10 @@ Map<String, dynamic> _$ApprovalObjectResponseToJson(
       'extraWorkDayType': instance.extraWorkDayType,
       'extraWorkReason': instance.extraWorkReason,
       'extraWorkPayrollCycle': instance.extraWorkPayrollCycle,
+
+      'extraWorkPayrollCycleDisplay': instance.extraWorkPayrollCycleDisplay,
+      'extraWorkPayrollCycleId': instance.extraWorkPayrollCycleId,
+
       'extraWorkRequestDate': instance.extraWorkRequestDate,
       'expenseCurrancy': instance.expenseCurrancy,
       'expenseAmount': instance.expenseAmount,

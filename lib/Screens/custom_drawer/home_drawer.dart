@@ -80,7 +80,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
           DrawerList item = DrawerList(
             index: DrawerIndex.VACATION,
             labelName:
-                AppTranslations.of(context).text(Const.LOCALE_KEY_VACATION),
+                AppTranslations.of(context).text(Const.LOCALE_KEY_MY_VACTIONS),
             icon: Icon(Icons.new_releases),
           );
           drawerList.add(item);
@@ -88,7 +88,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
           DrawerList item = DrawerList(
             index: DrawerIndex.LEAVES,
             labelName:
-                AppTranslations.of(context).text(Const.LOCALE_KEY_LEAVES),
+                AppTranslations.of(context).text(Const.LOCALE_KEY_MY_LEAVES),
             icon: Icon(Icons.directions_run),
           );
           drawerList.add(item);
