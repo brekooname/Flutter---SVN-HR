@@ -48,7 +48,7 @@ class LoginController {
 
     try {
       User user =
-          User(username: username, password: password, netsuitFlag: false);
+          User(username: username, password: password, netsuitFlag: ApiConnections.NetSuiteFlag);
       dynamic res = await getLoginAPI(context, user.toJson());
       if (res != null &&
           res.toString().compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {

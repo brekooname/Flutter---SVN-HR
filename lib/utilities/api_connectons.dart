@@ -3,12 +3,14 @@ class ApiConnections{
   ApiConnections._();
 
   // static const String url="http://176.67.58.26:19090/Sven/api";
- static const String host="http://157.56.182.203:8080";
-  static const String url=host+"/NetsuiteHR/api";
-//   static const String host="http://192.168.20.23:8080";
-//   static const String url=host+"/Sven/api";
+ // static const String host="http://157.56.182.203:8080";
+ //  static const String url=host+"/NetsuiteHR/api";
+  static const String host="http://192.168.20.23:8080";
+  static const String url=host+"/Sven/api";
 
   static const String login="/newlogin";
+
+  static const bool NetSuiteFlag=false;
 
   static const String vacation_transaction="/getFilteredVacation2";
 
@@ -67,4 +69,9 @@ class ApiConnections{
   static const String  ADD_EXTRA_WORK="/addExtraWorkRequestV2";
 
   static const String  ADD_EXPENSE="/addExpenseRequestV2";
+
+  static const String  GET_LIST_OF_ATTACHMENTS="/getListOfAttachments";
+
+  static const String  DOWN_LOAD_FILE="/downloadFile";
+
 }

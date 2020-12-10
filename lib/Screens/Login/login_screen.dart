@@ -17,10 +17,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // String _username = "mansour";
-  // String _password = "123123";
-  String _username;
-  String _password;
+  String _username = "mansour";
+  String _password = "123123";
+  // String _username;
+  // String _password;
 
   LoginController loginController = LoginController();
   bool showSpinner = false;
@@ -37,14 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               LoginImage(size: size),
-              SizedBox(height: size.height * 0.01),
-              Text(
-                "SVEN HR",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                    color: AppTheme.kPrimaryColor),
-              ),
+
               SizedBox(height: size.height * 0.03),
               RoundedInputField(
                 hintText: AppTranslations.of(context)
@@ -94,9 +87,9 @@ class LoginImage extends StatelessWidget {
 
   LoginImage({this.size}) {
     if (Platform.isIOS) {
-      loginImage = "assets/images/appstore.png";
+      loginImage = "assets/images/netsuiteLogo.png";
     } else if (Platform.isAndroid) {
-      loginImage = "assets/images/playstore.png";
+      loginImage = "assets/images/netsuiteLogo.png";
     }
   }
 
@@ -104,7 +97,7 @@ class LoginImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.asset(
       loginImage,
-      height: size.height * 0.20,
+      height: size.height*0.1,
     );
   }
 }

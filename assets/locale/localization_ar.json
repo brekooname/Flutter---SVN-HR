@@ -173,6 +173,8 @@
   "send_request": "Send Request",
 
   "my_vacations": "My Vacations",
-  "send_request": "My Leaves"
+  "my_leaves": "My Leaves",
 
+  "view_attachment": "View Attachments",
+  "download_finished": "Download Finished"
 }

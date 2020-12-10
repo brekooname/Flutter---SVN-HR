@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sven_hr/localization/app_translations.dart';
+import 'package:sven_hr/main.dart';
+import 'package:sven_hr/utilities/app_controller.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
@@ -41,24 +43,27 @@ class _ScreenLoaderState extends State<ScreenLoader> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        resizeToAvoidBottomPadding: false,
-        backgroundColor: AppTheme.white,
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          MenueTopBar(
-            screenName: this.widget.screenName,
-          ),
-          Expanded(
-            child: this.widget.screenWidget,
-          ),
-        ],
-      ),
-      ),
+      child: Directionality(
+        textDirection: MyApp.isEN ? TextDirection.ltr : TextDirection.rtl,
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          resizeToAvoidBottomPadding: false,
+          backgroundColor: AppTheme.white,
+          body: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            MenueTopBar(
+              screenName: this.widget.screenName,
+            ),
+            Expanded(
+              child: this.widget.screenWidget,
+            ),
+          ],
+        ),
+        ),
+        ),
       ),
     );
   }

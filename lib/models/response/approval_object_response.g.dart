@@ -47,10 +47,6 @@ ApprovalObjectResponse _$ApprovalObjectResponseFromJson(
     ..extraWorkDayType = json['extraWorkDayType'] as String
     ..extraWorkReason = json['extraWorkReason'] as String
     ..extraWorkPayrollCycle = json['extraWorkPayrollCycle'] as String
-
-    ..extraWorkPayrollCycleDisplay = json['extraWorkPayrollCycleDisplay'] as String
-    ..extraWorkPayrollCycleId = json['extraWorkPayrollCycleId'] as String
-
     ..extraWorkRequestDate = json['extraWorkRequestDate'] as String
     ..expenseCurrancy = json['expenseCurrancy'] as String
     ..expenseAmount = json['expenseAmount'] as num
@@ -85,7 +81,10 @@ ApprovalObjectResponse _$ApprovalObjectResponseFromJson(
     ..vacationPaidDays = json['vacationPaidDays'] as num
     ..vacationUnPaidDays = json['vacationUnPaidDays'] as num
     ..vacationPreviousBalance = json['vacationPreviousBalance'] as num
-    ..vacationNewBalance = json['vacationNewBalance'] as num;
+    ..vacationNewBalance = json['vacationNewBalance'] as num
+    ..extraWorkPayrollCycleDisplay =
+        json['extraWorkPayrollCycleDisplay'] as String
+    ..extraWorkPayrollCycleId = json['extraWorkPayrollCycleId'] as String;
 }
 
 Map<String, dynamic> _$ApprovalObjectResponseToJson(
@@ -129,10 +128,6 @@ Map<String, dynamic> _$ApprovalObjectResponseToJson(
       'extraWorkDayType': instance.extraWorkDayType,
       'extraWorkReason': instance.extraWorkReason,
       'extraWorkPayrollCycle': instance.extraWorkPayrollCycle,
-
-      'extraWorkPayrollCycleDisplay': instance.extraWorkPayrollCycleDisplay,
-      'extraWorkPayrollCycleId': instance.extraWorkPayrollCycleId,
-
       'extraWorkRequestDate': instance.extraWorkRequestDate,
       'expenseCurrancy': instance.expenseCurrancy,
       'expenseAmount': instance.expenseAmount,
@@ -168,4 +163,6 @@ Map<String, dynamic> _$ApprovalObjectResponseToJson(
       'vacationUnPaidDays': instance.vacationUnPaidDays,
       'vacationPreviousBalance': instance.vacationPreviousBalance,
       'vacationNewBalance': instance.vacationNewBalance,
+      'extraWorkPayrollCycleDisplay': instance.extraWorkPayrollCycleDisplay,
+      'extraWorkPayrollCycleId': instance.extraWorkPayrollCycleId,
     };

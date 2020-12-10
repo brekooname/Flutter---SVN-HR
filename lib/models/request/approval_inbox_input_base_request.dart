@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sven_hr/models/request/approval_inbox_input_request.dart';
 
-import 'base_request.dart';
 
 part 'approval_inbox_input_base_request.g.dart';
 

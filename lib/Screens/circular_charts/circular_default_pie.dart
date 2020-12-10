@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:sven_hr/main.dart';
 import 'package:sven_hr/models/chart_sample_data.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -30,12 +31,20 @@ class CircularDefaultPie extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  SfCircularChart(
-      // title: ChartTitle(text:title ,textStyle: TextStyle(fontSize: 14)),
-      legend: Legend(isVisible:true,
-        textStyle: TextStyle(fontSize: 8)
+    return  Directionality(
+      textDirection: MyApp.isEN ? TextDirection.ltr : TextDirection.rtl,
+      child: SfCircularChart(
+
+        // title: ChartTitle(text:title ,textStyle: TextStyle(fontSize: 14)),
+        legend: Legend(isVisible:true,
+          textStyle: TextStyle(fontSize: 8),
+            alignment: ChartAlignment.center,
+          orientation: LegendItemOrientation.auto,
+          overflowMode: LegendItemOverflowMode.scroll,
+          position: LegendPosition.auto
+        ),
+        series: _getDefaultPieSeries(),
       ),
-      series: _getDefaultPieSeries(),
     );
   }
 }

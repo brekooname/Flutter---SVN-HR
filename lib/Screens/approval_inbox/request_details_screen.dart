@@ -6,8 +6,10 @@ import 'package:sven_hr/Screens/approval_inbox/approval_inbox_controller.dart';
 import 'package:sven_hr/Screens/custom_drawer/menue_top_bar.dart';
 import 'package:sven_hr/Screens/custom_drawer/notification_controller.dart';
 import 'package:sven_hr/components/flutter_toast_message.dart';
+import 'package:sven_hr/components/multi_selectionlist_vew.dart';
 import 'package:sven_hr/components/text_field_container.dart';
 import 'package:sven_hr/localization/app_translations.dart';
+import 'package:sven_hr/models/response/approval_inbox_attachments_response.dart';
 import 'package:sven_hr/models/response/approval_inbox_list_response.dart';
 import 'package:sven_hr/models/response/approval_object_response.dart';
 import 'package:sven_hr/models/response/notification_list_response.dart';
@@ -30,6 +32,7 @@ class RequestDetailsScreen extends StatefulWidget {
 class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
   ApprovalObjectResponse _requestDetails;
   ApprovalInboxController _approvalInboxController;
+  List<ApprovalInboxAttachmentsResponse> attachmentsList;
 
   bool showSpinner = false;
   bool buttonClosedIsPressed = false;
@@ -40,6 +43,7 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
     _requestDetails = ApprovalObjectResponse();
     _approvalInboxController = ApprovalInboxController();
     getApprovalInboxObject();
+    getApprovalInboxAttachments();
     super.initState();
   }
 
@@ -54,22 +58,33 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
     });
   }
 
+  void getApprovalInboxAttachments() async {
+    await _approvalInboxController
+        .getApprovalInboxAttachments(this.widget.approvalInboxItenm.row_id)
+        .then((value) {
+      attachmentsList = _approvalInboxController.attachmentsList;
+      setState(() {
+        print(value);
+      });
+    });
+  }
+
   void sendRequest(String action) async {
     buttonSendIsPressed = true;
-    showSpinner = true;
 
-    if (_requestDetails.approvalInboxType != null &&
+    if (action.compareTo(Const.APPROVAL_INBOX_ACCTION_ACCEPT) == 0 &&
+        _requestDetails.approvalInboxType != null &&
         _requestDetails.approvalInboxType
                 .compareTo(Const.APPROVAL_INBOX_EXPENSE_TYPE) ==
             0 &&
         _requestDetails.expenseApprovedAmount == null) {
-      ToastMessage.showSuccessMsg(AppTranslations.of(context).text(
+      ToastMessage.showWarningMsg(AppTranslations.of(context).text(
           Const.LOCALE_KEY_EXPENSE_APPROVED_AMOUNT +
               " " +
               Const.LOCALE_KEY_REQUIRED));
       return;
     }
-
+    showSpinner = true;
     await _approvalInboxController
         .approvalInboxAction(requestInput: _requestDetails, action: action)
         .then((value) {
@@ -117,7 +132,7 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                               Icons.arrow_back,
                               color: AppTheme.kPrimaryColor,
                             ),
-                            tooltip: 'search',
+                            tooltip: 'back',
                             hoverColor: AppTheme.kPrimaryColor,
                             splashColor: AppTheme.kPrimaryColor,
                             onPressed: () async {
@@ -345,6 +360,35 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                     ),
                                   ],
                                 ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: ListTile(
+                                        title: Text(AppTranslations.of(context)
+                                            .text(Const
+                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
+                                        leading:  IconButton(
+                                          hoverColor: AppTheme.kPrimaryColor,
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return ApprovalInboxAttachmentsListView(
+                                                    attachmentsList: attachmentsList,
+                                                  );
+                                                });
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_red_eye_outlined,
+                                            color: AppTheme.kPrimaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
                               ],
                             ),
                           ),
@@ -462,6 +506,36 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                     ),
                                   ],
                                 ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: ListTile(
+                                        title: Text(AppTranslations.of(context)
+                                            .text(Const
+                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
+                                        leading:  IconButton(
+                                          hoverColor: AppTheme.kPrimaryColor,
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return ApprovalInboxAttachmentsListView(
+                                                    attachmentsList: attachmentsList,
+                                                  );
+                                                });
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_red_eye_outlined,
+                                            color: AppTheme.kPrimaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+
                               ],
                             ),
                           ),
@@ -578,6 +652,35 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                             : "-"),
                                       ),
                                     ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: ListTile(
+                                        title: Text(AppTranslations.of(context)
+                                            .text(Const
+                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
+                                        leading:  IconButton(
+                                          hoverColor: AppTheme.kPrimaryColor,
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return ApprovalInboxAttachmentsListView(
+                                                    attachmentsList: attachmentsList,
+                                                  );
+                                                });
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_red_eye_outlined,
+                                            color: AppTheme.kPrimaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
                                   ],
                                 ),
                               ],
@@ -703,6 +806,35 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                             : "-"),
                                       ),
                                     ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: ListTile(
+                                        title: Text(AppTranslations.of(context)
+                                            .text(Const
+                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
+                                        leading:  IconButton(
+                                          hoverColor: AppTheme.kPrimaryColor,
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return ApprovalInboxAttachmentsListView(
+                                                    attachmentsList: attachmentsList,
+                                                  );
+                                                });
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_red_eye_outlined,
+                                            color: AppTheme.kPrimaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
                                   ],
                                 ),
                               ],
@@ -834,6 +966,35 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                     ),
                                   ],
                                 ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: ListTile(
+                                        title: Text(AppTranslations.of(context)
+                                            .text(Const
+                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
+                                        leading:  IconButton(
+                                          hoverColor: AppTheme.kPrimaryColor,
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return ApprovalInboxAttachmentsListView(
+                                                    attachmentsList: attachmentsList,
+                                                  );
+                                                });
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_red_eye_outlined,
+                                            color: AppTheme.kPrimaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
                               ],
                             ),
                           ),
@@ -891,6 +1052,35 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                             : "-"),
                                       ),
                                     ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: ListTile(
+                                        title: Text(AppTranslations.of(context)
+                                            .text(Const
+                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
+                                        leading:  IconButton(
+                                          hoverColor: AppTheme.kPrimaryColor,
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return ApprovalInboxAttachmentsListView(
+                                                    attachmentsList: attachmentsList,
+                                                  );
+                                                });
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_red_eye_outlined,
+                                            color: AppTheme.kPrimaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
                                   ],
                                 ),
                               ],
@@ -987,6 +1177,35 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                     ),
                                   ],
                                 ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: ListTile(
+                                        title: Text(AppTranslations.of(context)
+                                            .text(Const
+                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
+                                        leading:  IconButton(
+                                          hoverColor: AppTheme.kPrimaryColor,
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return ApprovalInboxAttachmentsListView(
+                                                    attachmentsList: attachmentsList,
+                                                  );
+                                                });
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_red_eye_outlined,
+                                            color: AppTheme.kPrimaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
                               ],
                             ),
                           ),
@@ -1063,6 +1282,35 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                             : "-"),
                                       ),
                                     ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: ListTile(
+                                        title: Text(AppTranslations.of(context)
+                                            .text(Const
+                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
+                                        leading:  IconButton(
+                                          hoverColor: AppTheme.kPrimaryColor,
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return ApprovalInboxAttachmentsListView(
+                                                    attachmentsList: attachmentsList,
+                                                  );
+                                                });
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_red_eye_outlined,
+                                            color: AppTheme.kPrimaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
                                   ],
                                 ),
                               ],
@@ -1189,6 +1437,35 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
                                             : "-"),
                                       ),
                                     ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: ListTile(
+                                        title: Text(AppTranslations.of(context)
+                                            .text(Const
+                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
+                                        leading:  IconButton(
+                                          hoverColor: AppTheme.kPrimaryColor,
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return ApprovalInboxAttachmentsListView(
+                                                    attachmentsList: attachmentsList,
+                                                  );
+                                                });
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_red_eye_outlined,
+                                            color: AppTheme.kPrimaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
                                   ],
                                 ),
                               ],

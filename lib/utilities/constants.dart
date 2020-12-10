@@ -278,4 +278,8 @@ class Const {
   static final LOCALE_KEY_MY_VACTIONS="my_vacations";
   static final LOCALE_KEY_MY_LEAVES="my_leaves";
 
+  static final LOCALE_KEY_VIEW_ATTACHMENT="view_attachment";
+
+  static final LOCALE_KEY_DOWNLOAD_FINISHED="download_finished";
+
 }
