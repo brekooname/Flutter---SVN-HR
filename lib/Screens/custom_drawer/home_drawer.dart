@@ -7,6 +7,8 @@ import 'package:sven_hr/Screens/Login/login_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
 import 'package:sven_hr/Screens/app_settings/app_settings_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
+import 'package:sven_hr/Screens/attendance_summary/attendance_summary_screen.dart';
+import 'package:sven_hr/Screens/expense/expense_transaction_screen.dart';
 import 'package:sven_hr/Screens/profile/change_password_screen.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_controller.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
@@ -116,6 +118,22 @@ class _HomeDrawerState extends State<HomeDrawer> {
             labelName:
                 AppTranslations.of(context).text(Const.LOCALE_KEY_APP_SETTING),
             icon: Icon(Icons.settings),
+          );
+          drawerList.add(item);
+        }else if (screen.screenName.compareTo(AttendanceSummaryScreen.id) == 0) {
+          DrawerList item = DrawerList(
+            index: DrawerIndex.ATTENDANCE_SUMMARY,
+            labelName:
+            AppTranslations.of(context).text(Const.LOCALE_KEY_ATTENDANCE_SUMMARY),
+            icon: Icon(Icons.lock_clock),
+          );
+          drawerList.add(item);
+        }else if (screen.screenName.compareTo(ExpenseTransactionScreen.id) == 0) {
+          DrawerList item = DrawerList(
+            index: DrawerIndex.EXPENSE,
+            labelName:
+            AppTranslations.of(context).text(Const.LOCALE_KEY_MY_EXPENSE),
+            icon: Icon(Icons.monetization_on_outlined),
           );
           drawerList.add(item);
         }
@@ -404,25 +422,25 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 4),
-                    child: RichText(
-                      text: TextSpan(children: [
-                        WidgetSpan(
-                          child: Icon(Icons.lock_open, size: 14,color: AppTheme.red,),
-                        ),
-                        TextSpan(
-                            text: AppTranslations.of(context)
-                                    .text(Const.LOCALE_KEY_CHANGE_PASSWORD),
-                            style: TextStyle(color: AppTheme.kPrimaryColor),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                await _changePasswordDialog(context);
-                              }),
-
-                      ]),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 8, left: 4),
+                  //   child: RichText(
+                  //     text: TextSpan(children: [
+                  //       WidgetSpan(
+                  //         child: Icon(Icons.lock_open, size: 14,color: AppTheme.red,),
+                  //       ),
+                  //       TextSpan(
+                  //           text: AppTranslations.of(context)
+                  //                   .text(Const.LOCALE_KEY_CHANGE_PASSWORD),
+                  //           style: TextStyle(color: AppTheme.kPrimaryColor),
+                  //           recognizer: TapGestureRecognizer()
+                  //             ..onTap = () async {
+                  //               await _changePasswordDialog(context);
+                  //             }),
+                  //
+                  //     ]),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -444,38 +462,38 @@ class _HomeDrawerState extends State<HomeDrawer> {
               },
             ),
           ),
-          Divider(
-            height: 1,
-            color: AppTheme.nearlyBlue.withOpacity(0.6),
-          ),
-          Column(
-            children: <Widget>[
-              ListTile(
-                title: Text(
-                  AppTranslations.of(context).text(Const.LOCALE_KEY_LOGOUT),
-                  style: TextStyle(
-                    fontFamily: AppTheme.fontName,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: AppTheme.darkText,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-                trailing: Icon(
-                  Icons.power_settings_new,
-                  color: AppTheme.kPrimaryColor,
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, LoginScreen.id);
-                  prefs.clear();
-                },
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).padding.bottom,
-              )
-            ],
-          ),
+          // Divider(
+          //   height: 1,
+          //   color: AppTheme.nearlyBlue.withOpacity(0.6),
+          // ),
+          // Column(
+          //   children: <Widget>[
+          //     ListTile(
+          //       title: Text(
+          //         AppTranslations.of(context).text(Const.LOCALE_KEY_LOGOUT),
+          //         style: TextStyle(
+          //           fontFamily: AppTheme.fontName,
+          //           fontWeight: FontWeight.w600,
+          //           fontSize: 16,
+          //           color: AppTheme.darkText,
+          //         ),
+          //         textAlign: TextAlign.left,
+          //       ),
+          //       trailing: Icon(
+          //         Icons.power_settings_new,
+          //         color: AppTheme.kPrimaryColor,
+          //       ),
+          //       onTap: () {
+          //         Navigator.pop(context);
+          //         Navigator.pushNamed(context, LoginScreen.id);
+          //         prefs.clear();
+          //       },
+          //     ),
+          //     SizedBox(
+          //       height: MediaQuery.of(context).padding.bottom,
+          //     )
+          //   ],
+          // ),
         ],
       ),
     );
@@ -596,12 +614,13 @@ enum DrawerIndex {
   TIME_SHEET,
   SALARY_INC_REQUEST,
   EXTRA_WORK_REQUEST,
-  EXPENSE_REQUEST,
+  EXPENSE,
   BENEFIT_REQUEST,
   LOAN_REQUEST,
   CLOCK_RECORD,
   APPROVAL_INBOX,
-  APP_SETTINGS
+  APP_SETTINGS,
+  ATTENDANCE_SUMMARY
 }
 
 class DrawerList {

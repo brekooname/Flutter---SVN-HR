@@ -74,4 +74,8 @@ class ApiConnections{
 
   static const String  DOWN_LOAD_FILE="/downloadFile";
 
+  static const String  GET_EXPENSE_TRANSACTION="/getExpenseRequestTransaction";
+
+  static const String  GET_ATTENDANCE_SUMMARY="/getMyAttendSummaryV2";
+
 }

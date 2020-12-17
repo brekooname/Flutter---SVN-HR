@@ -388,13 +388,6 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
   }
 }
 
-class ListItem {
-  int value;
-  String name;
-
-  ListItem(this.value, this.name);
-}
-
 
 class LeavesView extends StatelessWidget {
   const LeavesView(

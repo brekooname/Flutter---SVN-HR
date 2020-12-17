@@ -88,7 +88,7 @@
   "expenseAmount": "Expense Amount",
   "expenseDate": "Expense Date",
   "expenseRequestDate": "Expense Request Date",
-  "expenseApprovedAmount": "Expense Approved Amount",
+  "expenseApprovedAmount": "Approved Amount",
 
   "documentApprovedDate": "Document Approved Date",
   "documentType": "Document Type",
@@ -178,5 +178,17 @@
 
   "view_attachment": "View Attachments",
 
-  "download_finished": "Download Finished"
+  "download_finished": "Download Finished",
+
+  "language": "Language",
+
+  "attendance_summary": "Attendance Summary",
+
+
+  "source": "Source",
+  "my_expense": "My Expense",
+
+  "expenseApproveDate": "Approve Date",
+  "expense_details": "Expense Details"
+
 }

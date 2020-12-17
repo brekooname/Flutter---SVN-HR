@@ -11,9 +11,11 @@ import 'package:sven_hr/Screens/Vacations/vacation_request_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/request_details_screen.dart';
+import 'package:sven_hr/Screens/attendance_summary/attendance_summary_screen.dart';
 import 'package:sven_hr/Screens/clock_record/clock_record_screen.dart';
 import 'package:sven_hr/Screens/custom_drawer/home_drawer.dart';
 import 'package:sven_hr/Screens/expense/expense_request_screen.dart';
+import 'package:sven_hr/Screens/expense/expense_transaction_screen.dart';
 import 'package:sven_hr/Screens/extra_work/extra_work_screen.dart';
 import 'package:sven_hr/Screens/navigation_home_screen.dart';
 import 'package:sven_hr/Screens/Login/login_screen.dart';
@@ -133,6 +135,9 @@ class _MyAppState extends State<MyApp> {
         ChangePasswordScreen.id: (context) => ChangePasswordScreen(),
         ExpenseRequestScreen.id: (context) => ExpenseRequestScreen(),
         ExtraWorkScreen.id: (context) => ExtraWorkScreen(),
+        AttendanceSummaryScreen.id: (context) => AttendanceSummaryScreen(),
+        ExpenseTransactionScreen.id: (context) => ExpenseTransactionScreen()
+
       },
       localizationsDelegates: [
         newLocaleDelegate,

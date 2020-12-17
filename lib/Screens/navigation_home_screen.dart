@@ -2,6 +2,8 @@ import 'package:sven_hr/Screens/Leaves/leaves_transaction_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
 import 'package:sven_hr/Screens/app_settings/app_settings_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
+import 'package:sven_hr/Screens/attendance_summary/attendance_summary_screen.dart';
+import 'package:sven_hr/Screens/expense/expense_transaction_screen.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
 import 'package:sven_hr/Screens/time_sheet/time_sheet_screen.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
@@ -19,17 +21,17 @@ class NavigationHomeScreen extends StatefulWidget {
   NavigationHomeScreen({this.screenView, this.drawerIndex});
 
   @override
-  _NavigationHomeScreenState createState() => _NavigationHomeScreenState(screenView,drawerIndex);
+  _NavigationHomeScreenState createState() =>
+      _NavigationHomeScreenState(screenView, drawerIndex);
 }
 
 class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
   Widget screenView;
   DrawerIndex drawerIndex;
 
-
-  _NavigationHomeScreenState(this.screenView, this.drawerIndex){
-    this.drawerIndex=drawerIndex;
-    this.screenView=screenView;
+  _NavigationHomeScreenState(this.screenView, this.drawerIndex) {
+    this.drawerIndex = drawerIndex;
+    this.screenView = screenView;
   }
 
   @override
@@ -49,13 +51,13 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
         child: Scaffold(
           backgroundColor: AppTheme.nearlyWhite,
           body: DrawerUserController(
-            screenIndex:  drawerIndex,
+            screenIndex: drawerIndex,
             drawerWidth: MediaQuery.of(context).size.width * 0.75,
             onDrawerCall: (DrawerIndex drawerIndexdata) {
               changeIndex(drawerIndexdata);
               //callback from drawer for replace screen as user need with passing DrawerIndex(Enum index)
             },
-            screenView:  screenView,
+            screenView: screenView,
             //we replace screen view as we need on navigate starting screens like MyHomePage, HelpScreen, FeedbackScreen, etc...
           ),
         ),
@@ -82,18 +84,25 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
         setState(() {
           screenView = ProfilePage();
         });
-      }else if (drawerIndex == DrawerIndex.APPROVAL_INBOX) {
+      } else if (drawerIndex == DrawerIndex.APPROVAL_INBOX) {
         setState(() {
           screenView = ApprovalInboxTransactionScreen();
         });
-      }
-      else if (drawerIndex == DrawerIndex.TIME_SHEET) {
+      } else if (drawerIndex == DrawerIndex.TIME_SHEET) {
         setState(() {
           screenView = TimeSheetScreen();
         });
       } else if (drawerIndex == DrawerIndex.APP_SETTINGS) {
         setState(() {
           screenView = AppSettingsScreen();
+        });
+      } else if (drawerIndex == DrawerIndex.ATTENDANCE_SUMMARY) {
+        setState(() {
+          screenView = AttendanceSummaryScreen();
+        });
+      } else if (drawerIndex == DrawerIndex.EXPENSE) {
+        setState(() {
+          screenView = ExpenseTransactionScreen();
         });
       }else {
         //do in your way......

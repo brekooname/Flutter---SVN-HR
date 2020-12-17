@@ -282,4 +282,15 @@ class Const {
 
   static final LOCALE_KEY_DOWNLOAD_FINISHED="download_finished";
 
+  static final LOCALE_KEY_LANGUAGE="language";
+
+  static final LOCALE_KEY_ATTENDANCE_SUMMARY="attendance_summary";
+
+
+  static final LOCALE_KEY_SOURCE="source";
+
+  static final LOCALE_KEY_MY_EXPENSE="my_expense";
+  static final LOCALE_KEY_EXPENSE_APPROVE_DATE="expenseApproveDate";
+  static final LOCALE_KEY_EXPENSE_DETAILS="expense_details";
+
 }

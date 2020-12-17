@@ -7,6 +7,7 @@ import 'package:sven_hr/dao/lov_value.dart';
 import 'package:sven_hr/dao/vacation_type.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/models/response/approval_inbox_attachments_response.dart';
+import 'package:sven_hr/models/response/approval_list.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
@@ -336,4 +337,7 @@ class _ApprovalInboxAttachmentsListViewState
       ),
     );
   }
+
+
+
 }
