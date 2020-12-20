@@ -82,7 +82,7 @@
   "extraWorkDayType": "Extra Work Day Type",
   "extraWorkReason": "Extra Work Reason",
   "extraWorkPayrollCycle": "Extra Work Payroll Cycle",
-  "extraWorkRequestDate": "Extra Work Reques tDate",
+  "extraWorkRequestDate": "Request Date",
 
   "expenseCurrancy": "Expense Currency",
   "expenseAmount": "Expense Amount",
@@ -190,6 +190,7 @@
 
   "expenseApproveDate": "Approve Date",
   "expense_details": "Expense Details",
-  "transaction_status": "Transaction Status"
-
+  "transaction_status": "Transaction Status",
+  "my_extra_work": "My Extra Work",
+  "extra_work_details": "Extra Work Details"
 }

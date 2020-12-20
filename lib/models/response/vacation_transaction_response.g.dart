@@ -51,7 +51,10 @@ VacationTransactionResponse _$VacationTransactionResponseFromJson(
     ..start_date = json['start_date'] as String
     ..vacation_location_code = json['vacation_location_code'] as String
     ..vacation_location_displayValue =
-        json['vacation_location_displayValue'] as String;
+        json['vacation_location_displayValue'] as String
+    ..approvalList = (json['approvalList'] as List)
+        .map((e) => ApprovalList.fromJson(e as Map<String, dynamic>))
+        .toList();
 }
 
 Map<String, dynamic> _$VacationTransactionResponseToJson(
@@ -98,4 +101,5 @@ Map<String, dynamic> _$VacationTransactionResponseToJson(
       'start_date': instance.start_date,
       'vacation_location_code': instance.vacation_location_code,
       'vacation_location_displayValue': instance.vacation_location_displayValue,
+      'approvalList': instance.approvalList.map((e) => e.toJson()).toList(),
     };

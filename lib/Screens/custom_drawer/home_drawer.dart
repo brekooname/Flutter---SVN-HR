@@ -9,6 +9,7 @@ import 'package:sven_hr/Screens/app_settings/app_settings_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
 import 'package:sven_hr/Screens/attendance_summary/attendance_summary_screen.dart';
 import 'package:sven_hr/Screens/expense/expense_transaction_screen.dart';
+import 'package:sven_hr/Screens/extra_work/extra_work_transaction_screen.dart';
 import 'package:sven_hr/Screens/profile/change_password_screen.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_controller.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
@@ -136,6 +137,14 @@ class _HomeDrawerState extends State<HomeDrawer> {
             icon: Icon(Icons.monetization_on_outlined),
           );
           drawerList.add(item);
+        }else if (screen.screenName.compareTo(ExtraWorkTransactionScreen.id) == 0) {
+          DrawerList item = DrawerList(
+            index: DrawerIndex.EXTRA_WORK,
+            labelName:
+            AppTranslations.of(context).text(Const.LOCALE_KEY_MY_EXTRA_WORK),
+            icon: Icon(Icons.text_rotation_angledown),
+          );
+          drawerList.add(item);
         }
       }
     }
@@ -149,42 +158,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
         icon: Icon(Icons.home),
       ),
 
-      // DrawerList(
-      //   index: DrawerIndex.SALARY_INC_REQUEST,
-      //   labelName: AppTranslations.of(context)
-      //       .text(Const.LOCALE_KEY_SALARY_INCREMENT_REQUEST),
-      //   icon: Icon(Icons.monetization_on),
-      // ),
-      // DrawerList(
-      //   index: DrawerIndex.EXTRA_WORK_REQUEST,
-      //   labelName: AppTranslations.of(context)
-      //       .text(Const.LOCALE_KEY_EXTRA_WORK_REQUEST),
-      //   icon: Icon(Icons.text_rotation_angledown),
-      // ),
-      // DrawerList(
-      //   index: DrawerIndex.EXPENSE_REQUEST,
-      //   labelName: AppTranslations.of(context)
-      //       .text(Const.LOCALE_KEY_EXPENSE_REQUEST),
-      //   icon: Icon(Icons.explicit),
-      // ),
-      // DrawerList(
-      //   index: DrawerIndex.BENEFIT_REQUEST,
-      //   labelName: AppTranslations.of(context)
-      //       .text(Const.LOCALE_KEY_BENEFIT_REQUEST),
-      //   icon: Icon(Icons.fiber_smart_record),
-      // ),
-      // DrawerList(
-      //   index: DrawerIndex.LOAN_REQUEST,
-      //   labelName: AppTranslations.of(context)
-      //       .text(Const.LOCALE_KEY_LOAN_REQUEST),
-      //   icon: Icon(Icons.local_activity),
-      // ),
-      // DrawerList(
-      //   index: DrawerIndex.CLOCK_RECORD,
-      //   labelName: AppTranslations.of(context)
-      //       .text(Const.LOCALE_KEY_CLOCK_RECORD),
-      //   icon: Icon(Icons.alarm),
-      // ),
     ];
     getProfileScreens();
   }
@@ -613,7 +586,7 @@ enum DrawerIndex {
   VACATION,
   TIME_SHEET,
   SALARY_INC_REQUEST,
-  EXTRA_WORK_REQUEST,
+  EXTRA_WORK,
   EXPENSE,
   BENEFIT_REQUEST,
   LOAN_REQUEST,

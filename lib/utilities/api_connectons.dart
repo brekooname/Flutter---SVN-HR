@@ -78,4 +78,6 @@ class ApiConnections{
 
   static const String  GET_ATTENDANCE_SUMMARY="/getMyAttendSummaryV2";
 
+  static const String  GET_EXTRA_WORK_TRANSACTION="/getExtraWorkTransaction";
+
 }

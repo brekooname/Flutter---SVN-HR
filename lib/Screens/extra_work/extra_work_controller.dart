@@ -1,13 +1,22 @@
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sven_hr/components/flutter_toast_message.dart';
 import 'package:sven_hr/dao/lov_value.dart';
+import 'package:sven_hr/models/request/expense_transaction_request.dart';
 import 'package:sven_hr/models/request/extra_work_base_request.dart';
 import 'package:sven_hr/models/request/extra_work_request.dart';
+import 'package:sven_hr/models/response/extra_work_transaction_base_response.dart';
+import 'package:sven_hr/models/response/extra_work_transaction_response.dart';
 import 'package:sven_hr/services/multi_part_file_upload.dart';
 import 'package:sven_hr/services/networking.dart';
 import 'package:sven_hr/utilities/api_connectons.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
 class ExtraWorkController {
+  DateFormat format = DateFormat(Const.DATE_FORMAT);
+
+  List<ExtraWorkTransactionResponse> _extraWorkList;
+
   Future<List<LovValue>> loadDayType() async {
     LovValue lov = LovValue();
     try {
@@ -102,5 +111,53 @@ class ExtraWorkController {
       print(userData[Const.SYSTEM_MSG_CODE]);
       return userData[Const.SYSTEM_MSG_CODE];
     }
+  }
+
+  Future<String> getDefualtSearch() async {
+    DateTime now = new DateTime.now();
+    String toDate = format.format(now);
+    DateTime lastMonthDate = new DateTime(now.year, now.month, now.day - 1);
+    String fromDate = format.format(lastMonthDate);
+
+    String response = await getExtraWorkTransaction(fromDate, toDate);
+    return response;
+  }
+
+  Future<String> getExtraWorkTransaction(
+    String fromDate,
+    String toDate,
+  ) async {
+    extraWorkList = List();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
+
+    ExpenseTransactionRequest request = ExpenseTransactionRequest(
+        tokenId: tokenId, fromDate: fromDate, toDate: toDate);
+    if (request != null) {
+      var url = ApiConnections.url + ApiConnections.GET_EXTRA_WORK_TRANSACTION;
+      NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
+      var userData = await helper.getData();
+      if (userData != null &&
+          userData[Const.SYSTEM_MSG_CODE] != null &&
+          userData[Const.SYSTEM_MSG_CODE].compareTo(Const.SYSTEM_SUCCESS_MSG) ==
+              0) {
+        ExtraWorkTransactionBaseResponse baseResponse =
+            ExtraWorkTransactionBaseResponse.fromJson(userData);
+
+        if (baseResponse.extraWorkList != null) {
+          extraWorkList = baseResponse.extraWorkList;
+        }
+        return Const.SYSTEM_SUCCESS_MSG;
+      } else {
+        ToastMessage.showErrorMsg(userData[Const.SYSTEM_MSG_CODE]);
+      }
+    }
+  }
+
+  List<ExtraWorkTransactionResponse> get extraWorkList => _extraWorkList;
+
+  set extraWorkList(List<ExtraWorkTransactionResponse> value) {
+    _extraWorkList = value;
   }
 }

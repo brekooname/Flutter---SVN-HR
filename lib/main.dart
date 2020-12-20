@@ -18,6 +18,7 @@ import 'package:sven_hr/Screens/custom_drawer/home_drawer.dart';
 import 'package:sven_hr/Screens/expense/expense_request_screen.dart';
 import 'package:sven_hr/Screens/expense/expense_transaction_screen.dart';
 import 'package:sven_hr/Screens/extra_work/extra_work_screen.dart';
+import 'package:sven_hr/Screens/extra_work/extra_work_transaction_screen.dart';
 import 'package:sven_hr/Screens/navigation_home_screen.dart';
 import 'package:sven_hr/Screens/Login/login_screen.dart';
 import 'package:sven_hr/Screens/profile/change_password_screen.dart';
@@ -152,7 +153,9 @@ class _MyAppState extends State<MyApp> {
         ExpenseRequestScreen.id: (context) => ExpenseRequestScreen(),
         ExtraWorkScreen.id: (context) => ExtraWorkScreen(),
         AttendanceSummaryScreen.id: (context) => AttendanceSummaryScreen(),
-        ExpenseTransactionScreen.id: (context) => ExpenseTransactionScreen()
+        ExpenseTransactionScreen.id: (context) => ExpenseTransactionScreen(),
+        ExtraWorkTransactionScreen.id: (context) => ExtraWorkTransactionScreen()
+
       },
       localizationsDelegates: [
         newLocaleDelegate,

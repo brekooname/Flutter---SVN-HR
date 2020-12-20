@@ -4,6 +4,7 @@ import 'package:sven_hr/Screens/app_settings/app_settings_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
 import 'package:sven_hr/Screens/attendance_summary/attendance_summary_screen.dart';
 import 'package:sven_hr/Screens/expense/expense_transaction_screen.dart';
+import 'package:sven_hr/Screens/extra_work/extra_work_transaction_screen.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
 import 'package:sven_hr/Screens/time_sheet/time_sheet_screen.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
@@ -103,6 +104,10 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       } else if (drawerIndex == DrawerIndex.EXPENSE) {
         setState(() {
           screenView = ExpenseTransactionScreen();
+        });
+      }else if (drawerIndex == DrawerIndex.EXTRA_WORK) {
+        setState(() {
+          screenView = ExtraWorkTransactionScreen();
         });
       }else {
         //do in your way......

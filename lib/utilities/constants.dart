@@ -44,6 +44,9 @@ class Const {
   static final String RECORD_TYPE_OUT = "1474187403434";
 
 
+  static final String EXT_WRK_TRNS_STAT_PENDING = "1476108304613";
+
+
   static final String DAY_TYPE = "1473061128097";
   static final String EMPLOYEE_EXTRA_WORK_UNIT = "1476106827305";
   static final String CURRENCY = "1465809340094";
@@ -296,5 +299,10 @@ class Const {
   static final LOCALE_KEY_EXPENSE_DETAILS="expense_details";
 
   static final LOCALE_KEY_TRANSACTION_STATUS="transaction_status";
+
+  static final LOCALE_KEY_MY_EXTRA_WORK="my_extra_work";
+  static final LOCALE_KEY_EXTRA_WORK_DETAILS="extra_work_details";
+
+
 
 }
