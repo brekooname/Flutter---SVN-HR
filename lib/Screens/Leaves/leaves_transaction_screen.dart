@@ -13,6 +13,8 @@ import 'package:sven_hr/dao/lov_value.dart';
 import 'package:sven_hr/dao/vacation_type.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/main.dart';
+import 'package:sven_hr/models/response/leave_transaction_response.dart';
+import 'package:sven_hr/utilities/app_controller.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
@@ -291,51 +293,7 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
                       ),
                     ],
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     IconButton(
-                  //       icon: Icon(
-                  //         Icons.search,
-                  //         color: AppTheme.kPrimaryColor,
-                  //       ),
-                  //       tooltip: 'search',
-                  //       hoverColor: AppTheme.kPrimaryColor,
-                  //       splashColor: AppTheme.kPrimaryColor,
-                  //       onPressed: () async {
-                  //
-                  //         setState(() {
-                  //           showSpinner = true;
-                  //         });
-                  //         await _vacationTransactionController
-                  //           .advancedSearch(
-                  //                   fromDate, toDate, statusList, typeList)
-                  //               .then((value) {
-                  //             setState(() {
-                  //               print(value);
-                  //             });
-                  //           });
-                  //         setState(() {
-                  //           showSpinner = false;
-                  //         });
-                  //       },
-                  //     ),
-                  //     IconButton(
-                  //       icon: Icon(
-                  //         Icons.autorenew,
-                  //         color: AppTheme.kPrimaryColor,
-                  //       ),
-                  //       tooltip: 'Reset',
-                  //       hoverColor: AppTheme.kPrimaryColor,
-                  //       splashColor: AppTheme.kPrimaryColor,
-                  //       onPressed: () {
-                  //         setState(() {
-                  //           reset();
-                  //         });
-                  //       },
-                  //     ),
-                  //   ],
-                  // ),
+
                 ],
               ),
             ),
@@ -399,9 +357,188 @@ class LeavesView extends StatelessWidget {
       : super(key: key);
 
   final VoidCallback callback;
-  final LeaveListItem leaveListItem;
+  final LeaveTransactionResponse leaveListItem;
   final AnimationController animationController;
   final Animation<dynamic> animation;
+
+
+  Future _asyncConfirmDialog(BuildContext context) async {
+    Size size = MediaQuery.of(context).size;
+    return await showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            actions: <Widget>[
+              FlatButton(
+                  child: Text(
+                    AppTranslations.of(context)
+                        .text(Const.LOCALE_KEY_EMPLOYMENT_CLOSE),
+                    style: TextStyle(color: AppTheme.kPrimaryColor),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  })
+            ],
+            content: Container(
+              color: AppTheme.white,
+              height: size.height / 2,
+              width: size.width / 2,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppTranslations.of(context)
+                              .text(Const.LOCALE_KEY_LEAVES),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 22,
+                            letterSpacing: 0.27,
+                            color: AppTheme.kPrimaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            title: Text(AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_TRANSACTION_STATUS)),
+                            subtitle: Text(leaveListItem.trans_status != null
+                                ? leaveListItem.trans_status_displayValue.toString()
+                                : "-"),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            title: Text(AppTranslations.of(context).text(
+                                Const.LOCALE_KEY_STATUS)),
+                            subtitle: Text(
+                                leaveListItem.request_status != null
+                                    ? leaveListItem.request_status_displayValue
+                                    : "-"),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            title: Text(AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_TYPE)),
+                            subtitle: Text(
+                                leaveListItem.leave_id != null
+                                    ? leaveListItem.leave_displayValue
+                                    : "-"),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            title: Text(AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_FROM)),
+                            subtitle: Column(
+                              children: [
+                                Text(leaveListItem.start_date != null
+                                    ? leaveListItem.start_date
+                                    : "-" ),
+                                SizedBox(height: 3,),
+                                Text(leaveListItem.start_time!=null ? ApplicationController.formatToHours(leaveListItem.start_time):"-")
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            title: Text(AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_TO)),
+                            subtitle: Column(
+                              children: [
+                                Text(leaveListItem.end_date != null
+                                    ? leaveListItem.end_date
+                                    : "-"),
+                                SizedBox(height: 3,),
+                                Text(leaveListItem.end_time!=null ? ApplicationController.formatToHours(leaveListItem.end_time):"-")
+
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            title: Text(AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_NOTES)),
+                            subtitle: Text(leaveListItem.remark != null
+                                ? leaveListItem.remark.toString()
+                                : "-"),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(AppTranslations.of(context)
+                              .text(Const.LOCALE_KEY_APPROVAL_INBOX) +
+                              ": "),
+                        ),
+                      ],
+                    ),
+                    if(leaveListItem.approvalList!=null)
+                      Row(
+                        children: [
+                          Expanded(
+                              child: SizedBox(
+                                height: 100,
+                                child: ListView.builder(
+                                  itemBuilder: (ctx, index) {
+                                    return Text(
+                                      leaveListItem
+                                          .approvalList[index].employeeName !=
+                                          null
+                                          ? leaveListItem
+                                          .approvalList[index].employeeName
+                                          : "-",
+                                      style: TextStyle(
+                                        color: AppTheme.kPrimaryColor,
+                                      ),
+                                    );
+                                  },
+                                  itemCount: leaveListItem.approvalList.length,
+                                ),
+                              ))
+                        ],
+                      )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -424,7 +561,7 @@ class LeavesView extends StatelessWidget {
                   color: AppTheme.kPrimaryLightColor.withOpacity(0.4),
                 ),
                 width: double.infinity,
-                height: 160,
+                height: 100,
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Row(
@@ -454,34 +591,6 @@ class LeavesView extends StatelessWidget {
                           Row(
                             children: <Widget>[
                               Icon(
-                                Icons.adjust,
-                                color: leaveListItem.getRightColor(),
-                                size: 20,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_TYPE),
-                                  style: TextStyle(
-                                      color: leaveListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                              Text(
-                                  leaveListItem.type.display != null
-                                      ? leaveListItem.type.display
-                                      : '',
-                                  style: TextStyle(
-                                      color: leaveListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 6,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Icon(
                                 Icons.swap_horizontal_circle,
                                 color: leaveListItem.getRightColor(),
                                 size: 20,
@@ -494,7 +603,7 @@ class LeavesView extends StatelessWidget {
                                       color: leaveListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
-                              Text(leaveListItem.status.display,
+                              Text(leaveListItem.request_status,
                                   style: TextStyle(
                                       color: leaveListItem.getRightColor(),
                                       fontSize: 13,
@@ -514,57 +623,41 @@ class LeavesView extends StatelessWidget {
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_FROM),
+                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_REQUEST_DATE),
                                   style: TextStyle(
                                       color: leaveListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
-                              Text( leaveListItem.fromDate !=null? leaveListItem.fromDate : '-',
-                                  style: TextStyle(
-                                      color: leaveListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                              SizedBox(width: 4,),
-                              Text(leaveListItem.fromTime !=null ? leaveListItem.fromTime : '-'
-                                  ,
+                              Text( leaveListItem.request_date !=null? leaveListItem.request_date : '-',
                                   style: TextStyle(
                                       color: leaveListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                             ],
+                          ),
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                    icon: Icon(
+                                      Icons.more_horiz,
+                                      color: leaveListItem.getRightColor(),
+                                      size: 25,
+                                    ),
+                                    tooltip: 'details',
+                                    hoverColor: leaveListItem.getRightColor(),
+                                    splashColor:
+                                    leaveListItem.getRightColor(),
+                                    onPressed: () {
+                                      _asyncConfirmDialog(context);
+                                    }),
+                              ],
+                            ),
                           ),
                           SizedBox(
-                            height: 6,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.calendar_today,
-                                color: leaveListItem.getRightColor(),
-                                size: 20,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_TO),
-                                  style: TextStyle(
-                                      color: leaveListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                              Text(leaveListItem.toDate !=null ? leaveListItem.toDate : '-'
-                                 ,
-                                  style: TextStyle(
-                                      color: leaveListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                              SizedBox(width: 4,),
-                              Text(leaveListItem.toTime !=null ? leaveListItem.toTime : '-'
-                                  ,
-                                  style: TextStyle(
-                                      color: leaveListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                            ],
+                            width: 5,
                           ),
                         ],
                       ),

@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sven_hr/Screens/Home/home_screen.dart';
 import 'package:sven_hr/Screens/Leaves/leave_request_screen.dart';
 import 'package:sven_hr/Screens/Leaves/leaves_transaction_screen.dart';
+import 'package:sven_hr/Screens/Login/login_controller.dart';
 import 'package:sven_hr/Screens/Vacations/picker_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_request_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
@@ -24,30 +25,41 @@ import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
 import 'package:sven_hr/Screens/time_sheet/time_sheet_screen.dart';
 import 'package:sven_hr/localization/app_translations_delegate.dart';
 import 'package:sven_hr/models/request/extra_work_request.dart';
+import 'package:sven_hr/models/request/user.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
 import 'Screens/app_settings/app_settings_screen.dart';
+import 'components/flutter_toast_message.dart';
 import 'localization/application.dart';
 
 var initialRoute;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  // //check if user login or not
-  // String prefTokenId = prefs.get(Const.SHARED_KEY_TOKEN_ID);
-  // if (prefTokenId != null && !prefTokenId.isEmpty) {
-  //   initialRoute = NavigationHomeScreen.id;
-  // } else {
-  //   initialRoute = LoginScreen.id;
-  // }
-
   initialRoute = LoginScreen.id;
-  await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown
-  ]).then((_) => runApp(MyApp()));
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //check if user login or not
+  String prefTokenId = prefs.get(Const.SHARED_KEY_TOKEN_ID);
+  if (prefTokenId != null && !prefTokenId.isEmpty) {
+    var username = prefs.getString(Const.SHARED_KEY_USERNAME) ?? "";
+    var password = prefs.getString(Const.SHARED_KEY_PASSWORD) ?? "";
+
+    LoginController loginController = LoginController();
+    await loginController.loginVerifications(username, password).then((value) {
+      if (value != null) {
+        if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
+          initialRoute = NavigationHomeScreen.id;
+
+          // ToastMessage.showSuccessMsg(value.message);
+        } else {
+          ToastMessage.showErrorMsg(value.message);
+        }
+      }
+    });
+  }
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -100,15 +112,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness:
-          Platform.isAndroid ? Brightness.dark : Brightness.light,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarDividerColor: Colors.grey,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //   statusBarColor: Colors.transparent,
+    //   statusBarIconBrightness: Brightness.dark,
+    //   statusBarBrightness:
+    //       Platform.isAndroid ? Brightness.dark : Brightness.light,
+    //   systemNavigationBarColor: Colors.white,
+    //   systemNavigationBarDividerColor: Colors.grey,
+    //   systemNavigationBarIconBrightness: Brightness.dark,
+    // ));
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -121,14 +133,18 @@ class _MyAppState extends State<MyApp> {
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
         MyHomePage.id: (context) => MyHomePage(),
-        NavigationHomeScreen.id: (context) => NavigationHomeScreen(drawerIndex: DrawerIndex.HOME,screenView: MyHomePage(),),
+        NavigationHomeScreen.id: (context) => NavigationHomeScreen(
+              drawerIndex: DrawerIndex.HOME,
+              screenView: MyHomePage(),
+            ),
         ProfilePage.id: (context) => ProfilePage(),
         VacationsTransaction.id: (context) => VacationsTransaction(),
         PickerScreen.id: (context) => PickerScreen(),
         LeavesTransaction.id: (context) => LeavesTransaction(),
         VacationRequestScreen.id: (context) => VacationRequestScreen(),
         LeaveRequestScreen.id: (context) => LeaveRequestScreen(),
-        ApprovalInboxTransactionScreen.id: (context) => ApprovalInboxTransactionScreen(),
+        ApprovalInboxTransactionScreen.id: (context) =>
+            ApprovalInboxTransactionScreen(),
         ClockRecordScreen.id: (context) => ClockRecordScreen(),
         TimeSheetScreen.id: (context) => TimeSheetScreen(),
         AppSettingsScreen.id: (context) => AppSettingsScreen(),
@@ -137,7 +153,6 @@ class _MyAppState extends State<MyApp> {
         ExtraWorkScreen.id: (context) => ExtraWorkScreen(),
         AttendanceSummaryScreen.id: (context) => AttendanceSummaryScreen(),
         ExpenseTransactionScreen.id: (context) => ExpenseTransactionScreen()
-
       },
       localizationsDelegates: [
         newLocaleDelegate,

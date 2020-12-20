@@ -11,6 +11,7 @@ import 'package:sven_hr/dao/lov_value.dart';
 import 'package:sven_hr/dao/vacation_type.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/main.dart';
+import 'package:sven_hr/models/response/vacation_transaction_response.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
@@ -407,9 +408,174 @@ class VacationView extends StatelessWidget {
       : super(key: key);
 
   final VoidCallback callback;
-  final VacationListItem vacationListItem;
+  final VacationTransactionResponse vacationListItem;
   final AnimationController animationController;
   final Animation<dynamic> animation;
+
+
+  Future _asyncConfirmDialog(BuildContext context) async {
+    Size size = MediaQuery.of(context).size;
+    return await showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            actions: <Widget>[
+              FlatButton(
+                  child: Text(
+                    AppTranslations.of(context)
+                        .text(Const.LOCALE_KEY_EMPLOYMENT_CLOSE),
+                    style: TextStyle(color: AppTheme.kPrimaryColor),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  })
+            ],
+            content: Container(
+              color: AppTheme.white,
+              height: size.height / 2,
+              width: size.width / 2,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppTranslations.of(context)
+                              .text(Const.LOCALE_KEY_VACATION),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 22,
+                            letterSpacing: 0.27,
+                            color: AppTheme.kPrimaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            title: Text(AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_TRANSACTION_STATUS)),
+                            subtitle: Text(vacationListItem.trans_status != null
+                                ? vacationListItem.trans_status_displayValue.toString()
+                                : "-"),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            title: Text(AppTranslations.of(context).text(
+                                Const.LOCALE_KEY_STATUS)),
+                            subtitle: Text(
+                                vacationListItem.request_status != null
+                                    ? vacationListItem.request_status_displayValue
+                                    : "-"),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            title: Text(AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_TYPE)),
+                            subtitle: Text(
+                                vacationListItem.vacation_location != null
+                                    ? vacationListItem.vacation_location_displayValue
+                                    : "-"),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            title: Text(AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_FROM)),
+                            subtitle: Text(vacationListItem.start_date != null
+                                ? vacationListItem.start_date
+                                : "-"),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            title: Text(AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_TO)),
+                            subtitle: Text(vacationListItem.end_date != null
+                                ? vacationListItem.end_date
+                                : "-"),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            title: Text(AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_NOTES)),
+                            subtitle: Text(vacationListItem.remark != null
+                                ? vacationListItem.remark.toString()
+                                : "-"),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(AppTranslations.of(context)
+                              .text(Const.LOCALE_KEY_APPROVAL_INBOX) +
+                              ": "),
+                        ),
+                      ],
+                    ),
+                    if(vacationListItem.approvalList!=null)
+                    Row(
+                      children: [
+                        Expanded(
+                            child: SizedBox(
+                              height: 100,
+                              child: ListView.builder(
+                                itemBuilder: (ctx, index) {
+                                  return Text(
+                                    vacationListItem
+                                        .approvalList[index].employeeName !=
+                                        null
+                                        ? vacationListItem
+                                        .approvalList[index].employeeName
+                                        : "-",
+                                    style: TextStyle(
+                                      color: AppTheme.kPrimaryColor,
+                                    ),
+                                  );
+                                },
+                                itemCount: vacationListItem.approvalList.length,
+                              ),
+                            ))
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -432,7 +598,7 @@ class VacationView extends StatelessWidget {
                   color: AppTheme.kPrimaryLightColor.withOpacity(0.4),
                 ),
                 width: double.infinity,
-                height: 160,
+                height: 100,
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Row(
@@ -457,7 +623,7 @@ class VacationView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            vacationListItem.name,
+                            vacationListItem.vacation_Name,
                             style: TextStyle(
                                 color: vacationListItem.getRightColor(),
                                 fontWeight: FontWeight.bold,
@@ -476,14 +642,14 @@ class VacationView extends StatelessWidget {
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_TYPE),
+                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_REQUEST_DATE),
                                   style: TextStyle(
                                       color: vacationListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                               Text(
-                                  vacationListItem.type.display != null
-                                      ? vacationListItem.type.display
+                                  vacationListItem.request_date != null
+                                      ? vacationListItem.request_date
                                       : '',
                                   style: TextStyle(
                                       color: vacationListItem.getRightColor(),
@@ -491,81 +657,102 @@ class VacationView extends StatelessWidget {
                                       letterSpacing: .3)),
                             ],
                           ),
-                          SizedBox(
-                            height: 6,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.swap_horizontal_circle,
-                                color: vacationListItem.getRightColor(),
-                                size: 20,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_STATUS),
-                                  style: TextStyle(
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                    icon: Icon(
+                                      Icons.more_horiz,
                                       color: vacationListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                              Text(vacationListItem.status.display,
-                                  style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                            ],
+                                      size: 25,
+                                    ),
+                                    tooltip: 'details',
+                                    hoverColor: vacationListItem.getRightColor(),
+                                    splashColor:
+                                    vacationListItem.getRightColor(),
+                                    onPressed: () {
+                                      _asyncConfirmDialog(context);
+                                    }),
+                              ],
+                            ),
                           ),
                           SizedBox(
-                            height: 6,
+                            width: 5,
                           ),
-                          Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.calendar_today,
-                                color: vacationListItem.getRightColor(),
-                                size: 20,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_FROM),
-                                  style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                              Text(vacationListItem.fromDate,
-                                  style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 6,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.calendar_today,
-                                color: vacationListItem.getRightColor(),
-                                size: 20,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_TO),
-                                  style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                              Text(vacationListItem.toDate,
-                                  style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                            ],
-                          ),
+                          // Row(
+                          //   children: <Widget>[
+                          //     Icon(
+                          //       Icons.swap_horizontal_circle,
+                          //       color: vacationListItem.getRightColor(),
+                          //       size: 20,
+                          //     ),
+                          //     SizedBox(
+                          //       width: 5,
+                          //     ),
+                          //     Text(AppTranslations.of(context).text(Const.LOCALE_KEY_STATUS),
+                          //         style: TextStyle(
+                          //             color: vacationListItem.getRightColor(),
+                          //             fontSize: 13,
+                          //             letterSpacing: .3)),
+                          //     Text(vacationListItem.status.display,
+                          //         style: TextStyle(
+                          //             color: vacationListItem.getRightColor(),
+                          //             fontSize: 13,
+                          //             letterSpacing: .3)),
+                          //   ],
+                          // ),
+                          // SizedBox(
+                          //   height: 6,
+                          // ),
+                          // Row(
+                          //   children: <Widget>[
+                          //     Icon(
+                          //       Icons.calendar_today,
+                          //       color: vacationListItem.getRightColor(),
+                          //       size: 20,
+                          //     ),
+                          //     SizedBox(
+                          //       width: 5,
+                          //     ),
+                          //     Text(AppTranslations.of(context).text(Const.LOCALE_KEY_FROM),
+                          //         style: TextStyle(
+                          //             color: vacationListItem.getRightColor(),
+                          //             fontSize: 13,
+                          //             letterSpacing: .3)),
+                          //     Text(vacationListItem.fromDate,
+                          //         style: TextStyle(
+                          //             color: vacationListItem.getRightColor(),
+                          //             fontSize: 13,
+                          //             letterSpacing: .3)),
+                          //   ],
+                          // ),
+                          // SizedBox(
+                          //   height: 6,
+                          // ),
+                          // Row(
+                          //   children: <Widget>[
+                          //     Icon(
+                          //       Icons.calendar_today,
+                          //       color: vacationListItem.getRightColor(),
+                          //       size: 20,
+                          //     ),
+                          //     SizedBox(
+                          //       width: 5,
+                          //     ),
+                          //     Text(AppTranslations.of(context).text(Const.LOCALE_KEY_TO),
+                          //         style: TextStyle(
+                          //             color: vacationListItem.getRightColor(),
+                          //             fontSize: 13,
+                          //             letterSpacing: .3)),
+                          //     Text(vacationListItem.toDate,
+                          //         style: TextStyle(
+                          //             color: vacationListItem.getRightColor(),
+                          //             fontSize: 13,
+                          //             letterSpacing: .3)),
+                          //   ],
+                          // ),
                         ],
                       ),
                     )

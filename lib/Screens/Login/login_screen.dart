@@ -1,6 +1,8 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:sven_hr/Screens/navigation_home_screen.dart';
+import 'package:sven_hr/components/flutter_toast_message.dart';
 import 'package:sven_hr/components/rounded_button.dart';
 import 'package:sven_hr/components/rounded_input_field.dart';
 import 'package:sven_hr/components/rounded_password_field.dart';
@@ -20,14 +22,39 @@ class _LoginScreenState extends State<LoginScreen> {
   // String _username = "abdallah1";
   // String _password = "123456";
 
-  // String _username = "mansour";
-  // String _password = "123123";
+  String _username = "mansour";
+  String _password = "123123";
 
-  String _username;
-  String _password;
+  // String _username;
+  // String _password;
 
   LoginController loginController = LoginController();
   bool showSpinner = false;
+
+  void login() async {
+    setState(() {
+      showSpinner = true;
+    });
+    await loginController
+        .loginVerifications(_username, _password)
+        .then((value) {
+      if (value != null) {
+        if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
+          Navigator.pop(context);
+
+          Navigator.pushNamed(context, NavigationHomeScreen.id);
+
+          ToastMessage.showSuccessMsg(value.message);
+        } else {
+          ToastMessage.showErrorMsg(value.message);
+        }
+      }
+      setState(() {
+        showSpinner = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -41,39 +68,25 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               LoginImage(size: size),
-
               SizedBox(height: size.height * 0.03),
               RoundedInputField(
-                hintText: AppTranslations.of(context)
-                    .text(Const.LOCALE_KEY_USERNAME),
+                hintText:
+                    AppTranslations.of(context).text(Const.LOCALE_KEY_USERNAME),
                 onChanged: (value) {
                   _username = value;
                 },
               ),
               RoundedPasswordField(
-                text: AppTranslations.of(context)
-                    .text(Const.LOCALE_KEY_PASSWORD),
+                text:
+                    AppTranslations.of(context).text(Const.LOCALE_KEY_PASSWORD),
                 onChanged: (value) {
                   _password = value;
                 },
               ),
               RoundedButton(
-                text: AppTranslations.of(context)
-                    .text(Const.LOCALE_KEY_LOGIN),
+                text: AppTranslations.of(context).text(Const.LOCALE_KEY_LOGIN),
                 press: () async {
-                  setState(() {
-                    showSpinner = true;
-                    print('Spinner status ' + showSpinner.toString());
-                  });
-
-                  var s = await loginController.loginVerifications(
-                      context, _username, _password);
-                  if (s != null) {}
-
-                  setState(() {
-                    showSpinner = false;
-                    print('Spinner status ' + showSpinner.toString());
-                  });
+                  login();
                 },
               ),
               SizedBox(height: size.height * 0.03),
@@ -101,7 +114,7 @@ class LoginImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.asset(
       loginImage,
-      height: size.height*0.1,
+      height: size.height * 0.1,
     );
   }
 }

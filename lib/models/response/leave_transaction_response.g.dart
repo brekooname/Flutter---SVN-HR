@@ -36,7 +36,10 @@ LeaveTransactionResponse _$LeaveTransactionResponseFromJson(
     ..createddate = json['createddate'] as String
     ..permission_method = json['permission_method'] as String
     ..end_time_String = json['end_time_String'] as String
-    ..start_time_String = json['start_time_String'] as String;
+    ..start_time_String = json['start_time_String'] as String
+    ..approvalList = (json['approvalList'] as List)
+        .map((e) => ApprovalList.fromJson(e as Map<String, dynamic>))
+        .toList();
 }
 
 Map<String, dynamic> _$LeaveTransactionResponseToJson(
@@ -69,4 +72,5 @@ Map<String, dynamic> _$LeaveTransactionResponseToJson(
       'permission_method': instance.permission_method,
       'end_time_String': instance.end_time_String,
       'start_time_String': instance.start_time_String,
+      'approvalList': instance.approvalList.map((e) => e.toJson()).toList(),
     };

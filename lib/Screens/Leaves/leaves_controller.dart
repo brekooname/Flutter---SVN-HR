@@ -15,9 +15,14 @@ import 'package:sven_hr/utilities/api_connectons.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
 class LeavesController {
-  List<LeaveListItem> _leaveList;
+  List<LeaveTransactionResponse> _leaveList;
   DateFormat format = DateFormat(Const.DATE_FORMAT);
   DateFormat dateTimeFormat = DateFormat(Const.DATE_TIME_FORMAT);
+
+
+  LeavesController(){
+    _leaveList=List();
+  }
 
   Future<List<LovValue>> loadLeavesStatus() async {
     LovValue lov = LovValue();
@@ -93,27 +98,28 @@ class LeavesController {
             LeaveTransactionBaseResponse.fromJson(userData);
         // add returned leaves to leaves list item view
         if (baseResponse.leaveTransactions != null) {
-          for (LeaveTransactionResponse vac in baseResponse.leaveTransactions) {
-            LovValue statusLov = LovValue();
-            statusLov.row_id = vac.request_status;
-            statusLov.code = vac.request_status_code;
-            statusLov.display = vac.request_status_displayValue;
-
-            LovValue typeLov = LovValue();
-            typeLov.row_id = vac.leave_id;
-            typeLov.code = vac.leave_code;
-            typeLov.display = vac.leave_displayValue;
-
-            LeaveListItem levItem = LeaveListItem(
-                status: statusLov,
-                type: typeLov,
-                fromDate: vac.start_date,
-                toDate: vac.end_date,
-                toTime: vac.end_time_String,
-                fromTime: vac.start_time_String);
-
-            leaveList.add(levItem);
-          }
+          leaveList=baseResponse.leaveTransactions;
+          // for (LeaveTransactionResponse vac in baseResponse.leaveTransactions) {
+          //   LovValue statusLov = LovValue();
+          //   statusLov.row_id = vac.request_status;
+          //   statusLov.code = vac.request_status_code;
+          //   statusLov.display = vac.request_status_displayValue;
+          //
+          //   LovValue typeLov = LovValue();
+          //   typeLov.row_id = vac.leave_id;
+          //   typeLov.code = vac.leave_code;
+          //   typeLov.display = vac.leave_displayValue;
+          //
+          //   LeaveListItem levItem = LeaveListItem(
+          //       status: statusLov,
+          //       type: typeLov,
+          //       fromDate: vac.start_date,
+          //       toDate: vac.end_date,
+          //       toTime: vac.end_time_String,
+          //       fromTime: vac.start_time_String);
+          //
+          //   leaveList.add(levItem);
+          // }
         }
         print("Finshed");
         return Const.SYSTEM_SUCCESS_MSG;
@@ -123,9 +129,9 @@ class LeavesController {
     }
   }
 
-  List<LeaveListItem> get leaveList => _leaveList;
+  List<LeaveTransactionResponse> get leaveList => _leaveList;
 
-  set leaveList(List<LeaveListItem> value) {
+  set leaveList(List<LeaveTransactionResponse> value) {
     _leaveList = value;
   }
 

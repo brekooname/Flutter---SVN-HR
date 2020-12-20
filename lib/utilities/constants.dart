@@ -66,6 +66,8 @@ class Const {
   static final SHARED_KEY_CURRENCY_CODE="currency_id_code";
   static final SHARED_KEY_EMPLOYEE_NAME="employeeName";
   static final SHARED_KEY_REPORTING_MANAGER="reportingManager";
+  static final SHARED_KEY_USERNAME="username";
+  static final SHARED_KEY_PASSWORD="password";
 
   static final LANGUAGE_CODE_EN="en";
   static final lANGUAGE_CODE_AR="ar";
@@ -292,5 +294,7 @@ class Const {
   static final LOCALE_KEY_MY_EXPENSE="my_expense";
   static final LOCALE_KEY_EXPENSE_APPROVE_DATE="expenseApproveDate";
   static final LOCALE_KEY_EXPENSE_DETAILS="expense_details";
+
+  static final LOCALE_KEY_TRANSACTION_STATUS="transaction_status";
 
 }

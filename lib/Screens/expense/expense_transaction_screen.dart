@@ -374,6 +374,7 @@ class ExpenseView extends StatelessWidget {
                         ),
                       ],
                     ),
+                    if(expenseListItem.approvalList!=null)
                     Row(
                       children: [
                         Expanded(

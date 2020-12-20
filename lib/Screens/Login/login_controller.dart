@@ -24,10 +24,12 @@ import '../navigation_home_screen.dart';
 class LoginController {
   SharedPreferences prefs;
   static List<ProfileScreenResponse> listOfProfileScreens;
+  String _username , _password;
 
-  Future<dynamic> loginVerifications(
-      BuildContext context, String username, String password) async {
+  Future<dynamic> loginVerifications(String username, String password) async {
     prefs = await SharedPreferences.getInstance();
+    this._username=username;
+    this._password=password;
 
     // //check if user login or not
     // String prefTokenId = prefs.get(Const.SHARED_KEY_TOKEN_ID);
@@ -49,11 +51,11 @@ class LoginController {
     try {
       User user =
           User(username: username, password: password, netsuitFlag: ApiConnections.NetSuiteFlag);
-      dynamic res = await getLoginAPI(context, user.toJson());
+      dynamic res = await getLoginAPI(user.toJson());
       if (res != null &&
           res.toString().compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
-        Navigator.pop(context);
-        Navigator.pushNamed(context, NavigationHomeScreen.id);
+        // Navigator.pop(context);
+        // Navigator.pushNamed(context, NavigationHomeScreen.id);
         return res;
       } else {
         ToastMessage.showErrorMsg(res.toString());
@@ -64,8 +66,7 @@ class LoginController {
     }
   }
 
-  Future<String> getLoginAPI(
-      BuildContext context, Map<String, dynamic> map) async {
+  Future<String> getLoginAPI(Map<String, dynamic> map) async {
     var url = ApiConnections.url + ApiConnections.login;
     NetworkHelper helper = NetworkHelper(url: url, map: map);
     var userData = await helper.getData();
@@ -112,6 +113,8 @@ class LoginController {
   }
 
   void _saveToSharedPreferences(Employee employee) async {
+    prefs.setString(Const.SHARED_KEY_USERNAME, _username);
+    prefs.setString(Const.SHARED_KEY_PASSWORD, _password);
     prefs.setString(Const.SHARED_KEY_TOKEN_ID, employee.tokenId);
     prefs.setString(Const.SHARED_KEY_EMPLOYEE_NUMBER, employee.employee_number);
     prefs.setString(Const.SHARED_KEY_EMPLOYEE_ID, employee.employee_id);

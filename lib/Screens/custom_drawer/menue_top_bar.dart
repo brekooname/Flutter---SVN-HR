@@ -62,12 +62,16 @@ class _MenueTopBarState extends State<MenueTopBar> {
       });
     });
   }
-
+  void clearPref() async{
+    prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
   void onItemSelected(String selected) async {
     prefs = await SharedPreferences.getInstance();
     if (selected.compareTo(Const.LOCALE_KEY_LOGOUT) == 0) {
       Navigator.pop(context);
       Navigator.pushNamed(context, LoginScreen.id);
+      clearPref();
       prefs.clear();
     } else if (selected.compareTo(Const.LOCALE_KEY_CHANGE_PASSWORD) == 0) {
       await _changePasswordDialog(context);

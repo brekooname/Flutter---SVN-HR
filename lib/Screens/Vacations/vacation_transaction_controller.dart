@@ -22,12 +22,12 @@ import 'package:mime/mime.dart';
 import 'models/vacation_list_item.dart';
 
 class VacationTransactionController {
-  List<VacationListItem> _vacationList;
+  List<VacationTransactionResponse> _vacationList;
   List<EmployeeVacationResponse> _employeeVactions;
   DateFormat format = DateFormat(Const.DATE_FORMAT);
 
   VacationTransactionController() {
-    _vacationList = <VacationListItem>[];
+    _vacationList = List();
   }
 
   Future<String> getDefualtSearch() async {
@@ -221,27 +221,28 @@ class VacationTransactionController {
             VacationTransactionBaseResponse.fromJson(userData);
         // add returned vacation to vacation list item view
         if (baseResponse.vacationTransactions != null) {
-          for (VacationTransactionResponse vac
-              in baseResponse.vacationTransactions) {
-            LovValue statusLov = LovValue();
-            statusLov.row_id = vac.request_status;
-            statusLov.code = vac.request_status_code;
-            statusLov.display = vac.request_status_displayValue;
-
-            LovValue typeLov = LovValue();
-            typeLov.row_id = vac.vacation_location;
-            typeLov.code = vac.vacation_location_code;
-            typeLov.display = vac.vacation_location_displayValue;
-
-            VacationListItem vacItem = VacationListItem(
-                name: vac.vacation_Name,
-                status: statusLov,
-                type: typeLov,
-                fromDate: vac.start_date,
-                toDate: vac.end_date);
-
-            vacationList.add(vacItem);
-          }
+          vacationList=baseResponse.vacationTransactions;
+          // for (VacationTransactionResponse vac
+          //     in baseResponse.vacationTransactions) {
+          //   LovValue statusLov = LovValue();
+          //   statusLov.row_id = vac.request_status;
+          //   statusLov.code = vac.request_status_code;
+          //   statusLov.display = vac.request_status_displayValue;
+          //
+          //   LovValue typeLov = LovValue();
+          //   typeLov.row_id = vac.vacation_location;
+          //   typeLov.code = vac.vacation_location_code;
+          //   typeLov.display = vac.vacation_location_displayValue;
+          //
+          //   VacationListItem vacItem = VacationListItem(
+          //       name: vac.vacation_Name,
+          //       status: statusLov,
+          //       type: typeLov,
+          //       fromDate: vac.start_date,
+          //       toDate: vac.end_date);
+          //
+          //   vacationList.add(vacItem);
+          // }
         }
         print("Finshed");
         return Const.SYSTEM_SUCCESS_MSG;
@@ -251,9 +252,9 @@ class VacationTransactionController {
     }
   }
 
-  List<VacationListItem> get vacationList => _vacationList;
+  List<VacationTransactionResponse> get vacationList => _vacationList;
 
-  set vacationList(List<VacationListItem> value) {
+  set vacationList(List<VacationTransactionResponse> value) {
     _vacationList = value;
   }
 

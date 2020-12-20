@@ -185,5 +185,7 @@
   "source": "Source",
   "my_expense": "My Expense",
   "expenseApproveDate": "Approve Date",
-  "expense_details": "Expense Details"
+  "expense_details": "Expense Details",
+
+  "transaction_status": "Transaction Status"
 }

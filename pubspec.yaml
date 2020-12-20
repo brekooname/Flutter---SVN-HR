@@ -51,6 +51,7 @@ dependencies:
   searchable_dropdown: ^1.1.3
   syncfusion_flutter_charts: ^18.3.35
   downloads_path_provider: ^0.1.0
+  flare_splash_screen: ^3.0.1
 
 dev_dependencies:
   flutter_test:

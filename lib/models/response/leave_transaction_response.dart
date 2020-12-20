@@ -1,5 +1,10 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:sven_hr/models/response/approval_list.dart';
+import 'package:sven_hr/utilities/app_theme.dart';
+import 'package:sven_hr/utilities/constants.dart';
 
 part 'leave_transaction_response.g.dart';
 
@@ -88,6 +93,9 @@ class LeaveTransactionResponse{
 
   @JsonKey(name: 'end_time_String')
   String _end_time_String;
+
+  @JsonKey(name: 'approvalList')
+  List<ApprovalList> _approvalList;
 
   factory LeaveTransactionResponse.fromJson(Map<String, dynamic> json) => _$LeaveTransactionResponseFromJson(json);
 
@@ -248,5 +256,61 @@ class LeaveTransactionResponse{
 
   set start_time_String(String value) {
     _start_time_String = value;
+  }
+
+  List<ApprovalList> get approvalList => _approvalList;
+
+  set approvalList(List<ApprovalList> value) {
+    _approvalList = value;
+  }
+
+  Icon getRightIcon() {
+    if (request_status != null) {
+      if (request_status.compareTo(Const.LEAVE_REQUEST_APPROVED_STATUS) ==
+          0) {
+        return Icon(
+          Icons.done_outline,
+          color: AppTheme.green,
+        );
+      } else if (request_status
+          .compareTo(Const.LEAVE_REQUEST_CANCELED_STATUS) ==
+          0) {
+        return Icon(
+          Icons.cancel,
+          color: AppTheme.blue_dark,
+        );
+      } else if (request_status
+          .compareTo(Const.LEAVE_REQUEST_REJECTED_STATUS) ==
+          0) {
+        return Icon(
+          Icons.close,
+          color: AppTheme.red,
+        );
+      } else if (request_status
+          .compareTo(Const.LEAVE_REQUEST_PENDING_STATUS) ==
+          0) {
+        return Icon(
+          Icons.query_builder,
+          color: AppTheme.orange,
+        );
+      }
+    }
+  }
+
+  Color getRightColor() {
+    if (request_status.compareTo(Const.LEAVE_REQUEST_APPROVED_STATUS) == 0) {
+      return AppTheme.green;
+    } else if (request_status
+        .compareTo(Const.LEAVE_REQUEST_CANCELED_STATUS) ==
+        0) {
+      return AppTheme.blue_dark;
+    } else if (request_status
+        .compareTo(Const.LEAVE_REQUEST_REJECTED_STATUS) ==
+        0) {
+      return AppTheme.red;
+    } else if (request_status.compareTo(Const.LEAVE_REQUEST_PENDING_STATUS) ==
+        0) {
+      return AppTheme.orange;
+    }
   }
 }
