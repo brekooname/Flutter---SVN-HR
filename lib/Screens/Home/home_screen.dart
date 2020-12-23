@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vertical_marquee/flutter_vertical_marquee.dart';
 import 'package:sven_hr/Screens/Home/actions_list_view.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_controller.dart';
 import 'package:sven_hr/Screens/circular_charts/circular_default_pie.dart';
+import 'package:sven_hr/Screens/message_broadcaste/message_broadcaste_controller.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/models/chart_sample_data.dart';
 import 'package:sven_hr/models/response/employee_vacation_response.dart';
+import 'package:sven_hr/models/response/message_broadcaste_response.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
-import 'package:sven_hr/Screens/Home/category_list_view.dart';
 import 'package:sven_hr/utilities/constants.dart';
+import 'package:sven_hr/utilities/hex_color.dart';
 
 import '../screen_loader.dart';
 import '../Vacations/vacation_request_screen.dart';
@@ -57,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       child: Column(
         children: <Widget>[
           // getSearchBarUI(),
+          _buildMarquee(),
           getVacationPieChart(),
           getPopularCourseUI()
           // CategoryListView(
@@ -64,7 +68,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           //     moveTo();
           //   },
           // ),
-
         ],
       ),
     );
@@ -139,11 +142,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     );
   }
 
-
-
   void LoadEmployeeVacationsBalance() async {
     List<EmployeeVacationResponse> employeeVactionsList;
-    VacationTransactionController _vacationTransactionController=VacationTransactionController();
+    VacationTransactionController _vacationTransactionController =
+        VacationTransactionController();
 
     employeeVactionsList = List();
 
@@ -157,13 +159,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
           for (EmployeeVacationResponse intervales in employeeVactionsList) {
             ChartSampleData chartSampleData = ChartSampleData(
-                x: intervales.vacation_type_name, y: intervales.remaining_balance);
+                x: intervales.vacation_type_name,
+                y: intervales.remaining_balance);
             chartData.add(chartSampleData);
           }
         }
       });
     });
   }
+
   List<ChartSampleData> chartData = <ChartSampleData>[];
 
   Widget getVacationPieChart() {
@@ -172,7 +176,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-
           decoration: BoxDecoration(
             color: AppTheme.kPrimaryLightColor.withOpacity(0.5),
             borderRadius: BorderRadius.circular(29),
@@ -183,6 +186,73 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           ),
         ),
       ),
+    );
+  }
+
+  List<TextSpan> _tipMarqueeList = List();
+
+  _initMarquee() {
+    _tipMarqueeList.clear();
+    MessageBroadcasteController broadcasteController =
+        MessageBroadcasteController();
+    TextSpan txt;
+    broadcasteController.getMessageBroadcasteList().then((value) => {
+          if (value != null && value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0)
+            {
+              for (MessageBroadcasteResponse msg
+                  in broadcasteController.messageList)
+                {
+                  txt = TextSpan(
+                      text: msg.message_title+" :",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(
+                              HexColor.getColorFromHex(msg.message_color))),
+                      children: <InlineSpan>[
+                        TextSpan(
+                          text: msg.message_text,
+                          style: TextStyle(
+                              fontWeight:FontWeight.normal,
+                              color: Color(
+                                  HexColor.getColorFromHex(msg.message_color))),
+                        )
+                      ]
+
+                  ),
+                  _tipMarqueeList.add(txt)
+
+                }
+            }
+        });
+
+   setState(() {
+
+   });
+    // _tipMarqueeList.addAll({TextSpan(text: "testttt"), TextSpan(text: "yyyyyyyyy")});
+  }
+
+  Widget _buildMarquee() {
+    _initMarquee();
+    var controller = MarqueeController();
+    return GestureDetector(
+      child: Container(
+        height: 40.0,
+        color: AppTheme.kPrimaryLightColor,
+        child: Marquee(
+          // textList: _tipMarqueeList, // List<Text>, textList and textSpanList can only have one of code.
+          textSpanList:
+              _tipMarqueeList, // List<TextSpan> text, textList and textSpanList can only have one of code.
+          fontSize: 14.0, // text size
+          scrollDuration: Duration(seconds: 1), // every scroll duration
+          stopDuration: Duration(seconds: 3), //every stop duration
+          tapToNext: true, // tap to next
+          textColor: Colors.black, // text color
+          controller: controller, // the controller can get the position
+        ),
+      ),
+      onTap: () {
+        print(controller.position); // get the position
+      },
     );
   }
 

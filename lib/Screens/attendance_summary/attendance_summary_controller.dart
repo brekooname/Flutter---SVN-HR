@@ -14,11 +14,9 @@ class AttendanceSummaryController {
   DateFormat format = DateFormat(Const.DATE_FORMAT);
 
   List<AttendanceSummaryResponse> _attendanceList;
-  List<AttendanceListItem> _attendanceListItem;
 
   AttendanceSummaryController() {
     _attendanceList = List();
-    _attendanceListItem = List();
   }
 
   Future<String> getDefualtSearch() async {
@@ -36,8 +34,6 @@ class AttendanceSummaryController {
     String toDate,
   ) async {
     _attendanceList = List();
-    _attendanceListItem = List();
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
 
@@ -54,34 +50,9 @@ class AttendanceSummaryController {
         AttendanceSummaryBaseResponse baseResponse =
             AttendanceSummaryBaseResponse.fromJson(userData);
 
-        if (baseResponse.myAttendSummaryRecords != null) {
-          _attendanceList = baseResponse.myAttendSummaryRecords;
+        if (baseResponse.cloackRecordList != null) {
+          _attendanceList = baseResponse.cloackRecordList;
 
-          Map<String, List<AttendanceSummaryResponse>> attendanceMap = {};
-          _attendanceList.forEach((customer) => {
-                if (attendanceMap[customer.rec_date] == null)
-                  {attendanceMap[customer.rec_date] = List()},
-                attendanceMap[customer.rec_date].add(customer),
-              });
-
-          attendanceMap.forEach((key, value) {
-            AttendanceListItem item = AttendanceListItem();
-
-            if (value != null && value.length > 0) {
-              item.rec_date = value[0].rec_date;
-              item.rec_type = value[0].rec_type;
-              if (value[0].rec_time != null)
-                item.rec_time_in =
-                    ApplicationController.formatToHours(value[0].rec_time);
-            }
-            if (value != null && value.length > 1) {
-              if (value[1].rec_time != null)
-                item.rec_time_Out =
-                    ApplicationController.formatToHours(value[1].rec_time);
-            }
-
-            _attendanceListItem.add(item);
-          });
         }
         return Const.SYSTEM_SUCCESS_MSG;
       } else {
@@ -90,9 +61,9 @@ class AttendanceSummaryController {
     }
   }
 
-  List<AttendanceListItem> get attendanceListItem => _attendanceListItem;
+  List<AttendanceSummaryResponse> get attendanceList => _attendanceList;
 
-  set attendanceListItem(List<AttendanceListItem> value) {
-    _attendanceListItem = value;
+  set attendanceList(List<AttendanceSummaryResponse> value) {
+    _attendanceList = value;
   }
 }

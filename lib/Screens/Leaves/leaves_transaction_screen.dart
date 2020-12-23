@@ -25,7 +25,8 @@ class LeavesTransaction extends StatefulWidget {
   _LeavesTransactionState createState() => _LeavesTransactionState();
 }
 
-class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProviderStateMixin {
+class _LeavesTransactionState extends State<LeavesTransaction>
+    with TickerProviderStateMixin {
   AnimationController animationController;
   LovValue statusValue;
   LovValue typeValue;
@@ -54,10 +55,13 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
     });
   }
 
-  void reset(){
-    statusList.forEach((element) {element.isSelected =false;});
-    typeList.forEach((element) {element.isSelected =false;});
-
+  void reset() {
+    statusList.forEach((element) {
+      element.isSelected = false;
+    });
+    typeList.forEach((element) {
+      element.isSelected = false;
+    });
   }
 
   void LoadLeavesStatus() async {
@@ -82,7 +86,6 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
     });
   }
 
-
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 10));
     return true;
@@ -106,7 +109,7 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
           Container(
             margin: EdgeInsets.all(5),
             decoration: BoxDecoration(
-              // color: AppTheme.kPrimaryLightColor.withOpacity(.6),
+                // color: AppTheme.kPrimaryLightColor.withOpacity(.6),
                 borderRadius: BorderRadius.circular(30)),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 1),
@@ -120,7 +123,8 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: Text(
-                          AppTranslations.of(context).text(Const.LOCALE_KEY_FILTER_BY),
+                          AppTranslations.of(context)
+                              .text(Const.LOCALE_KEY_FILTER_BY),
                           style: TextStyle(color: AppTheme.kPrimaryColor),
                           textAlign: TextAlign.center,
                         ),
@@ -155,10 +159,11 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
                             ),
                             child: Center(
                                 child: Text(
-                                  AppTranslations.of(context).text(Const.LOCALE_KEY_STATUS),
-                                  style: TextStyle(color: AppTheme.kPrimaryColor),
-                                  textAlign: TextAlign.center,
-                                )),
+                              AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_STATUS),
+                              style: TextStyle(color: AppTheme.kPrimaryColor),
+                              textAlign: TextAlign.center,
+                            )),
                           ),
                         ),
                       ),
@@ -172,7 +177,7 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
                                   context: context,
                                   builder: (ctx) {
                                     return MultiSelectionLOVListView(
-                                      lovs : typeList,
+                                      lovs: typeList,
                                     );
                                   });
                             });
@@ -192,10 +197,11 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
                             ),
                             child: Center(
                                 child: Text(
-                                  AppTranslations.of(context).text(Const.LOCALE_KEY_TYPE),
-                                  style: TextStyle(color: AppTheme.kPrimaryColor),
-                                  textAlign: TextAlign.center,
-                                )),
+                              AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_TYPE),
+                              style: TextStyle(color: AppTheme.kPrimaryColor),
+                              textAlign: TextAlign.center,
+                            )),
                           ),
                         ),
                       ),
@@ -218,7 +224,11 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
                   Row(
                     children: [
                       Expanded(
-                          flex: 0, child: Text(AppTranslations.of(context).text(Const.LOCALE_KEY_FROM), style: AppTheme.subtitle)),
+                          flex: 0,
+                          child: Text(
+                              AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_FROM),
+                              style: AppTheme.subtitle)),
                       Expanded(
                         child: DateTimeField(
                           textAlign: TextAlign.center,
@@ -242,7 +252,11 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
                         ),
                       ),
                       Expanded(
-                          flex: 0, child: Text(AppTranslations.of(context).text(Const.LOCALE_KEY_TO), style: AppTheme.subtitle)),
+                          flex: 0,
+                          child: Text(
+                              AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_TO),
+                              style: AppTheme.subtitle)),
                       Expanded(
                         child: DateTimeField(
                           textAlign: TextAlign.center,
@@ -274,13 +288,12 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
                         hoverColor: AppTheme.kPrimaryColor,
                         splashColor: AppTheme.kPrimaryColor,
                         onPressed: () async {
-
                           setState(() {
                             showSpinner = true;
                           });
                           await _leavesController
                               .advancedSearch(
-                              fromDate, toDate, statusList, typeList)
+                                  fromDate, toDate, statusList, typeList)
                               .then((value) {
                             setState(() {
                               print(value);
@@ -293,7 +306,6 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
                       ),
                     ],
                   ),
-
                 ],
               ),
             ),
@@ -312,22 +324,19 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
                     itemCount: _leavesController.leaveList.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (BuildContext context, int index) {
-                      final int count =
-                      _leavesController.leaveList.length > 10
+                      final int count = _leavesController.leaveList.length > 10
                           ? 10
-                          : _leavesController
-                          .leaveList.length;
+                          : _leavesController.leaveList.length;
                       final Animation<double> animation =
-                      Tween<double>(begin: 0.0, end: 1.0).animate(
-                          CurvedAnimation(
-                              parent: animationController,
-                              curve: Interval((1 / count) * index, 1.0,
-                                  curve: Curves.fastOutSlowIn)));
+                          Tween<double>(begin: 0.0, end: 1.0).animate(
+                              CurvedAnimation(
+                                  parent: animationController,
+                                  curve: Interval((1 / count) * index, 1.0,
+                                      curve: Curves.fastOutSlowIn)));
                       animationController.forward();
 
                       return LeavesView(
-                        leaveListItem:
-                        _leavesController.leaveList[index],
+                        leaveListItem: _leavesController.leaveList[index],
                         animation: animation,
                         animationController: animationController,
                         callback: () {
@@ -346,21 +355,19 @@ class _LeavesTransactionState extends State<LeavesTransaction>  with TickerProvi
   }
 }
 
-
 class LeavesView extends StatelessWidget {
   const LeavesView(
       {Key key,
-        this.leaveListItem,
-        this.animationController,
-        this.animation,
-        this.callback})
+      this.leaveListItem,
+      this.animationController,
+      this.animation,
+      this.callback})
       : super(key: key);
 
   final VoidCallback callback;
   final LeaveTransactionResponse leaveListItem;
   final AnimationController animationController;
   final Animation<dynamic> animation;
-
 
   Future _asyncConfirmDialog(BuildContext context) async {
     Size size = MediaQuery.of(context).size;
@@ -393,7 +400,7 @@ class LeavesView extends StatelessWidget {
                       children: [
                         Text(
                           AppTranslations.of(context)
-                              .text(Const.LOCALE_KEY_LEAVES),
+                              .text(Const.LOCALE_KEY_LEAVE_DETAILS),
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 22,
@@ -411,11 +418,11 @@ class LeavesView extends StatelessWidget {
                             title: Text(AppTranslations.of(context)
                                 .text(Const.LOCALE_KEY_TRANSACTION_STATUS)),
                             subtitle: Text(leaveListItem.trans_status != null
-                                ? leaveListItem.trans_status_displayValue.toString()
+                                ? leaveListItem.trans_status_displayValue
+                                    .toString()
                                 : "-"),
                           ),
                         ),
-
                       ],
                     ),
                     Row(
@@ -423,61 +430,25 @@ class LeavesView extends StatelessWidget {
                         Expanded(
                           flex: 1,
                           child: ListTile(
-                            title: Text(AppTranslations.of(context).text(
-                                Const.LOCALE_KEY_STATUS)),
-                            subtitle: Text(
-                                leaveListItem.request_status != null
-                                    ? leaveListItem.request_status_displayValue
-                                    : "-"),
+                            title: Text(AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_REQUEST_DATE)),
+                            subtitle: Text(leaveListItem.request_date != null
+                                ? leaveListItem.request_date
+                                : "-"),
                           ),
                         ),
+                      ],
+                    ),
+                    Row(
+                      children: [
                         Expanded(
                           flex: 1,
                           child: ListTile(
                             title: Text(AppTranslations.of(context)
                                 .text(Const.LOCALE_KEY_TYPE)),
-                            subtitle: Text(
-                                leaveListItem.leave_id != null
-                                    ? leaveListItem.leave_displayValue
-                                    : "-"),
-                          ),
-                        ),
-
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: ListTile(
-                            title: Text(AppTranslations.of(context)
-                                .text(Const.LOCALE_KEY_FROM)),
-                            subtitle: Column(
-                              children: [
-                                Text(leaveListItem.start_date != null
-                                    ? leaveListItem.start_date
-                                    : "-" ),
-                                SizedBox(height: 3,),
-                                Text(leaveListItem.start_time!=null ? ApplicationController.formatToHours(leaveListItem.start_time):"-")
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: ListTile(
-                            title: Text(AppTranslations.of(context)
-                                .text(Const.LOCALE_KEY_TO)),
-                            subtitle: Column(
-                              children: [
-                                Text(leaveListItem.end_date != null
-                                    ? leaveListItem.end_date
-                                    : "-"),
-                                SizedBox(height: 3,),
-                                Text(leaveListItem.end_time!=null ? ApplicationController.formatToHours(leaveListItem.end_time):"-")
-
-                              ],
-                            ),
+                            subtitle: Text(leaveListItem.leave_id != null
+                                ? leaveListItem.leave_displayValue
+                                : "-"),
                           ),
                         ),
                       ],
@@ -501,34 +472,34 @@ class LeavesView extends StatelessWidget {
                         Expanded(
                           flex: 1,
                           child: Text(AppTranslations.of(context)
-                              .text(Const.LOCALE_KEY_APPROVAL_INBOX) +
+                                  .text(Const.LOCALE_KEY_APPROVAL_INBOX) +
                               ": "),
                         ),
                       ],
                     ),
-                    if(leaveListItem.approvalList!=null)
+                    if (leaveListItem.approvalList != null)
                       Row(
                         children: [
                           Expanded(
                               child: SizedBox(
-                                height: 100,
-                                child: ListView.builder(
-                                  itemBuilder: (ctx, index) {
-                                    return Text(
-                                      leaveListItem
-                                          .approvalList[index].employeeName !=
+                            height: 100,
+                            child: ListView.builder(
+                              itemBuilder: (ctx, index) {
+                                return Text(
+                                  leaveListItem.approvalList[index]
+                                              .employeeName !=
                                           null
-                                          ? leaveListItem
+                                      ? leaveListItem
                                           .approvalList[index].employeeName
-                                          : "-",
-                                      style: TextStyle(
-                                        color: AppTheme.kPrimaryColor,
-                                      ),
-                                    );
-                                  },
-                                  itemCount: leaveListItem.approvalList.length,
-                                ),
-                              ))
+                                      : "-",
+                                  style: TextStyle(
+                                    color: AppTheme.kPrimaryColor,
+                                  ),
+                                );
+                              },
+                              itemCount: leaveListItem.approvalList.length,
+                            ),
+                          ))
                         ],
                       )
                   ],
@@ -538,7 +509,6 @@ class LeavesView extends StatelessWidget {
           );
         });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -561,7 +531,7 @@ class LeavesView extends StatelessWidget {
                   color: AppTheme.kPrimaryLightColor.withOpacity(0.4),
                 ),
                 width: double.infinity,
-                height: 100,
+                height: 120,
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Row(
@@ -570,14 +540,15 @@ class LeavesView extends StatelessWidget {
                     Container(
                       width: 50,
                       height: 50,
-                      margin: MyApp.isEN ? EdgeInsets.only(right: 15):EdgeInsets.only(left: 15),
+                      margin: MyApp.isEN
+                          ? EdgeInsets.only(right: 15)
+                          : EdgeInsets.only(left: 15),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                         border: Border.all(
                             width: 3,
-                            color: leaveListItem
-                                .getRightColor()
-                                .withOpacity(0.2)),
+                            color:
+                                leaveListItem.getRightColor().withOpacity(0.2)),
                       ),
                       child: leaveListItem.getRightIcon(),
                     ),
@@ -598,16 +569,64 @@ class LeavesView extends StatelessWidget {
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_STATUS),
+                              Text(
+                                  AppTranslations.of(context)
+                                      .text(Const.LOCALE_KEY_STATUS),
                                   style: TextStyle(
                                       color: leaveListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
-                              Text(leaveListItem.request_status,
+                              Text(
+                                  leaveListItem.request_status != null
+                                      ? leaveListItem
+                                          .request_status_displayValue
+                                      : "-",
                                   style: TextStyle(
                                       color: leaveListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.calendar_today,
+                                color: leaveListItem.getRightColor(),
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                  AppTranslations.of(context)
+                                      .text(Const.LOCALE_KEY_FROM)+" :",
+                                  style: TextStyle(
+                                      color: leaveListItem.getRightColor(),
+                                      fontSize: 13,
+                                      letterSpacing: .3)),
+                              Text(
+                                  leaveListItem.start_date != null
+                                      ? leaveListItem.start_date
+                                      : "-",
+                                  style: TextStyle(
+                                      color: leaveListItem.getRightColor(),
+                                      fontSize: 13,
+                                      letterSpacing: .3)),
+                              SizedBox(
+                                height: 3,
+                              ),
+                              Text(
+                                  leaveListItem.start_time != null
+                                      ? ApplicationController.formatToHours(
+                                          leaveListItem.start_time)
+                                      : "-",
+                                  style: TextStyle(
+                                      color: leaveListItem.getRightColor(),
+                                      fontSize: 13,
+                                      letterSpacing: .3))
                             ],
                           ),
                           SizedBox(
@@ -623,16 +642,33 @@ class LeavesView extends StatelessWidget {
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_REQUEST_DATE),
+                              Text(
+                                  AppTranslations.of(context)
+                                      .text(Const.LOCALE_KEY_TO)+" :",
                                   style: TextStyle(
                                       color: leaveListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
-                              Text( leaveListItem.request_date !=null? leaveListItem.request_date : '-',
+                              Text(
+                                  leaveListItem.end_date != null
+                                      ? leaveListItem.end_date
+                                      : "-",
                                   style: TextStyle(
                                       color: leaveListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
+                              SizedBox(
+                                height: 3,
+                              ),
+                              Text(
+                                  leaveListItem.end_time != null
+                                      ? ApplicationController.formatToHours(
+                                          leaveListItem.end_time)
+                                      : "-",
+                                  style: TextStyle(
+                                      color: leaveListItem.getRightColor(),
+                                      fontSize: 13,
+                                      letterSpacing: .3))
                             ],
                           ),
                           Expanded(
@@ -648,8 +684,7 @@ class LeavesView extends StatelessWidget {
                                     ),
                                     tooltip: 'details',
                                     hoverColor: leaveListItem.getRightColor(),
-                                    splashColor:
-                                    leaveListItem.getRightColor(),
+                                    splashColor: leaveListItem.getRightColor(),
                                     onPressed: () {
                                       _asyncConfirmDialog(context);
                                     }),

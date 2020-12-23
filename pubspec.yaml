@@ -52,6 +52,8 @@ dependencies:
   syncfusion_flutter_charts: ^18.3.35
   downloads_path_provider: ^0.1.0
   flare_splash_screen: ^3.0.1
+  flutter_vertical_marquee: ^0.2.3
+
 
 dev_dependencies:
   flutter_test:

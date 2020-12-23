@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'attendance_summary_base_response.dart';
+part of 'message_broadcaste_base_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AttendanceSummaryBaseResponse _$AttendanceSummaryBaseResponseFromJson(
+MessageBroadcasteBaseResponse _$MessageBroadcasteBaseResponseFromJson(
     Map<String, dynamic> json) {
-  return AttendanceSummaryBaseResponse()
-    ..cloackRecordList = (json['cloackRecordList'] as List)
+  return MessageBroadcasteBaseResponse()
+    ..messageList = (json['messageList'] as List)
         .map((e) =>
-            AttendanceSummaryResponse.fromJson(e as Map<String, dynamic>))
+            MessageBroadcasteResponse.fromJson(e as Map<String, dynamic>))
         .toList()
     ..err_MSG = json['err_MSG'] as String
     ..response = json['response'] as String;
 }
 
-Map<String, dynamic> _$AttendanceSummaryBaseResponseToJson(
-        AttendanceSummaryBaseResponse instance) =>
+Map<String, dynamic> _$MessageBroadcasteBaseResponseToJson(
+        MessageBroadcasteBaseResponse instance) =>
     <String, dynamic>{
-      'cloackRecordList': instance.cloackRecordList,
+      'messageList': instance.messageList,
       'err_MSG': instance.err_MSG,
       'response': instance.response,
     };

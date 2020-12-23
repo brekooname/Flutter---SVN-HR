@@ -302,6 +302,8 @@ class Const {
 
   static final LOCALE_KEY_MY_EXTRA_WORK="my_extra_work";
   static final LOCALE_KEY_EXTRA_WORK_DETAILS="extra_work_details";
+  static final LOCALE_KEY_LEAVE_DETAILS="leave_details";
+  static final LOCALE_KEY_VACATION_DETAILS="vacation_details";
 
 
 

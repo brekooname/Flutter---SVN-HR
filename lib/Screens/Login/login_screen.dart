@@ -22,11 +22,11 @@ class _LoginScreenState extends State<LoginScreen> {
   // String _username = "abdallah1";
   // String _password = "123456";
 
-  String _username = "mansour";
-  String _password = "123123";
+  // String _username = "mansour";
+  // String _password = "123123";
 
-  // String _username;
-  // String _password;
+  String _username;
+  String _password;
 
   LoginController loginController = LoginController();
   bool showSpinner = false;

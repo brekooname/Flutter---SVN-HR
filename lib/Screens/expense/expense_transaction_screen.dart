@@ -342,9 +342,9 @@ class ExpenseView extends StatelessWidget {
                           flex: 1,
                           child: ListTile(
                             title: Text(AppTranslations.of(context)
-                                .text(Const.LOCALE_KEY_EXPENSE_REQUEST_DATE)),
-                            subtitle: Text(expenseListItem.request_date != null
-                                ? expenseListItem.request_date.toString()
+                                .text(Const.LOCALE_KEY_EXPENSE_APPROVE_DATE)),
+                            subtitle: Text(expenseListItem.approval_date != null
+                                ? expenseListItem.approval_date.toString()
                                 : "-"),
                           ),
                         ),
@@ -499,7 +499,7 @@ class ExpenseView extends StatelessWidget {
                               ),
                               Text(
                                   AppTranslations.of(context).text(Const
-                                          .LOCALE_KEY_EXPENSE_APPROVE_DATE) +
+                                          .LOCALE_KEY_EXPENSE_REQUEST_DATE) +
                                       ": ",
                                   style: TextStyle(
                                       color: expenseListItem.getRightColor(),

@@ -26,7 +26,8 @@ ExtraWorkTransactionResponse _$ExtraWorkTransactionResponseFromJson(
     ..unit_display_value = json['unit_display_value'] as String
     ..unit = json['unit'] as String
     ..employee_id = json['employee_id'] as String
-    ..row_id = json['row_id'] as String;
+    ..row_id = json['row_id'] as String
+    ..approval_date = json['approval_date'] as String;
 }
 
 Map<String, dynamic> _$ExtraWorkTransactionResponseToJson(
@@ -48,4 +49,5 @@ Map<String, dynamic> _$ExtraWorkTransactionResponseToJson(
       'unit': instance.unit,
       'employee_id': instance.employee_id,
       'row_id': instance.row_id,
+      'approval_date': instance.approval_date,
     };

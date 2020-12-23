@@ -11,7 +11,7 @@ ExtraWorkTransactionBaseResponse _$ExtraWorkTransactionBaseResponseFromJson(
   return ExtraWorkTransactionBaseResponse()
     ..extraWorkList = (json['extraWorkList'] as List)
         .map((e) =>
-        ExtraWorkTransactionResponse.fromJson(e as Map<String, dynamic>))
+            ExtraWorkTransactionResponse.fromJson(e as Map<String, dynamic>))
         .toList()
     ..err_MSG = json['err_MSG'] as String
     ..response = json['response'] as String;

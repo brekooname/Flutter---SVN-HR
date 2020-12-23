@@ -35,6 +35,8 @@ class ExtraWorkTransactionResponse{
 
   String _request_date;
 
+  String _approval_date;
+
   String _day_type;
 
   String _day_type_display_value;
@@ -158,4 +160,9 @@ class ExtraWorkTransactionResponse{
     return AppTheme.green;
   }
 
+  String get approval_date => _approval_date;
+
+  set approval_date(String value) {
+    _approval_date = value;
+  }
 }

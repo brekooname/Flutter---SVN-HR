@@ -292,10 +292,10 @@ class ExtraWorkView extends StatelessWidget {
                           flex: 1,
                           child: ListTile(
                             title: Text(AppTranslations.of(context)
-                                .text(Const.LOCALE_KEY_EXTRA_WORK_REQUEST_DATE)),
+                                .text(Const.LOCALE_KEY_EXPENSE_APPROVE_DATE)),
                             subtitle: Text(
-                                extraWorkListItem.request_date != null
-                                    ? extraWorkListItem.request_date.toString()
+                                extraWorkListItem.approval_date != null
+                                    ? extraWorkListItem.approval_date.toString()
                                     : "-"),
                           ),
                         ),

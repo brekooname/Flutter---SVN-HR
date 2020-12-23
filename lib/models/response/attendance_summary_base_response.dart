@@ -11,7 +11,7 @@ class AttendanceSummaryBaseResponse{
 
   String _err_MSG;
 
-  List<AttendanceSummaryResponse> _myAttendSummaryRecords;
+  List<AttendanceSummaryResponse> _cloackRecordList;
 
 
   AttendanceSummaryBaseResponse();
@@ -21,11 +21,11 @@ class AttendanceSummaryBaseResponse{
 
   Map<String, dynamic> toJson() => _$AttendanceSummaryBaseResponseToJson(this);
 
-  List<AttendanceSummaryResponse> get myAttendSummaryRecords =>
-      _myAttendSummaryRecords;
 
-  set myAttendSummaryRecords(List<AttendanceSummaryResponse> value) {
-    _myAttendSummaryRecords = value;
+  List<AttendanceSummaryResponse> get cloackRecordList => _cloackRecordList;
+
+  set cloackRecordList(List<AttendanceSummaryResponse> value) {
+    _cloackRecordList = value;
   }
 
   String get err_MSG => _err_MSG;

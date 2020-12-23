@@ -87,7 +87,7 @@
   "expenseCurrancy": "Expense Currency",
   "expenseAmount": "Expense Amount",
   "expenseDate": "Expense Date",
-  "expenseRequestDate": "Expense Request Date",
+  "expenseRequestDate": "Request Date",
   "expenseApprovedAmount": "Approved Amount",
 
   "documentApprovedDate": "Document Approved Date",
@@ -192,5 +192,8 @@
   "expense_details": "Expense Details",
   "transaction_status": "Transaction Status",
   "my_extra_work": "My Extra Work",
-  "extra_work_details": "Extra Work Details"
+  "extra_work_details": "Extra Work Details",
+
+  "leave_details": "Leave Details",
+  "vacation_details": "Vacation Details"
 }

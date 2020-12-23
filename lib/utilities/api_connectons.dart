@@ -80,4 +80,6 @@ class ApiConnections{
 
   static const String  GET_EXTRA_WORK_TRANSACTION="/getExtraWorkTransaction";
 
+  static const String  GET_MESSAGES="/getMessageBroadcasteList";
+
 }

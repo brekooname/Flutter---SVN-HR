@@ -182,15 +182,15 @@ class _AttendanceSummaryScreenState extends State<AttendanceSummaryScreen>
                     padding: const EdgeInsets.only(
                         top: 0, bottom: 0, right: 16, left: 16),
                     itemCount:
-                        _attendanceSummaryController.attendanceListItem.length,
+                        _attendanceSummaryController.attendanceList.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (BuildContext context, int index) {
                       final int count = _attendanceSummaryController
-                                  .attendanceListItem.length >
+                                  .attendanceList.length >
                               10
                           ? 10
                           : _attendanceSummaryController
-                              .attendanceListItem.length;
+                              .attendanceList.length;
                       final Animation<double> animation =
                           Tween<double>(begin: 0.0, end: 1.0).animate(
                               CurvedAnimation(
@@ -201,7 +201,7 @@ class _AttendanceSummaryScreenState extends State<AttendanceSummaryScreen>
 
                       return AttendanceView(
                         attendanceItem: _attendanceSummaryController
-                            .attendanceListItem[index],
+                            .attendanceList[index],
                         animation: animation,
                         animationController: animationController,
                         callback: () {
@@ -220,12 +220,6 @@ class _AttendanceSummaryScreenState extends State<AttendanceSummaryScreen>
   }
 }
 
-class ListItem {
-  int value;
-  String name;
-
-  ListItem(this.value, this.name);
-}
 
 class AttendanceView extends StatelessWidget {
   const AttendanceView(
@@ -237,7 +231,7 @@ class AttendanceView extends StatelessWidget {
       : super(key: key);
 
   final VoidCallback callback;
-  final AttendanceListItem attendanceItem;
+  final AttendanceSummaryResponse attendanceItem;
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
@@ -286,7 +280,7 @@ class AttendanceView extends StatelessWidget {
                                 width: 5,
                               ),
                               Text(
-                                  attendanceItem.rec_type != null
+                                  attendanceItem.rec_date != null
                                       ? attendanceItem.rec_date
                                       : '',
                                   style: TextStyle(
@@ -322,7 +316,7 @@ class AttendanceView extends StatelessWidget {
                                 SizedBox(
                                   width: 3,
                                 ),
-                                Text(attendanceItem.rec_time_in,
+                                Text(attendanceItem.check_in!=null ?attendanceItem.check_in:"-",
                                     style: TextStyle(
                                         color: AppTheme.green,
                                         fontSize: 13,
@@ -353,8 +347,8 @@ class AttendanceView extends StatelessWidget {
                                   width: 3,
                                 ),
                                 Text(
-                                    attendanceItem.rec_time_Out != null
-                                        ? attendanceItem.rec_time_Out
+                                    attendanceItem.check_out != null
+                                        ? attendanceItem.check_out
                                         : '-',
                                     style: TextStyle(
                                         color: AppTheme.red,
