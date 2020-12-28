@@ -196,6 +196,7 @@ class _AttachmentsListViewState extends State<AttachmentsListView> {
       ],
       content: Container(
         height: 180,
+        width: MediaQuery.of(context).size.width / 2,
         child: ListView.builder(
           itemBuilder: (ctx, index) {
             return GestureDetector(
@@ -300,6 +301,7 @@ class _ApprovalInboxAttachmentsListViewState
         inAsyncCall: showSpinner,
         child: Container(
           height: MediaQuery.of(context).size.height / 2,
+          width: MediaQuery.of(context).size.width / 2,
           child: ListView.builder(
             itemBuilder: (ctx, index) {
               return Container(

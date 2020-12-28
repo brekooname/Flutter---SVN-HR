@@ -85,9 +85,10 @@ class LeavesController {
     requestWrapper.statusList = statusList;
     requestWrapper.typeList = typeList;
     request.vac = requestWrapper;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.LEAVES_TRANSACTION;
+      var url = host + ApiConnections.LEAVES_TRANSACTION;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&
@@ -143,7 +144,9 @@ class LeavesController {
       List<String> filePaths}) async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    var url = ApiConnections.url + ApiConnections.ADD_NEW_LEAVE;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
+    var url = host + ApiConnections.ADD_NEW_LEAVE;
     NewLeaveRequest newLeaveRequest = NewLeaveRequest();
     newLeaveRequest.leave_id = leaveId;
     newLeaveRequest.notes = notes;
@@ -182,7 +185,11 @@ class LeavesController {
 
   Future<String> uploadAttachment(
       {String filePath, String tokenId, String approval_inbox_row_id}) async {
-    var url = ApiConnections.url + ApiConnections.UPLOAD_FILE;
+    final prefs = await SharedPreferences.getInstance();
+
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
+    var url = host + ApiConnections.UPLOAD_FILE;
     String fileNameWithExtenstion = filePath.split('/').last;
     String fileName = fileNameWithExtenstion.split('.').first;
     ;

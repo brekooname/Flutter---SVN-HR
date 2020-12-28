@@ -11,7 +11,9 @@ class EmployeeProfileController {
       String confirmedPassword}) async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    var url = ApiConnections.url + ApiConnections.CHANGE_PASSWORD;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
+    var url = host + ApiConnections.CHANGE_PASSWORD;
 
     NewPasswordRequest request = NewPasswordRequest(
         tokenID: tokenId,

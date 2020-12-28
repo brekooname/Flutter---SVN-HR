@@ -192,5 +192,16 @@
   "my_extra_work": "My Extra Work",
   "extra_work_details": "Extra Work Details",
   "leave_details": "Leave Details",
-  "vacation_details": "Vacation Details"
+  "vacation_details": "Vacation Details",
+  "message_details": "Message Details",
+
+  "server_ip": "IP Address",
+  "port": "Port",
+
+  "invalid_server_ip": "Invalid IP",
+  "invalid_port": "Invalid Port",
+  "is_integrated": "Is Integrated",
+  "server_connection": "Server Connection",
+  "my_announcements": "My Announcements"
+
 }

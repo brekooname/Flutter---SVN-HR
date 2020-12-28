@@ -49,8 +49,9 @@ class LoginController {
     }
 
     try {
+      bool _isIntegrated = prefs.getBool(Const.SHARED_KEY_IS_INTEGRATED);
       User user =
-          User(username: username, password: password, netsuitFlag: ApiConnections.NetSuiteFlag);
+          User(username: username, password: password, netsuitFlag: _isIntegrated);
       dynamic res = await getLoginAPI(user.toJson());
       if (res != null &&
           res.toString().compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
@@ -67,7 +68,9 @@ class LoginController {
   }
 
   Future<String> getLoginAPI(Map<String, dynamic> map) async {
-    var url = ApiConnections.url + ApiConnections.login;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
+    var url = host + ApiConnections.login;
     NetworkHelper helper = NetworkHelper(url: url, map: map);
     var userData = await helper.getData();
     if (userData != null &&
@@ -113,6 +116,11 @@ class LoginController {
   }
 
   void _saveToSharedPreferences(Employee employee) async {
+
+    String server_ip = prefs.getString(Const.SHARED_KEY_SERVER_IP);
+    String server_port = prefs.getString(Const.SHARED_KEY_SERVER_PORT);
+    String imageUrl=ApiConnections.main_part+server_ip+":"+server_port;
+
     prefs.setString(Const.SHARED_KEY_USERNAME, _username);
     prefs.setString(Const.SHARED_KEY_PASSWORD, _password);
     prefs.setString(Const.SHARED_KEY_TOKEN_ID, employee.tokenId);
@@ -124,7 +132,7 @@ class LoginController {
     prefs.setString(
         Const.SHARED_KEY_TELEPHONE_NUMBER, employee.telephoneNumber);
     prefs.setString(
-        Const.SHARED_KEY_EMPLOYEE_PIC_LINK, ApiConnections.host+employee.employee_profile_pic_link);
+        Const.SHARED_KEY_EMPLOYEE_PIC_LINK, imageUrl+employee.employee_profile_pic_link);
     prefs.setString(Const.SHARED_KEY_EMPLOYEE_NAME, employee.employeeName);
     prefs.setString(
         Const.SHARED_KEY_REPORTING_MANAGER, employee.reportingManager);
@@ -142,7 +150,9 @@ class LoginController {
   Future<String> loadLovValues() async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    var url = ApiConnections.url + ApiConnections.lov_values;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
+    var url = host+ ApiConnections.lov_values;
     LovValuesRequest request = LovValuesRequest(tokenID: tokenId);
     NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
     var userData = await helper.getData();
@@ -184,7 +194,9 @@ class LoginController {
   Future<String> loadVacationType() async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    var url = ApiConnections.url + ApiConnections.Vacations_type;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
+    var url = host + ApiConnections.Vacations_type;
     BaseRequest request = BaseRequest(tokenID: tokenId);
     NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
     var userData = await helper.getData();
@@ -238,7 +250,9 @@ class LoginController {
   Future<String> getProfileScreen() async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    var url = ApiConnections.url + ApiConnections.PROFILE_SCREEN;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
+    var url = host + ApiConnections.PROFILE_SCREEN;
     BaseRequest request = BaseRequest(tokenID: tokenId);
     NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
     var userData = await helper.getData();

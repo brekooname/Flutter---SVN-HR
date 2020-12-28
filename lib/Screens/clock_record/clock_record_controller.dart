@@ -40,9 +40,10 @@ class ClockRecordController {
     baseRequest.tokenID = tokenId;
     request.tokenWrapper = baseRequest;
     request.par_row_id = employeeId;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.GET_LAST_CHECK;
+      var url = host + ApiConnections.GET_LAST_CHECK;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&
@@ -101,9 +102,10 @@ class ClockRecordController {
 
     UserVerificationBaseRequest request = UserVerificationBaseRequest(
         tokenId: tokenId, userVerificationRequest: verificationRequest);
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.USER_VERIFICATION;
+      var url = host + ApiConnections.USER_VERIFICATION;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&
@@ -128,8 +130,10 @@ class ClockRecordController {
     NewClockCheckRequest request = NewClockCheckRequest(
         tokenID: tokenId, clockTime: clockTime, clockType: type);
 
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.NEW_CHECK;
+      var url = host + ApiConnections.NEW_CHECK;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&

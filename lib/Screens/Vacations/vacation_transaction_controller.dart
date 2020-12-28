@@ -72,7 +72,9 @@ class VacationTransactionController {
   Future<String> loadEmployeeVacationsBalance() async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    var url = ApiConnections.url + ApiConnections.Employee_Vacations;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
+    var url = host + ApiConnections.Employee_Vacations;
     BaseRequest request = BaseRequest(tokenID: tokenId);
     NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
     var userData = await helper.getData();
@@ -104,7 +106,9 @@ class VacationTransactionController {
       List<String> filePaths}) async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    var url = ApiConnections.url + ApiConnections.Add_New_Vacations;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
+    var url = host + ApiConnections.Add_New_Vacations;
     NewVacationRequest newVacationRequest = NewVacationRequest();
     newVacationRequest.vacation_id = vacationId;
     newVacationRequest.vacation_locaction = locationId;
@@ -144,7 +148,11 @@ class VacationTransactionController {
 
   Future<String> uploadAttachment(
       {String filePath, String tokenId, String approval_inbox_row_id}) async {
-    var url = ApiConnections.url + ApiConnections.UPLOAD_FILE;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
+    var url = host + ApiConnections.UPLOAD_FILE;
     String fileNameWithExtenstion = filePath.split('/').last;
     String fileName=fileNameWithExtenstion.split('.').first;;
     String fileType =  fileNameWithExtenstion.split('.').last;
@@ -208,9 +216,10 @@ class VacationTransactionController {
     requestWrapper.statusList = statusList;
     requestWrapper.typeList = typeList;
     request.vac = requestWrapper;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.vacation_transaction;
+      var url = host + ApiConnections.vacation_transaction;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&

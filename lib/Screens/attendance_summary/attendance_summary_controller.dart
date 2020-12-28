@@ -36,11 +36,12 @@ class AttendanceSummaryController {
     _attendanceList = List();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     AttendanceSummaryRequest request = AttendanceSummaryRequest(
         tokenId: tokenId, fromDate: fromDate, toDate: toDate);
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.GET_ATTENDANCE_SUMMARY;
+      var url = host + ApiConnections.GET_ATTENDANCE_SUMMARY;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&

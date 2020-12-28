@@ -33,9 +33,10 @@ class NotificationController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
     request.tokenID = tokenId;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.GET_ALL_NOTIFICATION_LIST;
+      var url = host + ApiConnections.GET_ALL_NOTIFICATION_LIST;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&
@@ -69,9 +70,10 @@ class NotificationController {
     baseRequest.tokenID = tokenId;
     request.tokenWrapper = baseRequest;
     request.par_row_id = approvalInboxId;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.GET_NOTIFICATION_OBJECT;
+      var url = host + ApiConnections.GET_NOTIFICATION_OBJECT;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&
@@ -95,7 +97,9 @@ class NotificationController {
   Future<String> closeNotification({String notifId}) async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    var url = ApiConnections.url + ApiConnections.CLOSE_NOTIFICATION;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
+    var url = host + ApiConnections.CLOSE_NOTIFICATION;
 
     NotificationCloseRequest request =
         NotificationCloseRequest(tokenId: tokenId, notifId: notifId);

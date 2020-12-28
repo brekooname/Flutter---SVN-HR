@@ -6,10 +6,12 @@ import 'package:sven_hr/Screens/Login/login_controller.dart';
 import 'package:sven_hr/Screens/Login/login_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
 import 'package:sven_hr/Screens/app_settings/app_settings_screen.dart';
+import 'package:sven_hr/Screens/app_settings/server_connection_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
 import 'package:sven_hr/Screens/attendance_summary/attendance_summary_screen.dart';
 import 'package:sven_hr/Screens/expense/expense_transaction_screen.dart';
 import 'package:sven_hr/Screens/extra_work/extra_work_transaction_screen.dart';
+import 'package:sven_hr/Screens/message_broadcaste/message_broadcaste_transaction_screen.dart';
 import 'package:sven_hr/Screens/profile/change_password_screen.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_controller.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
@@ -143,6 +145,22 @@ class _HomeDrawerState extends State<HomeDrawer> {
             labelName:
             AppTranslations.of(context).text(Const.LOCALE_KEY_MY_EXTRA_WORK),
             icon: Icon(Icons.text_rotation_angledown),
+          );
+          drawerList.add(item);
+        }else if (screen.screenName.compareTo(MessageBroadcasteScreen.id) == 0) {
+          DrawerList item = DrawerList(
+            index: DrawerIndex.ANNOUNCEMENTS,
+            labelName:
+            AppTranslations.of(context).text(Const.LOCALE_KEY_MY_ANNOUNCEMENTS),
+            icon: Icon(Icons.panorama_wide_angle_outlined),
+          );
+          drawerList.add(item);
+        }else if (screen.screenName.compareTo(ServerConnectionScreen.id) == 0) {
+          DrawerList item = DrawerList(
+            index: DrawerIndex.SERVER_CONNECTION,
+            labelName:
+            AppTranslations.of(context).text(Const.LOCALE_KEY_SERVER_CONNECTION),
+            icon: Icon(Icons.connected_tv),
           );
           drawerList.add(item);
         }
@@ -593,7 +611,9 @@ enum DrawerIndex {
   CLOCK_RECORD,
   APPROVAL_INBOX,
   APP_SETTINGS,
-  ATTENDANCE_SUMMARY
+  ATTENDANCE_SUMMARY,
+  ANNOUNCEMENTS,
+  SERVER_CONNECTION
 }
 
 class DrawerList {

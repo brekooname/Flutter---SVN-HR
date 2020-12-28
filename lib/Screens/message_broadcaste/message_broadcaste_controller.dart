@@ -19,10 +19,11 @@ class MessageBroadcasteController {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     BaseRequest request = BaseRequest(tokenID: tokenId);
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.GET_MESSAGES;
+      var url = host + ApiConnections.GET_MESSAGES;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&

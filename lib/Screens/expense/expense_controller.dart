@@ -41,7 +41,8 @@ class ExpenseController {
       List<String> filePaths}) async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    var url = ApiConnections.url + ApiConnections.ADD_EXPENSE;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    var url = host + ApiConnections.ADD_EXPENSE;
 
     ExpenseRequest expenseRequest = ExpenseRequest();
     expenseRequest.currency_id = currency;
@@ -84,7 +85,11 @@ class ExpenseController {
 
   Future<String> uploadAttachment(
       {String filePath, String tokenId, String approval_inbox_row_id}) async {
-    var url = ApiConnections.url + ApiConnections.UPLOAD_FILE;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
+    var url = host + ApiConnections.UPLOAD_FILE;
     String fileNameWithExtenstion = filePath.split('/').last;
     String fileName = fileNameWithExtenstion.split('.').first;
     ;
@@ -129,11 +134,12 @@ class ExpenseController {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     ExpenseTransactionRequest request = ExpenseTransactionRequest(
         tokenId: tokenId, fromDate: fromDate, toDate: toDate);
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.GET_EXPENSE_TRANSACTION;
+      var url = host + ApiConnections.GET_EXPENSE_TRANSACTION;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&

@@ -4,6 +4,7 @@ import 'package:sven_hr/Screens/Home/actions_list_view.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_controller.dart';
 import 'package:sven_hr/Screens/circular_charts/circular_default_pie.dart';
 import 'package:sven_hr/Screens/message_broadcaste/message_broadcaste_controller.dart';
+import 'package:sven_hr/components/text_field_container.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/models/chart_sample_data.dart';
 import 'package:sven_hr/models/response/employee_vacation_response.dart';
@@ -190,10 +191,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   List<TextSpan> _tipMarqueeList = List();
-
+  MessageBroadcasteController broadcasteController;
   _initMarquee() {
     _tipMarqueeList.clear();
-    MessageBroadcasteController broadcasteController =
+    broadcasteController =
         MessageBroadcasteController();
     TextSpan txt;
     broadcasteController.getMessageBroadcasteList().then((value) => {
@@ -203,20 +204,20 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   in broadcasteController.messageList)
                 {
                   txt = TextSpan(
-                      text: msg.message_title+" :",
+                      text: msg.message_title,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Color(
                               HexColor.getColorFromHex(msg.message_color))),
-                      children: <InlineSpan>[
-                        TextSpan(
-                          text: msg.message_text,
-                          style: TextStyle(
-                              fontWeight:FontWeight.normal,
-                              color: Color(
-                                  HexColor.getColorFromHex(msg.message_color))),
-                        )
-                      ]
+                      // children: <InlineSpan>[
+                      //   TextSpan(
+                      //     text: msg.message_text,
+                      //     style: TextStyle(
+                      //         fontWeight:FontWeight.normal,
+                      //         color: Color(
+                      //             HexColor.getColorFromHex(msg.message_color))),
+                      //   )
+                      // ]
 
                   ),
                   _tipMarqueeList.add(txt)
@@ -234,26 +235,72 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   Widget _buildMarquee() {
     _initMarquee();
     var controller = MarqueeController();
-    return GestureDetector(
-      child: Container(
-        height: 40.0,
-        color: AppTheme.kPrimaryLightColor,
-        child: Marquee(
-          // textList: _tipMarqueeList, // List<Text>, textList and textSpanList can only have one of code.
-          textSpanList:
-              _tipMarqueeList, // List<TextSpan> text, textList and textSpanList can only have one of code.
-          fontSize: 14.0, // text size
-          scrollDuration: Duration(seconds: 1), // every scroll duration
-          stopDuration: Duration(seconds: 3), //every stop duration
-          tapToNext: true, // tap to next
-          textColor: Colors.black, // text color
-          controller: controller, // the controller can get the position
+    return Container(
+      child: GestureDetector(
+        child: Container(
+          height: 40.0,
+          color: AppTheme.kPrimaryLightColor,
+          child: Marquee(
+            // textList: _tipMarqueeList, // List<Text>, textList and textSpanList can only have one of code.
+            textSpanList:
+                _tipMarqueeList, // List<TextSpan> text, textList and textSpanList can only have one of code.
+            fontSize: 14.0, // text size
+            scrollDuration: Duration(seconds: 1), // every scroll duration
+            stopDuration: Duration(seconds: 3), //every stop duration
+            tapToNext: false, // tap to next
+            textColor: Colors.black, // text color
+            controller: controller, // the controller can get the position
+          ),
         ),
+        onTap: () {
+          print(controller.position);
+          if(broadcasteController.messageList!=null && broadcasteController.messageList.isNotEmpty)
+          _asyncConfirmDialog(context, broadcasteController.messageList[controller.position]);// get the position
+        },
       ),
-      onTap: () {
-        print(controller.position); // get the position
-      },
     );
+  }
+
+
+  Future _asyncConfirmDialog(BuildContext context,MessageBroadcasteResponse messageListItem) async {
+    return await showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.close,
+                  color: AppTheme.kPrimaryColor,
+                ),
+                tooltip: 'close',
+                hoverColor: AppTheme.kPrimaryColor,
+                splashColor: AppTheme.kPrimaryColor,
+                onPressed: () async {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+            content: Container(
+              color: AppTheme.white,
+              height: 300,
+              width: 200.0,
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: TextFieldContainer(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(messageListItem.message_text,style: TextStyle(color: Color(HexColor.getColorFromHex(
+                              messageListItem.message_color))),),
+                        )),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   Widget getPopularCourseUI() {

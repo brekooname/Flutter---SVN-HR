@@ -43,6 +43,10 @@ class Const {
   static final String RECORD_TYPE_IN = "1474187388526";
   static final String RECORD_TYPE_OUT = "1474187403434";
 
+  static final String MESSAGE_SEVERITY_HIGH = "1222199906133719";
+  static final String MESSAGE_SEVERITY_MEDUIM = "1222167849724511";
+  static final String MESSAGE_SEVERITY_LOW = "1222124795469481";
+
 
   static final String EXT_WRK_TRNS_STAT_PENDING = "1476108304613";
 
@@ -71,6 +75,12 @@ class Const {
   static final SHARED_KEY_REPORTING_MANAGER="reportingManager";
   static final SHARED_KEY_USERNAME="username";
   static final SHARED_KEY_PASSWORD="password";
+  static final SHARED_KEY_SERVER_IP="ip";
+  static final SHARED_KEY_SERVER_PORT="port";
+  static final SHARED_KEY_FULL_HOST_URL="full_url";
+  static final SHARED_KEY_IS_INTEGRATED="_isIntegrated";
+
+
 
   static final LANGUAGE_CODE_EN="en";
   static final lANGUAGE_CODE_AR="ar";
@@ -98,6 +108,11 @@ class Const {
   static final LOCALE_KEY_USERNAME="username";
   static final LOCALE_KEY_PASSWORD="password";
   static final LOCALE_KEY_LOGIN="login";
+
+  static final LOCALE_KEY_SERVER_IP="server_ip";
+  static final LOCALE_KEY_SERVER_PORT="port";
+  static final LOCALE_KEY_IS_INTEGRATED="is_integrated";
+
 
   static final LOCALE_KEY_HOME="home";
   static final LOCALE_KEY_PROFILE="my_profile";
@@ -304,6 +319,16 @@ class Const {
   static final LOCALE_KEY_EXTRA_WORK_DETAILS="extra_work_details";
   static final LOCALE_KEY_LEAVE_DETAILS="leave_details";
   static final LOCALE_KEY_VACATION_DETAILS="vacation_details";
+
+  static final LOCALE_KEY_MESSAGE_DETAILS="message_details";
+
+  static final INVALID_SERVER_IP="invalid_server_ip";
+  static final INVALID_SERVER_PORT="invalid_port";
+
+  static final LOCALE_KEY_SERVER_CONNECTION="server_connection";
+
+  static final LOCALE_KEY_MY_ANNOUNCEMENTS="my_announcements";
+
 
 
 

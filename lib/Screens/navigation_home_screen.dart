@@ -5,6 +5,7 @@ import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen
 import 'package:sven_hr/Screens/attendance_summary/attendance_summary_screen.dart';
 import 'package:sven_hr/Screens/expense/expense_transaction_screen.dart';
 import 'package:sven_hr/Screens/extra_work/extra_work_transaction_screen.dart';
+import 'package:sven_hr/Screens/message_broadcaste/message_broadcaste_transaction_screen.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
 import 'package:sven_hr/Screens/time_sheet/time_sheet_screen.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
@@ -13,6 +14,8 @@ import 'package:sven_hr/Screens/custom_drawer/home_drawer.dart';
 
 import 'package:flutter/material.dart';
 import 'package:sven_hr/Screens/Home/home_screen.dart';
+
+import 'app_settings/server_connection_screen.dart';
 
 class NavigationHomeScreen extends StatefulWidget {
   static final String id = "NavigationHomeScreen";
@@ -108,6 +111,14 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       }else if (drawerIndex == DrawerIndex.EXTRA_WORK) {
         setState(() {
           screenView = ExtraWorkTransactionScreen();
+        });
+      }else if (drawerIndex == DrawerIndex.ANNOUNCEMENTS) {
+        setState(() {
+          screenView = MessageBroadcasteScreen();
+        });
+      }else if (drawerIndex == DrawerIndex.SERVER_CONNECTION) {
+        setState(() {
+          screenView = ServerConnectionScreen(inside: true,);
         });
       }else {
         //do in your way......

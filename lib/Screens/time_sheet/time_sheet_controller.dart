@@ -56,12 +56,13 @@ class TimeSheetController {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     TimeSheetRequest request =
         TimeSheetRequest(tokenId: tokenId, fromDate: fromDate, toDate: toDate);
     if (request != null) {
       var url =
-          ApiConnections.url + ApiConnections.TIME_SHEET_HEADER_TRANSACTION;
+          host + ApiConnections.TIME_SHEET_HEADER_TRANSACTION;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&
@@ -94,7 +95,9 @@ class TimeSheetController {
   Future<String> addNewTimeSheetHeader({String startDate, String rowId}) async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    var url = ApiConnections.url + ApiConnections.ADD_TIME_SHEET_HEADER_REQUEST;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
+    var url = host + ApiConnections.ADD_TIME_SHEET_HEADER_REQUEST;
 
     NewTimeSheetHeaderRequest timesheetHeader = NewTimeSheetHeaderRequest();
     timesheetHeader.start_date = startDate;
@@ -127,7 +130,9 @@ class TimeSheetController {
       String description}) async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    var url = ApiConnections.url + ApiConnections.ADD_TIME_SHEET_DETAILS;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
+    var url = host + ApiConnections.ADD_TIME_SHEET_DETAILS;
 
     NewTimeSheetDetailsRequest timesheetDetails = NewTimeSheetDetailsRequest(
         start_time: startTime,
@@ -163,13 +168,14 @@ class TimeSheetController {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     BaseRequest baseRequest = BaseRequest(tokenID: tokenId);
 
     ApprovalObjectRequest request = ApprovalObjectRequest(
         tokenWrapper: baseRequest, par_row_id: timeSheetRowId);
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.GET_TIME_SHEET_DETAILS_LIST;
+      var url = host + ApiConnections.GET_TIME_SHEET_DETAILS_LIST;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&
@@ -206,11 +212,12 @@ class TimeSheetController {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     BaseRequest request = BaseRequest(tokenID: tokenId);
 
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.GET_PROJECTS_lIST;
+      var url = host + ApiConnections.GET_PROJECTS_lIST;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&

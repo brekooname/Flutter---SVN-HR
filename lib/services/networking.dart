@@ -23,4 +23,21 @@ class NetworkHelper {
       print(response.statusCode);
     }
   }
+
+  Future<bool> testConnection() async {
+    try{
+      http.Response response = await http.get(url);
+      if (response.statusCode == 200) {
+
+        return true;
+      } else {
+        return false;
+      }
+    }catch(e){
+      return false;
+    }
+
+    return false;
+
+  }
 }

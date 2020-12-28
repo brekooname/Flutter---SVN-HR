@@ -10,6 +10,7 @@ import 'package:sven_hr/Screens/Login/login_controller.dart';
 import 'package:sven_hr/Screens/Vacations/picker_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_request_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
+import 'package:sven_hr/Screens/app_settings/server_connection_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/request_details_screen.dart';
 import 'package:sven_hr/Screens/attendance_summary/attendance_summary_screen.dart';
@@ -19,6 +20,7 @@ import 'package:sven_hr/Screens/expense/expense_request_screen.dart';
 import 'package:sven_hr/Screens/expense/expense_transaction_screen.dart';
 import 'package:sven_hr/Screens/extra_work/extra_work_screen.dart';
 import 'package:sven_hr/Screens/extra_work/extra_work_transaction_screen.dart';
+import 'package:sven_hr/Screens/message_broadcaste/message_broadcaste_transaction_screen.dart';
 import 'package:sven_hr/Screens/navigation_home_screen.dart';
 import 'package:sven_hr/Screens/Login/login_screen.dart';
 import 'package:sven_hr/Screens/profile/change_password_screen.dart';
@@ -41,25 +43,33 @@ Future<void> main() async {
   initialRoute = LoginScreen.id;
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //check if user login or not
-  String prefTokenId = prefs.get(Const.SHARED_KEY_TOKEN_ID);
-  if (prefTokenId != null && !prefTokenId.isEmpty) {
-    var username = prefs.getString(Const.SHARED_KEY_USERNAME) ?? "";
-    var password = prefs.getString(Const.SHARED_KEY_PASSWORD) ?? "";
+  var full_url = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL) ?? "";
+  if (full_url.isNotEmpty) {
+    //check if user login or not
+    String prefTokenId = prefs.get(Const.SHARED_KEY_TOKEN_ID);
+    if (prefTokenId != null && !prefTokenId.isEmpty) {
+      var username = prefs.getString(Const.SHARED_KEY_USERNAME) ?? "";
+      var password = prefs.getString(Const.SHARED_KEY_PASSWORD) ?? "";
 
-    LoginController loginController = LoginController();
-    await loginController.loginVerifications(username, password).then((value) {
-      if (value != null) {
-        if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
-          initialRoute = NavigationHomeScreen.id;
+      LoginController loginController = LoginController();
+      await loginController
+          .loginVerifications(username, password)
+          .then((value) {
+        if (value != null) {
+          if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
+            initialRoute = NavigationHomeScreen.id;
 
-          // ToastMessage.showSuccessMsg(value.message);
-        } else {
-          ToastMessage.showErrorMsg(value.message);
+            // ToastMessage.showSuccessMsg(value.message);
+          } else {
+            ToastMessage.showErrorMsg(value.message);
+          }
         }
-      }
-    });
+      });
+    }
+  } else {
+    initialRoute = ServerConnectionScreen.id;
   }
+
   runApp(MyApp());
 }
 
@@ -154,8 +164,10 @@ class _MyAppState extends State<MyApp> {
         ExtraWorkScreen.id: (context) => ExtraWorkScreen(),
         AttendanceSummaryScreen.id: (context) => AttendanceSummaryScreen(),
         ExpenseTransactionScreen.id: (context) => ExpenseTransactionScreen(),
-        ExtraWorkTransactionScreen.id: (context) => ExtraWorkTransactionScreen()
-
+        ExtraWorkTransactionScreen.id: (context) =>
+            ExtraWorkTransactionScreen(),
+        MessageBroadcasteScreen.id: (context) => MessageBroadcasteScreen(),
+        ServerConnectionScreen.id: (context) => ServerConnectionScreen()
       },
       localizationsDelegates: [
         newLocaleDelegate,

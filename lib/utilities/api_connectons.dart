@@ -5,12 +5,16 @@ class ApiConnections{
   // static const String url="http://176.67.58.26:19090/Sven/api";
  // static const String host="http://157.56.182.203:8080";
  //  static const String url=host+"/NetsuiteHR/api";
-  static const String host="http://192.168.20.23:8080";
-  static const String url=host+"/Sven/api";
+  static const String main_part="http://";
+  static const String sven_part="/Sven/api";
+  static const String netsuite_part="/NetsuiteHR/api";
+
+  // static const String host="http://192.168.20.23:8080";
+  // static const String url=host+"/Sven/api";
 
   static const String login="/newlogin";
 
-  static const bool NetSuiteFlag=false;
+  // static const bool NetSuiteFlag=false;
 
   static const String vacation_transaction="/getFilteredVacation2";
 

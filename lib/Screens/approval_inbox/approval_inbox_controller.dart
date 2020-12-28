@@ -57,9 +57,10 @@ class ApprovalInboxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
     request.tokenID = tokenId;
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.GET_APPROVALS_LIST;
+      var url = host + ApiConnections.GET_APPROVALS_LIST;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&
@@ -94,13 +95,15 @@ class ApprovalInboxController {
     ApprovalObjectRequest request = ApprovalObjectRequest();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
     BaseRequest baseRequest = BaseRequest();
     baseRequest.tokenID = tokenId;
     request.tokenWrapper = baseRequest;
     request.par_row_id = approvalInboxId;
 
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.GET_APPROVAL_INBOX;
+      var url = host + ApiConnections.GET_APPROVAL_INBOX;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&
@@ -125,11 +128,13 @@ class ApprovalInboxController {
       {ApprovalObjectResponse requestInput, String action}) async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+
     var url;
     if (action.compareTo(Const.APPROVAL_INBOX_ACCTION_ACCEPT) == 0) {
-      url = ApiConnections.url + ApiConnections.APPROVALS_INBOX_ACCEPT;
+      url = host + ApiConnections.APPROVALS_INBOX_ACCEPT;
     } else {
-      url = ApiConnections.url + ApiConnections.APPROVAL_INBOX_REJECT;
+      url = host + ApiConnections.APPROVAL_INBOX_REJECT;
     }
     ApprovalInboxInputRequest inboxInputRequest = ApprovalInboxInputRequest();
     inboxInputRequest.approvedInboxId = requestInput.approvalInboxID;
@@ -176,12 +181,13 @@ class ApprovalInboxController {
     ApprovalInboxAttachmentsRequest request = ApprovalInboxAttachmentsRequest();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     request.token_id = tokenId;
     request.approval_inbox_row_id = approvalInboxId;
 
     if (request != null) {
-      var url = ApiConnections.url + ApiConnections.GET_LIST_OF_ATTACHMENTS;
+      var url = host + ApiConnections.GET_LIST_OF_ATTACHMENTS;
       NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
       var userData = await helper.getData();
       if (userData != null &&
@@ -205,9 +211,10 @@ class ApprovalInboxController {
   Future<String> downloadFile(String attachId, String attachName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
+    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     if (attachId != null) {
-      var url = ApiConnections.url + ApiConnections.DOWN_LOAD_FILE;
+      var url = host + ApiConnections.DOWN_LOAD_FILE;
       DownloadFile helper = DownloadFile(
           url: url,
           attach_rowId: attachId,

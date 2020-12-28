@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:sven_hr/utilities/constants.dart';
+import 'package:sven_hr/utilities/hex_color.dart';
 
 
 part 'message_broadcaste_response.g.dart';
@@ -60,21 +64,26 @@ class MessageBroadcasteResponse {
     _message_title = value;
   }
 
-// Icon getRightIcon() {
-//   if (rec_type != null && rec_type != null) {
-//     if (rec_type.compareTo(Const.RECORD_TYPE_OUT) == 0) {
-//       return Icon(
-//         Icons.arrow_circle_up_outlined,
-//         color: AppTheme.red,
-//       );
-//     } else if (rec_type.compareTo(Const.RECORD_TYPE_IN) == 0) {
-//       return Icon(
-//         Icons.arrow_circle_down_outlined,
-//         color: AppTheme.green,
-//       );
-//     }
-//   }
-// }
+Icon getRightIcon() {
+  if (message_severity != null) {
+    if (message_severity.compareTo(Const.MESSAGE_SEVERITY_HIGH) == 0) {
+      return Icon(
+        Icons.notification_important,
+        color: Color(HexColor.getColorFromHex(message_color)),
+      );
+    } else if (message_severity.compareTo(Const.MESSAGE_SEVERITY_MEDUIM) == 0) {
+      return Icon(
+        Icons.notification_important_outlined,
+        color: Color(HexColor.getColorFromHex(message_color)),
+      );
+    }else if (message_severity.compareTo(Const.MESSAGE_SEVERITY_LOW) == 0) {
+      return Icon(
+        Icons.low_priority,
+        color: Color(HexColor.getColorFromHex(message_color)),
+      );
+    }
+  }
+}
 //
 // Color getRightColor() {
 //   if (rec_type.compareTo(Const.RECORD_TYPE_IN) == 0) {
