@@ -19,15 +19,15 @@ Salary _$SalaryFromJson(Map<String, dynamic> json) {
     ..net_salary = json['net_salary'] as num
     ..original_date_of_hire = json['original_date_of_hire'] as String
     ..org_id = json['org_id'] as String
-    ..hour_base_salary = json['hour_base_salary'] as int
-    ..retroactive_amt = json['retroactive_amt'] as int
+    ..hour_base_salary = json['hour_base_salary'] as num
+    ..retroactive_amt = json['retroactive_amt'] as num
     ..hour_value = json['hour_value'] as num
     ..updatedate = json['updatedate'] as String
     ..exemptions_amt = json['exemptions_amt'] as num
     ..unpaid_days_amount = json['unpaid_days_amount'] as num
     ..status = json['status'] as String
     ..comp_commit_flg = json['comp_commit_flg'] as String
-    ..loans_value = json['loans_value'] as int
+    ..loans_value = json['loans_value'] as num
     ..permission_method = json['permission_method'] as String
     ..tax_amt = json['tax_amt'] as num
     ..total_all = json['total_all'] as num
@@ -38,7 +38,7 @@ Salary _$SalaryFromJson(Map<String, dynamic> json) {
     ..extra_wrk_value = json['extra_wrk_value'] as num
     ..createdby = json['createdby'] as String
     ..total_ded = json['total_ded'] as num
-    ..paid_amt = json['paid_amt'] as int
+    ..paid_amt = json['paid_amt'] as num
     ..cycle_close_balance = json['cycle_close_balance'] as num
     ..payroll_cycle = json['payroll_cycle'] as String
     ..employment_class = json['employment_class'] as String
@@ -53,23 +53,23 @@ Salary _$SalaryFromJson(Map<String, dynamic> json) {
     ..employee_status_code = json['employee_status_code'] as String
     ..employee_status_displayValue =
         json['employee_status_displayValue'] as String
-    ..gross_salary = json['gross_salary'] as int
+    ..gross_salary = json['gross_salary'] as num
     ..employment_type = json['employment_type'] as String
     ..tax_exempt_id = json['tax_exempt_id'] as String
     ..position_id = json['position_id'] as String
-    ..cycle_days = json['cycle_days'] as int
+    ..cycle_days = json['cycle_days'] as num
     ..employee_id = json['employee_id'] as String
-    ..eos_salary = json['eos_salary'] as int
+    ..eos_salary = json['eos_salary'] as num
     ..shift_type = json['shift_type'] as String
     ..shift_type_code = json['shift_type_code'] as String
     ..shift_type_displayValue = json['shift_type_displayValue'] as String
     ..row_id = json['row_id'] as String
     ..day_value = json['day_value'] as num
-    ..unpaid_days = json['unpaid_days'] as int
+    ..unpaid_days = json['unpaid_days'] as num
     ..tax_slice_id = json['tax_slice_id'] as String
     ..iban_code = json['iban_code'] as String
     ..bank_id = json['bank_id'] as String
-    ..wrk_days = json['wrk_days'] as int
+    ..wrk_days = json['wrk_days'] as num
     ..createddate = json['createddate'] as String
     ..currency_id = json['currency_id'] as String
     ..currency_id_code = json['currency_id_code'] as String
@@ -82,9 +82,9 @@ Salary _$SalaryFromJson(Map<String, dynamic> json) {
     ..paymet_method = json['paymet_method'] as String
     ..updatedby = json['updatedby'] as String
     ..tax_id = json['tax_id'] as String
-    ..basic_salary = json['basic_salary'] as int
+    ..basic_salary = json['basic_salary'] as num
     ..isPosted = json['isPosted'] as String
-    ..posted_date = json['posted_date'] as String
+    ..posted_date = json['posted_date'] as num
     ..batch_row_id = json['batch_row_id'] as String;
 }
 

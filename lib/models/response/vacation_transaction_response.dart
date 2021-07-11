@@ -32,7 +32,7 @@ class VacationTransactionResponse{
   String _request_date;
 
   @JsonKey(name: 'holiday_days')
-  int _holiday_days;
+  num _holiday_days;
 
   @JsonKey(name: 'updatedate')
   String _updatedate;
@@ -59,16 +59,16 @@ class VacationTransactionResponse{
   String _employee_id;
 
   @JsonKey(name: 'paid_days')
-  int _paid_days;
+  num _paid_days;
 
   @JsonKey(name: 'unpaid_days')
-  int _unpaid_days;
+  num _unpaid_days;
 
   @JsonKey(name: 'linked_vacation_id')
   String _linked_vacation_id;
 
   @JsonKey(name: 'trans_period')
-  int _trans_period;
+  num _trans_period;
 
   @JsonKey(name: 'planned_flg')
   String _planned_flg;
@@ -86,7 +86,7 @@ class VacationTransactionResponse{
   String _start_date;
 
   @JsonKey(name: 'actual_period')
-  int _actual_period;
+  num _actual_period;
 
   @JsonKey(name: 'new_balance')
   double _new_balance;
@@ -183,9 +183,9 @@ class VacationTransactionResponse{
     _request_date = value;
   }
 
-  int get holiday_days => _holiday_days;
+  num get holiday_days => _holiday_days;
 
-  set holiday_days(int value) {
+  set holiday_days(num value) {
     _holiday_days = value;
   }
 
@@ -237,15 +237,15 @@ class VacationTransactionResponse{
     _employee_id = value;
   }
 
-  int get paid_days => _paid_days;
+  num get paid_days => _paid_days;
 
-  set paid_days(int value) {
+  set paid_days(num value) {
     _paid_days = value;
   }
 
-  int get unpaid_days => _unpaid_days;
+  num get unpaid_days => _unpaid_days;
 
-  set unpaid_days(int value) {
+  set unpaid_days(num value) {
     _unpaid_days = value;
   }
 
@@ -255,9 +255,9 @@ class VacationTransactionResponse{
     _linked_vacation_id = value;
   }
 
-  int get trans_period => _trans_period;
+  num get trans_period => _trans_period;
 
-  set trans_period(int value) {
+  set trans_period(num value) {
     _trans_period = value;
   }
 
@@ -363,9 +363,9 @@ class VacationTransactionResponse{
     _new_balance = value;
   }
 
-  int get actual_period => _actual_period;
+  num get actual_period => _actual_period;
 
-  set actual_period(int value) {
+  set actual_period(num value) {
     _actual_period = value;
   }
 

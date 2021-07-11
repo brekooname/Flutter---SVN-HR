@@ -28,7 +28,7 @@ dependencies:
   cupertino_icons: ^1.0.0
   font_awesome_flutter: ^8.8.1
   smooth_star_rating: ^1.1.1
-  intl: ^0.16.0
+  intl: ^0.17.0
   fluttertoastalert: ^1.0.3
   http: ^0.12.2
   json_annotation: ^3.0.1
@@ -53,17 +53,15 @@ dependencies:
   downloads_path_provider: ^0.1.0
   flare_splash_screen: ^3.0.1
   flutter_vertical_marquee: ^0.2.3
-
+  open_file: ^3.2.1
+  file_picker: ^2.1.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  file_picker:
-    path: ./flutter_file_picker
 
-  open_file:
-    path: ./open_file
+
 
   build_runner: ^1.1.0
   json_serializable: ^3.4.1

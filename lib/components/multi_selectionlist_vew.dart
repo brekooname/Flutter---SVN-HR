@@ -14,7 +14,9 @@ import 'package:sven_hr/utilities/constants.dart';
 class MultiSelectionLOVListView extends StatefulWidget {
   List<LovValue> lovs;
 
-  MultiSelectionLOVListView({@required this.lovs});
+  MultiSelectionLOVListView({@required
+  this.lovs
+  });
 
   @override
   _MultiSelectionLOVListViewState createState() =>
@@ -27,6 +29,7 @@ class _MultiSelectionLOVListViewState extends State<MultiSelectionLOVListView> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+
       actions: <Widget>[
         IconButton(
           icon: Icon(
@@ -45,6 +48,7 @@ class _MultiSelectionLOVListViewState extends State<MultiSelectionLOVListView> {
       ],
       content: Container(
         height: 180,
+        width: 180,
         child: ListView.builder(
           itemBuilder: (ctx, index) {
             return GestureDetector(
@@ -121,6 +125,7 @@ class _MultiSelectionTypeListViewState
       ],
       content: Container(
         height: 180,
+        width: 180,
         child: ListView.builder(
           itemBuilder: (ctx, index) {
             return GestureDetector(

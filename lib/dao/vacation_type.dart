@@ -51,7 +51,7 @@ class VacationType {
   String _description;
   String _createdby;
   String _updatedate;
-  int _default_balance;
+  num _default_balance;
   // not database columns
   bool isSelected=false;
   DatabaseHelper helper;
@@ -60,9 +60,9 @@ class VacationType {
     helper = DatabaseHelper.instance;
   }
 
-  int get default_balance => _default_balance;
+  num get default_balance => _default_balance;
 
-  set default_balance(int value) {
+  set default_balance(num value) {
     _default_balance = value;
   }
 

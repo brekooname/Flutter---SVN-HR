@@ -57,7 +57,7 @@ class VacationTypeResponse{
 
 
   @JsonKey(name: 'default_balance')
-  int _default_balance;
+  num _default_balance;
 
   String get name => _name;
 
@@ -71,9 +71,9 @@ class VacationTypeResponse{
     _approval_flg = value;
   }
 
-  int get default_balance => _default_balance;
+  num get default_balance => _default_balance;
 
-  set default_balance(int value) {
+  set default_balance(num value) {
     _default_balance = value;
   }
 

@@ -34,7 +34,7 @@ class ApprovalObjectResponse{
   String _vacationLocation;
 
   @JsonKey(name: 'vacationTransactionPeriod')
-  int _vacationTransactionPeriod;
+  num _vacationTransactionPeriod;
 
   @JsonKey(name: 'vacationTransactionReason')
   String _vacationTransactionReason;
@@ -55,7 +55,7 @@ class ApprovalObjectResponse{
   String _vacationRequestChannel;
 
   @JsonKey(name: 'vacationHolidayDays')
-  int _vacationHolidayDays;
+  num _vacationHolidayDays;
 
   @JsonKey(name: 'vacationPaidDays')
   num _vacationPaidDays;
@@ -85,10 +85,10 @@ class ApprovalObjectResponse{
   String _leaveApprovedBy;
 
   @JsonKey(name: 'leaveStartTime')
-  int _leaveStartTime;
+  num _leaveStartTime;
 
   @JsonKey(name: 'leaveEndTime')
-  int _leaveEndTime;
+  num _leaveEndTime;
 
   @JsonKey(name: 'leaveNotes')
   String _leaveNotes;
@@ -279,9 +279,9 @@ class ApprovalObjectResponse{
     _vacationLocation = value;
   }
 
-  int get vacationTransactionPeriod => _vacationTransactionPeriod;
+  num get vacationTransactionPeriod => _vacationTransactionPeriod;
 
-  set vacationTransactionPeriod(int value) {
+  set vacationTransactionPeriod(num value) {
     _vacationTransactionPeriod = value;
   }
 
@@ -322,9 +322,9 @@ class ApprovalObjectResponse{
   }
 
 
-  int get vacationHolidayDays => _vacationHolidayDays;
+  num get vacationHolidayDays => _vacationHolidayDays;
 
-  set vacationHolidayDays(int value) {
+  set vacationHolidayDays(num value) {
     _vacationHolidayDays = value;
   }
 
@@ -358,15 +358,15 @@ class ApprovalObjectResponse{
     _leaveApprovedBy = value;
   }
 
-  int get leaveStartTime => _leaveStartTime;
+  num get leaveStartTime => _leaveStartTime;
 
-  set leaveStartTime(int value) {
+  set leaveStartTime(num value) {
     _leaveStartTime = value;
   }
 
-  int get leaveEndTime => _leaveEndTime;
+  num get leaveEndTime => _leaveEndTime;
 
-  set leaveEndTime(int value) {
+  set leaveEndTime(num value) {
     _leaveEndTime = value;
   }
 

@@ -71,7 +71,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>  with Ticke
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        resizeToAvoidBottomPadding: false,
+//        resizeToAvoidBottomPadding: false,
         backgroundColor: AppTheme.nearlyWhite,
         body: ModalProgressHUD(
           inAsyncCall: showSpinner,

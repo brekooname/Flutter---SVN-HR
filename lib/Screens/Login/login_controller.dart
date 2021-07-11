@@ -139,7 +139,7 @@ class LoginController {
 
     if (employee.salary != null) {
       if (employee.salary.basic_salary != null)
-        prefs.setInt(
+        prefs.setDouble(
             Const.SHARED_KEY_BASIC_SALARY, employee.salary.basic_salary);
       if (employee.salary.currency_id_displayValue != null)
         prefs.setString(Const.SHARED_KEY_CURRENCY_CODE,

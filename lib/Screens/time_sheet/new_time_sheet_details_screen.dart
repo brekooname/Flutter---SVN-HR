@@ -193,7 +193,7 @@ class _NewTimeSheetDetailsScreenState extends State<NewTimeSheetDetailsScreen>
 
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        resizeToAvoidBottomPadding: false,
+//        resizeToAvoidBottomPadding: false,
         backgroundColor: AppTheme.nearlyWhite,
         body: ModalProgressHUD(
           inAsyncCall: showSpinner,

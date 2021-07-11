@@ -47,7 +47,7 @@ class _ScreenLoaderState extends State<ScreenLoader> {
         textDirection: MyApp.isEN ? TextDirection.ltr : TextDirection.rtl,
         child: Scaffold(
           resizeToAvoidBottomInset: true,
-          resizeToAvoidBottomPadding: false,
+//          resizeToAvoidBottomPadding: false,
           backgroundColor: AppTheme.white,
           body: SafeArea(
             child: Column(

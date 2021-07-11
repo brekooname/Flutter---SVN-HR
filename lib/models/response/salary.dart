@@ -42,10 +42,10 @@ class Salary{
   String _org_id;
 
   @JsonKey(name: 'hour_base_salary')
-  int _hour_base_salary;
+  double _hour_base_salary;
 
   @JsonKey(name: 'retroactive_amt')
-  int _retroactive_amt;
+  num _retroactive_amt;
 
   @JsonKey(name: 'hour_value')
   num _hour_value;
@@ -66,7 +66,7 @@ class Salary{
   String _comp_commit_flg;
 
   @JsonKey(name: 'loans_value')
-  int _loans_value;
+  num _loans_value;
 
   @JsonKey(name: 'permission_method')
   String _permission_method;
@@ -99,7 +99,7 @@ class Salary{
   num _total_ded;
 
   @JsonKey(name: 'paid_amt')
-  int _paid_amt;
+  num _paid_amt;
 
   @JsonKey(name: 'cycle_close_balance')
   num _cycle_close_balance;
@@ -138,7 +138,7 @@ class Salary{
   String _employee_status_displayValue;
 
   @JsonKey(name: 'gross_salary')
-  int _gross_salary;
+  num _gross_salary;
 
   @JsonKey(name: 'employment_type')
   String _employment_type;
@@ -150,13 +150,13 @@ class Salary{
   String _position_id;
 
   @JsonKey(name: 'cycle_days')
-  int _cycle_days;
+  num _cycle_days;
 
   @JsonKey(name: 'employee_id')
   String _employee_id;
 
   @JsonKey(name: 'eos_salary')
-  int _eos_salary;
+  num _eos_salary;
 
   @JsonKey(name: 'shift_type')
   String _shift_type;
@@ -174,7 +174,7 @@ class Salary{
   num _day_value;
 
   @JsonKey(name: 'unpaid_days')
-  int _unpaid_days;
+  num _unpaid_days;
 
   @JsonKey(name: 'tax_slice_id')
   String _tax_slice_id;
@@ -186,7 +186,7 @@ class Salary{
   String _bank_id;
 
   @JsonKey(name: 'wrk_days')
-  int _wrk_days;
+  num _wrk_days;
 
   @JsonKey(name: 'createddate')
   String _createddate;
@@ -225,13 +225,13 @@ class Salary{
   String _tax_id;
 
   @JsonKey(name: 'basic_salary')
-  int _basic_salary;
+  num _basic_salary;
 
   @JsonKey(name: 'isPosted')
   String _isPosted;
 
   @JsonKey(name: 'posted_date')
-  String _posted_date;
+  num _posted_date;
 
   @JsonKey(name: 'atch_row_id')
   String _batch_row_id;
@@ -304,15 +304,15 @@ class Salary{
     _org_id = value;
   }
 
-  int get hour_base_salary => _hour_base_salary;
+  double get hour_base_salary => _hour_base_salary;
 
-  set hour_base_salary(int value) {
+  set hour_base_salary(double value) {
     _hour_base_salary = value;
   }
 
-  int get retroactive_amt => _retroactive_amt;
+  num get retroactive_amt => _retroactive_amt;
 
-  set retroactive_amt(int value) {
+  set retroactive_amt(num value) {
     _retroactive_amt = value;
   }
 
@@ -352,9 +352,9 @@ class Salary{
     _comp_commit_flg = value;
   }
 
-  int get loans_value => _loans_value;
+  num get loans_value => _loans_value;
 
-  set loans_value(int value) {
+  set loans_value(num value) {
     _loans_value = value;
   }
 
@@ -418,9 +418,9 @@ class Salary{
     _total_ded = value;
   }
 
-  int get paid_amt => _paid_amt;
+  num get paid_amt => _paid_amt;
 
-  set paid_amt(int value) {
+  set paid_amt(num value) {
     _paid_amt = value;
   }
 
@@ -496,9 +496,9 @@ class Salary{
     _employee_status_displayValue = value;
   }
 
-  int get gross_salary => _gross_salary;
+  num get gross_salary => _gross_salary;
 
-  set gross_salary(int value) {
+  set gross_salary(num value) {
     _gross_salary = value;
   }
 
@@ -520,9 +520,9 @@ class Salary{
     _position_id = value;
   }
 
-  int get cycle_days => _cycle_days;
+  num get cycle_days => _cycle_days;
 
-  set cycle_days(int value) {
+  set cycle_days(num value) {
     _cycle_days = value;
   }
 
@@ -532,9 +532,9 @@ class Salary{
     _employee_id = value;
   }
 
-  int get eos_salary => _eos_salary;
+  num get eos_salary => _eos_salary;
 
-  set eos_salary(int value) {
+  set eos_salary(num value) {
     _eos_salary = value;
   }
 
@@ -568,9 +568,9 @@ class Salary{
     _day_value = value;
   }
 
-  int get unpaid_days => _unpaid_days;
+  num get unpaid_days => _unpaid_days;
 
-  set unpaid_days(int value) {
+  set unpaid_days(num value) {
     _unpaid_days = value;
   }
 
@@ -592,9 +592,9 @@ class Salary{
     _bank_id = value;
   }
 
-  int get wrk_days => _wrk_days;
+  num get wrk_days => _wrk_days;
 
-  set wrk_days(int value) {
+  set wrk_days(num value) {
     _wrk_days = value;
   }
 
@@ -670,9 +670,9 @@ class Salary{
     _tax_id = value;
   }
 
-  int get basic_salary => _basic_salary;
+  num get basic_salary => _basic_salary;
 
-  set basic_salary(int value) {
+  set basic_salary(num value) {
     _basic_salary = value;
   }
 
@@ -682,9 +682,9 @@ class Salary{
     _isPosted = value;
   }
 
-  String get posted_date => _posted_date;
+  num get posted_date => _posted_date;
 
-  set posted_date(String value) {
+  set posted_date(num value) {
     _posted_date = value;
   }
 

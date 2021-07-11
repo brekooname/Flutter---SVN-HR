@@ -10,7 +10,7 @@ VacationTypeResponse _$VacationTypeResponseFromJson(Map<String, dynamic> json) {
   return VacationTypeResponse()
     ..name = json['name'] as String
     ..approval_flg = json['approval_flg'] as String
-    ..default_balance = json['default_balance'] as int
+    ..default_balance = json['default_balance'] as num
     ..updatedate = json['updatedate'] as String
     ..createdby = json['createdby'] as String
     ..description = json['description'] as String
