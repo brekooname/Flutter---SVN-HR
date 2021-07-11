@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:open_file/open_file.dart';
+//import 'package:open_file/open_file.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sven_hr/Screens/approval_inbox/models/approval_inbox_item_list.dart';
 import 'package:sven_hr/components/flutter_toast_message.dart';
@@ -221,10 +221,10 @@ class ApprovalInboxController {
           token_id: tokenId,
           attach_name: attachName);
      File file= await helper.downloadFile();
-     if(file!=null) {
-      await OpenFile.open(file.path);
-       return Const.SYSTEM_SUCCESS_MSG;
-     }
+//     if(file!=null) {
+//      await OpenFile.open(file.path);
+//       return Const.SYSTEM_SUCCESS_MSG;
+//     }
 
     }
   }

@@ -53,8 +53,7 @@ dependencies:
   downloads_path_provider: ^0.1.0
   flare_splash_screen: ^3.0.1
   flutter_vertical_marquee: ^0.2.3
-  open_file: ^3.2.1
-  file_picker: ^2.1.7
+
 
 dev_dependencies:
   flutter_test:
