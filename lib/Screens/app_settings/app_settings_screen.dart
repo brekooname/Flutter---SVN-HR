@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:android_intent/android_intent.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,7 +43,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
 
 /*Check if gps service is enabled or not*/
   Future _gpsService() async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!(await Geolocator.isLocationServiceEnabled())) {
       _checkGps();
       return null;
     } else
@@ -51,7 +51,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
   }
 
   Future _checkGps() async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!(await Geolocator.isLocationServiceEnabled())) {
       if (Theme.of(context).platform == TargetPlatform.android) {
         showDialog(
             context: context,
@@ -136,21 +136,21 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
     switch (result) {
       case ConnectivityResult.wifi:
         try {
-          wifiBSSID = await _connectivity.getWifiBSSID();
+          var wifiBSSID = await (NetworkInfo().getWifiBSSID());
         } on PlatformException catch (e) {
           print(e.toString());
           wifiBSSID = "Failed to get Wifi BSSID";
         }
 
         try {
-          wifiName = await _connectivity.getWifiName();
+          var wifiName = await (NetworkInfo().getWifiName());
         } on PlatformException catch (e) {
           print(e.toString());
           wifiName = "Failed to get Wifi Name";
         }
 
         try {
-          wifiIP = await _connectivity.getWifiIP();
+          var wifiIP = await (NetworkInfo().getWifiIP());
         } on PlatformException catch (e) {
           print(e.toString());
           wifiIP = "Failed to get Wifi IP";
@@ -172,7 +172,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
   }
 
   void addNewLocation() async {
-    if(longitude ==null || latitude ==null ){
+    if (longitude == null || latitude == null) {
       ToastMessage.showErrorMsg(Const.LONGITUDE_LATITUDE_CANT_EMPTY);
       return;
     }
@@ -226,6 +226,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
 
     super.dispose();
   }
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -275,8 +276,9 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
                                         .text(Const.LOCALE_KEY_LATITUDE)),
-                                    subtitle: Text(
-                                        latitude != null ? latitude.toString() : "-"),
+                                    subtitle: Text(latitude != null
+                                        ? latitude.toString()
+                                        : "-"),
                                   ),
                                 ),
                                 SizedBox(
@@ -340,7 +342,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
                                 child: TextFormField(
                                   validator: (value) => value == null
                                       ? AppTranslations.of(context)
-                                      .text(Const.LOCALE_KEY_REQUIRED)
+                                          .text(Const.LOCALE_KEY_REQUIRED)
                                       : null,
                                   keyboardType: TextInputType.number,
                                   cursorColor: AppTheme.kPrimaryColor,
@@ -366,7 +368,8 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
                             ),
                             Flexible(
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 20, right: 20),
+                                padding:
+                                    const EdgeInsets.only(left: 20, right: 20),
                                 child: GestureDetector(
                                   onTap: () {
                                     if (_formKey.currentState.validate()) {
@@ -378,23 +381,24 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
                                     height: 40,
                                     decoration: BoxDecoration(
                                       color: buttonSendIsPressed
-                                          ? AppTheme.nearlyWhite.withOpacity(0.1)
+                                          ? AppTheme.nearlyWhite
+                                              .withOpacity(0.1)
                                           : AppTheme.nearlyBlue,
                                       borderRadius: const BorderRadius.all(
                                         Radius.circular(16.0),
                                       ),
                                       boxShadow: <BoxShadow>[
                                         BoxShadow(
-                                            color:
-                                                AppTheme.nearlyBlue.withOpacity(0.5),
+                                            color: AppTheme.nearlyBlue
+                                                .withOpacity(0.5),
                                             offset: const Offset(1.1, 1.1),
                                             blurRadius: 10.0),
                                       ],
                                     ),
                                     child: Center(
                                       child: Text(
-                                        AppTranslations.of(context)
-                                            .text(Const.LOCALE_KEY_ADD_LOCATION),
+                                        AppTranslations.of(context).text(
+                                            Const.LOCALE_KEY_ADD_LOCATION),
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
@@ -470,8 +474,9 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
                             child: ListTile(
                               title: Text(AppTranslations.of(context)
                                   .text(Const.LOCALE_KEY_WIFI_BSSID)),
-                              subtitle: Text(
-                                  wifiBSSID != null ? wifiBSSID.toString() : "-"),
+                              subtitle: Text(wifiBSSID != null
+                                  ? wifiBSSID.toString()
+                                  : "-"),
                             ),
                           ),
                           Flexible(
@@ -479,8 +484,8 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
                             child: ListTile(
                               title: Text(AppTranslations.of(context)
                                   .text(Const.LOCALE_KEY_WIFI_IP)),
-                              subtitle:
-                                  Text(wifiIP != null ? wifiIP.toString() : "-"),
+                              subtitle: Text(
+                                  wifiIP != null ? wifiIP.toString() : "-"),
                             ),
                           ),
                           SizedBox(
@@ -488,7 +493,8 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
                           ),
                           Flexible(
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 20, right: 20),
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
                               child: GestureDetector(
                                 onTap: () {
                                   addNewNetwork();
@@ -504,8 +510,8 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
                                     ),
                                     boxShadow: <BoxShadow>[
                                       BoxShadow(
-                                          color:
-                                              AppTheme.nearlyBlue.withOpacity(0.5),
+                                          color: AppTheme.nearlyBlue
+                                              .withOpacity(0.5),
                                           offset: const Offset(1.1, 1.1),
                                           blurRadius: 10.0),
                                     ],

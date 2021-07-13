@@ -62,7 +62,8 @@ class _MenueTopBarState extends State<MenueTopBar> {
       });
     });
   }
-  void clearPref() async{
+
+  void clearPref() async {
     prefs = await SharedPreferences.getInstance();
     String _serverIP = prefs.getString(Const.SHARED_KEY_SERVER_IP);
     String _port = prefs.getString(Const.SHARED_KEY_SERVER_PORT);
@@ -73,15 +74,14 @@ class _MenueTopBarState extends State<MenueTopBar> {
     prefs.setString(Const.SHARED_KEY_SERVER_IP, _serverIP);
     prefs.setString(Const.SHARED_KEY_SERVER_PORT, _port);
     prefs.setString(Const.SHARED_KEY_FULL_HOST_URL, _fullUrl);
-
   }
+
   void onItemSelected(String selected) async {
     prefs = await SharedPreferences.getInstance();
     if (selected.compareTo(Const.LOCALE_KEY_LOGOUT) == 0) {
       Navigator.pop(context);
       Navigator.pushNamed(context, LoginScreen.id);
       clearPref();
-
     } else if (selected.compareTo(Const.LOCALE_KEY_CHANGE_PASSWORD) == 0) {
       await _changePasswordDialog(context);
     }

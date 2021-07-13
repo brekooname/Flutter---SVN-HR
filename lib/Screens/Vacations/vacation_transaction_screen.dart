@@ -54,14 +54,17 @@ class _VacationsTransactionState extends State<VacationsTransaction>
     });
   }
 
-  void reset(){
-    statusList.forEach((element) {element.isSelected =false;});
-    typeList.forEach((element) {element.isSelected =false;});
-
+  void reset() {
+    statusList.forEach((element) {
+      element.isSelected = false;
+    });
+    typeList.forEach((element) {
+      element.isSelected = false;
+    });
   }
 
   void LoadVacationStatus() async {
-    statusList = List();
+    statusList = [];
 
     await _vacationTransactionController.loadVacationStatus().then((value) {
       setState(() {
@@ -72,7 +75,7 @@ class _VacationsTransactionState extends State<VacationsTransaction>
   }
 
   void LoadVacationType() async {
-    typeList = List();
+    typeList = [];
 
     await _vacationTransactionController.loadVacationTypes().then((value) {
       setState(() {
@@ -125,7 +128,8 @@ class _VacationsTransactionState extends State<VacationsTransaction>
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: Text(
-                          AppTranslations.of(context).text(Const.LOCALE_KEY_FILTER_BY),
+                          AppTranslations.of(context)
+                              .text(Const.LOCALE_KEY_FILTER_BY),
                           style: TextStyle(color: AppTheme.kPrimaryColor),
                           textAlign: TextAlign.center,
                         ),
@@ -160,7 +164,8 @@ class _VacationsTransactionState extends State<VacationsTransaction>
                             ),
                             child: Center(
                                 child: Text(
-                                  AppTranslations.of(context).text(Const.LOCALE_KEY_STATUS),
+                              AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_STATUS),
                               style: TextStyle(color: AppTheme.kPrimaryColor),
                               textAlign: TextAlign.center,
                             )),
@@ -197,7 +202,8 @@ class _VacationsTransactionState extends State<VacationsTransaction>
                             ),
                             child: Center(
                                 child: Text(
-                                  AppTranslations.of(context).text(Const.LOCALE_KEY_TYPE),
+                              AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_TYPE),
                               style: TextStyle(color: AppTheme.kPrimaryColor),
                               textAlign: TextAlign.center,
                             )),
@@ -225,7 +231,11 @@ class _VacationsTransactionState extends State<VacationsTransaction>
                     // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                          flex: 0, child: Text(AppTranslations.of(context).text(Const.LOCALE_KEY_FROM), style: AppTheme.subtitle)),
+                          flex: 0,
+                          child: Text(
+                              AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_FROM),
+                              style: AppTheme.subtitle)),
                       Expanded(
                         child: DateTimeField(
                           textAlign: TextAlign.center,
@@ -249,7 +259,11 @@ class _VacationsTransactionState extends State<VacationsTransaction>
                         ),
                       ),
                       Expanded(
-                          flex: 0, child: Text(AppTranslations.of(context).text(Const.LOCALE_KEY_TO), style: AppTheme.subtitle)),
+                          flex: 0,
+                          child: Text(
+                              AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_TO),
+                              style: AppTheme.subtitle)),
                       Expanded(
                         child: DateTimeField(
                           textAlign: TextAlign.center,
@@ -281,13 +295,12 @@ class _VacationsTransactionState extends State<VacationsTransaction>
                         hoverColor: AppTheme.kPrimaryColor,
                         splashColor: AppTheme.kPrimaryColor,
                         onPressed: () async {
-
                           setState(() {
                             showSpinner = true;
                           });
                           await _vacationTransactionController
                               .advancedSearch(
-                              fromDate, toDate, statusList, typeList)
+                                  fromDate, toDate, statusList, typeList)
                               .then((value) {
                             setState(() {
                               print(value);
@@ -360,20 +373,20 @@ class _VacationsTransactionState extends State<VacationsTransaction>
                     shrinkWrap: true,
                     padding: const EdgeInsets.only(
                         top: 0, bottom: 0, right: 16, left: 16),
-                    itemCount: _vacationTransactionController.vacationList.length,
+                    itemCount:
+                        _vacationTransactionController.vacationList.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (BuildContext context, int index) {
-                      final int count =
-                          _vacationTransactionController.vacationList.length > 10
-                              ? 10
-                              : _vacationTransactionController
-                                  .vacationList.length;
+                      final int count = _vacationTransactionController
+                                  .vacationList.length >
+                              10
+                          ? 10
+                          : _vacationTransactionController.vacationList.length;
                       final Animation<double> animation =
                           Tween<double>(begin: 0.0, end: 1).animate(
                               CurvedAnimation(
                                   parent: animationController,
-                                  curve: Interval(
-                                      (0.5 / count) * index, 0.5,
+                                  curve: Interval((0.5 / count) * index, 0.5,
                                       curve: Curves.fastOutSlowIn)));
                       animationController.forward();
 
@@ -412,7 +425,6 @@ class VacationView extends StatelessWidget {
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
-
   Future _asyncConfirmDialog(BuildContext context) async {
     Size size = MediaQuery.of(context).size;
     return await showDialog(
@@ -420,7 +432,7 @@ class VacationView extends StatelessWidget {
         builder: (ctx) {
           return AlertDialog(
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                   child: Text(
                     AppTranslations.of(context)
                         .text(Const.LOCALE_KEY_EMPLOYMENT_CLOSE),
@@ -462,11 +474,11 @@ class VacationView extends StatelessWidget {
                             title: Text(AppTranslations.of(context)
                                 .text(Const.LOCALE_KEY_TRANSACTION_STATUS)),
                             subtitle: Text(vacationListItem.trans_status != null
-                                ? vacationListItem.trans_status_displayValue.toString()
+                                ? vacationListItem.trans_status_displayValue
+                                    .toString()
                                 : "-"),
                           ),
                         ),
-
                       ],
                     ),
                     Row(
@@ -474,12 +486,11 @@ class VacationView extends StatelessWidget {
                         Expanded(
                           flex: 1,
                           child: ListTile(
-                            title: Text(AppTranslations.of(context).text(
-                                Const.LOCALE_KEY_REQUEST_DATE)),
-                            subtitle: Text(
-                                vacationListItem.request_date != null
-                                    ? vacationListItem.request_date
-                                    : "-"),
+                            title: Text(AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_REQUEST_DATE)),
+                            subtitle: Text(vacationListItem.request_date != null
+                                ? vacationListItem.request_date
+                                : "-"),
                           ),
                         ),
                       ],
@@ -493,11 +504,11 @@ class VacationView extends StatelessWidget {
                                 .text(Const.LOCALE_KEY_TYPE)),
                             subtitle: Text(
                                 vacationListItem.vacation_location != null
-                                    ? vacationListItem.vacation_location_displayValue
+                                    ? vacationListItem
+                                        .vacation_location_displayValue
                                     : "-"),
                           ),
                         ),
-
                       ],
                     ),
                     Row(
@@ -514,42 +525,41 @@ class VacationView extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     Row(
                       children: [
                         Expanded(
                           flex: 1,
                           child: Text(AppTranslations.of(context)
-                              .text(Const.LOCALE_KEY_APPROVAL_INBOX) +
+                                  .text(Const.LOCALE_KEY_APPROVAL_INBOX) +
                               ": "),
                         ),
                       ],
                     ),
-                    if(vacationListItem.approvalList!=null)
-                    Row(
-                      children: [
-                        Expanded(
-                            child: SizedBox(
-                              height: 100,
-                              child: ListView.builder(
-                                itemBuilder: (ctx, index) {
-                                  return Text(
-                                    vacationListItem
-                                        .approvalList[index].employeeName !=
-                                        null
-                                        ? vacationListItem
-                                        .approvalList[index].employeeName
-                                        : "-",
-                                    style: TextStyle(
-                                      color: AppTheme.kPrimaryColor,
-                                    ),
-                                  );
-                                },
-                                itemCount: vacationListItem.approvalList.length,
-                              ),
-                            ))
-                      ],
-                    )
+                    if (vacationListItem.approvalList != null)
+                      Row(
+                        children: [
+                          Expanded(
+                              child: SizedBox(
+                            height: 100,
+                            child: ListView.builder(
+                              itemBuilder: (ctx, index) {
+                                return Text(
+                                  vacationListItem.approvalList[index]
+                                              .employeeName !=
+                                          null
+                                      ? vacationListItem
+                                          .approvalList[index].employeeName
+                                      : "-",
+                                  style: TextStyle(
+                                    color: AppTheme.kPrimaryColor,
+                                  ),
+                                );
+                              },
+                              itemCount: vacationListItem.approvalList.length,
+                            ),
+                          ))
+                        ],
+                      )
                   ],
                 ),
               ),
@@ -588,14 +598,15 @@ class VacationView extends StatelessWidget {
                     Container(
                       width: 50,
                       height: 50,
-                      margin: MyApp.isEN ? EdgeInsets.only(right: 15):EdgeInsets.only(left: 15),
+                      margin: MyApp.isEN
+                          ? EdgeInsets.only(right: 15)
+                          : EdgeInsets.only(left: 15),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                         border: Border.all(
-                            width: 3,
-                            color: vacationListItem
-                                .getRightColor()
-                                .withOpacity(0.2)),
+                          width: 3,
+                          color: Colors.white,
+                        ),
                       ),
                       child: vacationListItem.getRightIcon(),
                     ),
@@ -606,7 +617,7 @@ class VacationView extends StatelessWidget {
                           Text(
                             vacationListItem.vacation_Name,
                             style: TextStyle(
-                                color: vacationListItem.getRightColor(),
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18),
                           ),
@@ -617,23 +628,26 @@ class VacationView extends StatelessWidget {
                             children: <Widget>[
                               Icon(
                                 Icons.adjust,
-                                color: vacationListItem.getRightColor(),
+                                color: Colors.white,
                                 size: 20,
                               ),
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_STATUS),
+                              Text(
+                                  AppTranslations.of(context)
+                                      .text(Const.LOCALE_KEY_STATUS),
                                   style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
+                                      color: Colors.white,
                                       fontSize: 13,
                                       letterSpacing: .3)),
                               Text(
                                   vacationListItem.request_status != null
-                                      ? vacationListItem.request_status_displayValue
+                                      ? vacationListItem
+                                          .request_status_displayValue
                                       : '',
                                   style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
+                                      color: Colors.white,
                                       fontSize: 13,
                                       letterSpacing: .3)),
                             ],
@@ -642,15 +656,18 @@ class VacationView extends StatelessWidget {
                             children: <Widget>[
                               Icon(
                                 Icons.calendar_today,
-                                color: vacationListItem.getRightColor(),
+                                color: Colors.white,
                                 size: 20,
                               ),
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_FROM)+" :",
+                              Text(
+                                  AppTranslations.of(context)
+                                          .text(Const.LOCALE_KEY_FROM) +
+                                      " :",
                                   style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
+                                      color: Colors.white,
                                       fontSize: 13,
                                       letterSpacing: .3)),
                               Text(
@@ -658,7 +675,7 @@ class VacationView extends StatelessWidget {
                                       ? vacationListItem.start_date
                                       : '',
                                   style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
+                                      color: Colors.white,
                                       fontSize: 13,
                                       letterSpacing: .3)),
                             ],
@@ -667,15 +684,17 @@ class VacationView extends StatelessWidget {
                             children: <Widget>[
                               Icon(
                                 Icons.calendar_today,
-                                color: vacationListItem.getRightColor(),
+                                color: Colors.white,
                                 size: 20,
                               ),
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(AppTranslations.of(context).text(Const.LOCALE_KEY_TO),
+                              Text(
+                                  AppTranslations.of(context)
+                                      .text(Const.LOCALE_KEY_TO),
                                   style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
+                                      color: Colors.white,
                                       fontSize: 13,
                                       letterSpacing: .3)),
                               Text(
@@ -683,12 +702,11 @@ class VacationView extends StatelessWidget {
                                       ? vacationListItem.end_date
                                       : '',
                                   style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
+                                      color: Colors.white,
                                       fontSize: 13,
                                       letterSpacing: .3)),
                             ],
                           ),
-
                           Expanded(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -697,13 +715,12 @@ class VacationView extends StatelessWidget {
                                 IconButton(
                                     icon: Icon(
                                       Icons.more_horiz,
-                                      color: vacationListItem.getRightColor(),
+                                      color: Colors.white,
                                       size: 25,
                                     ),
                                     tooltip: 'details',
-                                    hoverColor: vacationListItem.getRightColor(),
-                                    splashColor:
-                                    vacationListItem.getRightColor(),
+                                    hoverColor: Colors.white,
+                                    splashColor: Colors.white,
                                     onPressed: () {
                                       _asyncConfirmDialog(context);
                                     }),
@@ -713,7 +730,6 @@ class VacationView extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-
                         ],
                       ),
                     )

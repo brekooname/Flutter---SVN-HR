@@ -8,9 +8,8 @@ import 'package:sven_hr/utilities/constants.dart';
 
 part 'vacation_transaction_response.g.dart';
 
-@JsonSerializable(nullable: false , explicitToJson: true)
-class VacationTransactionResponse{
-
+@JsonSerializable(nullable: false, explicitToJson: true)
+class VacationTransactionResponse {
   VacationTransactionResponse();
 
   @JsonKey(name: 'createddate')
@@ -127,7 +126,6 @@ class VacationTransactionResponse{
   @JsonKey(name: 'subsititude_emp')
   String _subsititude_emp;
 
-
   @JsonKey(name: 'vacation_location')
   String _vacation_location;
 
@@ -136,7 +134,6 @@ class VacationTransactionResponse{
 
   @JsonKey(name: 'vacation_location_displayValue')
   String _vacation_location_displayValue;
-
 
   @JsonKey(name: 'approvalList')
   List<ApprovalList> _approvalList;
@@ -375,8 +372,8 @@ class VacationTransactionResponse{
     _start_date = value;
   }
 
-  factory VacationTransactionResponse.fromJson(Map<String, dynamic> json) => _$VacationTransactionResponseFromJson(json);
-
+  factory VacationTransactionResponse.fromJson(Map<String, dynamic> json) =>
+      _$VacationTransactionResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$VacationTransactionResponseToJson(this);
 
@@ -403,25 +400,25 @@ class VacationTransactionResponse{
       if (request_status.compareTo(Const.VACATION_REQUEST_APPROVED_STATUS) ==
           0) {
         return Icon(
-          Icons.done_outline,
-          color: AppTheme.green,
+          Icons.done_outline_outlined,
+          color: Colors.white,
         );
       } else if (request_status
-          .compareTo(Const.VACATION_REQUEST_CANCELED_STATUS) ==
+              .compareTo(Const.VACATION_REQUEST_CANCELED_STATUS) ==
           0) {
         return Icon(
           Icons.cancel,
           color: AppTheme.blue_dark,
         );
       } else if (request_status
-          .compareTo(Const.VACATION_REQUEST_DECLINED_STATUS) ==
+              .compareTo(Const.VACATION_REQUEST_DECLINED_STATUS) ==
           0) {
         return Icon(
           Icons.close,
           color: AppTheme.red,
         );
       } else if (request_status
-          .compareTo(Const.VACATION_REQUEST_PENDING_STATUS) ==
+              .compareTo(Const.VACATION_REQUEST_PENDING_STATUS) ==
           0) {
         return Icon(
           Icons.query_builder,
@@ -435,14 +432,15 @@ class VacationTransactionResponse{
     if (request_status.compareTo(Const.VACATION_REQUEST_APPROVED_STATUS) == 0) {
       return AppTheme.green;
     } else if (request_status
-        .compareTo(Const.VACATION_REQUEST_CANCELED_STATUS) ==
+            .compareTo(Const.VACATION_REQUEST_CANCELED_STATUS) ==
         0) {
       return AppTheme.blue_dark;
     } else if (request_status
-        .compareTo(Const.VACATION_REQUEST_DECLINED_STATUS) ==
+            .compareTo(Const.VACATION_REQUEST_DECLINED_STATUS) ==
         0) {
       return AppTheme.red;
-    } else if (request_status.compareTo(Const.VACATION_REQUEST_PENDING_STATUS) ==
+    } else if (request_status
+            .compareTo(Const.VACATION_REQUEST_PENDING_STATUS) ==
         0) {
       return AppTheme.orange;
     }

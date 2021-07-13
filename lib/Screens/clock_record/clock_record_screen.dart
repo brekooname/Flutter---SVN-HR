@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_mac/get_mac.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:sven_hr/Screens/clock_record/clock_record_controller.dart';
 import 'package:sven_hr/components/flutter_toast_message.dart';
 import 'package:sven_hr/dao/lov_value.dart';
@@ -36,7 +37,7 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
   final Connectivity _connectivity = Connectivity();
   // final WifiInfo _wifiInfo = WifiInfo();
   String wifiBSSID = "";
-  String recType='';
+  String recType = '';
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   @override
@@ -73,7 +74,7 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
     switch (result) {
       case ConnectivityResult.wifi:
         try {
-          wifiBSSID = await _connectivity.getWifiBSSID();
+          var wifiBSSID = await (NetworkInfo().getWifiBSSID());
         } on PlatformException catch (e) {
           print(e.toString());
           wifiBSSID = "Failed to get Wifi BSSID";
@@ -109,13 +110,13 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
   }
 
   Future _checkGps() async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!(await Geolocator.isLocationServiceEnabled())) {
       if (Theme.of(context).platform == TargetPlatform.android) {
         showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text("Can't get gurrent location"),
+                title: Text("Can't get current location"),
                 content:
                     const Text('Please make sure you enable GPS and try again'),
                 actions: <Widget>[
@@ -138,7 +139,7 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
 
 /*Check if gps service is enabled or not*/
   Future _gpsService() async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!(await Geolocator.isLocationServiceEnabled())) {
       _checkGps();
       return null;
     } else
@@ -166,16 +167,15 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
     });
   }
 
-  Future<void> getRecType()async{
-     LovValue lovValue=LovValue();
-     lovValue= await  lovValue.getLovsByRowId(_lastCheck.rec_type );
-     if(lovValue.row_id!=null){
-       recType =lovValue.display;
-     }
-     setState(() {
-
-     });
+  Future<void> getRecType() async {
+    LovValue lovValue = LovValue();
+    lovValue = await lovValue.getLovsByRowId(_lastCheck.rec_type);
+    if (lovValue.row_id != null) {
+      recType = lovValue.display;
+    }
+    setState(() {});
   }
+
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -227,14 +227,14 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                     SizedBox(
                       height: 30,
                     ),
-
                     Expanded(
                       flex: 3,
                       child: Card(
                         color: AppTheme.kPrimaryLightColor,
                         child: Container(
                           decoration: BoxDecoration(
-                              color: AppTheme.kPrimaryLightColor.withOpacity(0.2),
+                              color:
+                                  AppTheme.kPrimaryLightColor.withOpacity(0.2),
                               borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(30),
                                   bottomRight: Radius.circular(30),
@@ -246,23 +246,23 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                Text(AppTranslations.of(context).text(Const.LOCALE_KEY_lAST_CHECK_IN_OUT),
+                                Text(
+                                  AppTranslations.of(context)
+                                      .text(Const.LOCALE_KEY_lAST_CHECK_IN_OUT),
                                   style: TextStyle(
                                       color: AppTheme.kPrimaryColor,
                                       fontWeight: FontWeight.w500,
                                       fontSize: 20),
                                   textAlign: TextAlign.center,
                                 ),
-
                                 Expanded(
                                   flex: 1,
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
                                         .text(Const.LOCALE_KEY_REC_DATE)),
-                                    subtitle: Text(
-                                        _lastCheck.rec_date != null
-                                            ? _lastCheck.rec_date
-                                            : "-"),
+                                    subtitle: Text(_lastCheck.rec_date != null
+                                        ? _lastCheck.rec_date
+                                        : "-"),
                                   ),
                                 ),
                                 Expanded(
@@ -270,10 +270,11 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
                                         .text(Const.LOCALE_KEY_REC_TIME)),
-                                    subtitle: Text(
-                                        _lastCheck.rec_time != null
-                                            ? ApplicationController.formatToHours(_lastCheck.rec_time).toString()
-                                            : "-"),
+                                    subtitle: Text(_lastCheck.rec_time != null
+                                        ? ApplicationController.formatToHours(
+                                                _lastCheck.rec_time)
+                                            .toString()
+                                        : "-"),
                                   ),
                                 ),
                                 Expanded(
@@ -281,8 +282,7 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                                   child: ListTile(
                                     title: Text(AppTranslations.of(context)
                                         .text(Const.LOCALE_KEY_TYPE)),
-                                    subtitle: Text(
-                                        recType),
+                                    subtitle: Text(recType),
                                   ),
                                 ),
                               ],

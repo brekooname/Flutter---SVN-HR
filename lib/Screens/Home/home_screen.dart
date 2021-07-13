@@ -178,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
-            color: AppTheme.kPrimaryLightColor.withOpacity(0.5),
+            color: AppTheme.kPrimaryLightColor.withOpacity(0.05),
             borderRadius: BorderRadius.circular(29),
           ),
           child: CircularDefaultPie(
@@ -194,8 +194,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   MessageBroadcasteController broadcasteController;
   _initMarquee() {
     _tipMarqueeList.clear();
-    broadcasteController =
-        MessageBroadcasteController();
+    broadcasteController = MessageBroadcasteController();
     TextSpan txt;
     broadcasteController.getMessageBroadcasteList().then((value) => {
           if (value != null && value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0)
@@ -204,31 +203,27 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   in broadcasteController.messageList)
                 {
                   txt = TextSpan(
-                      text: msg.message_title,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(
-                              HexColor.getColorFromHex(msg.message_color))),
-                      // children: <InlineSpan>[
-                      //   TextSpan(
-                      //     text: msg.message_text,
-                      //     style: TextStyle(
-                      //         fontWeight:FontWeight.normal,
-                      //         color: Color(
-                      //             HexColor.getColorFromHex(msg.message_color))),
-                      //   )
-                      // ]
-
+                    text: msg.message_title,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color:
+                            Color(HexColor.getColorFromHex(msg.message_color))),
+                    // children: <InlineSpan>[
+                    //   TextSpan(
+                    //     text: msg.message_text,
+                    //     style: TextStyle(
+                    //         fontWeight:FontWeight.normal,
+                    //         color: Color(
+                    //             HexColor.getColorFromHex(msg.message_color))),
+                    //   )
+                    // ]
                   ),
                   _tipMarqueeList.add(txt)
-
                 }
             }
         });
 
-   setState(() {
-
-   });
+    setState(() {});
     // _tipMarqueeList.addAll({TextSpan(text: "testttt"), TextSpan(text: "yyyyyyyyy")});
   }
 
@@ -239,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       child: GestureDetector(
         child: Container(
           height: 40.0,
-          color: AppTheme.kPrimaryLightColor,
+          color: AppTheme.kPrimaryLightColor.withOpacity(0.4),
           child: Marquee(
             // textList: _tipMarqueeList, // List<Text>, textList and textSpanList can only have one of code.
             textSpanList:
@@ -254,15 +249,19 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         ),
         onTap: () {
           print(controller.position);
-          if(broadcasteController.messageList!=null && broadcasteController.messageList.isNotEmpty)
-          _asyncConfirmDialog(context, broadcasteController.messageList[controller.position]);// get the position
+          if (broadcasteController.messageList != null &&
+              broadcasteController.messageList.isNotEmpty)
+            _asyncConfirmDialog(
+                context,
+                broadcasteController
+                    .messageList[controller.position]); // get the position
         },
       ),
     );
   }
 
-
-  Future _asyncConfirmDialog(BuildContext context,MessageBroadcasteResponse messageListItem) async {
+  Future _asyncConfirmDialog(
+      BuildContext context, MessageBroadcasteResponse messageListItem) async {
     return await showDialog(
         context: context,
         builder: (ctx) {
@@ -291,10 +290,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     flex: 3,
                     child: TextFieldContainer(
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(messageListItem.message_text,style: TextStyle(color: Color(HexColor.getColorFromHex(
-                              messageListItem.message_color))),),
-                        )),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        messageListItem.message_text,
+                        style: TextStyle(
+                            color: Color(HexColor.getColorFromHex(
+                                messageListItem.message_color))),
+                      ),
+                    )),
                   ),
                 ],
               ),

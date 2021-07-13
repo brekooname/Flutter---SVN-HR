@@ -4,11 +4,11 @@ import 'package:sven_hr/models/request/base_request.dart';
 part 'approval_object_response.g.dart';
 
 @JsonSerializable(nullable: false)
-class ApprovalObjectResponse{
-
+class ApprovalObjectResponse {
   ApprovalObjectResponse();
 
-  factory ApprovalObjectResponse.fromJson(Map<String, dynamic> json) => _$ApprovalObjectResponseFromJson(json);
+  factory ApprovalObjectResponse.fromJson(Map<String, dynamic> json) =>
+      _$ApprovalObjectResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ApprovalObjectResponseToJson(this);
 
@@ -320,7 +320,6 @@ class ApprovalObjectResponse{
   set vacationRequestChannel(String value) {
     _vacationRequestChannel = value;
   }
-
 
   num get vacationHolidayDays => _vacationHolidayDays;
 

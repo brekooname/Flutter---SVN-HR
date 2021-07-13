@@ -1,4 +1,5 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -263,13 +264,12 @@ class _VacationRequestScreenState extends State<VacationRequestScreen>
                           child: TextFieldContainer(
                             child: DropdownButtonFormField<LovValue>(
                               decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                 ),
-                              hint: Text(AppTranslations.of(context).text(
-                                  Const.LOCALE_KEY_SELECT_LOCATION)),
+                                border: InputBorder.none,
+                              ),
+                              hint: Text(AppTranslations.of(context)
+                                  .text(Const.LOCALE_KEY_SELECT_LOCATION)),
                               isExpanded: true,
-                              style: TextStyle(
-                                  color: AppTheme.kPrimaryColor),
+                              style: TextStyle(color: AppTheme.kPrimaryColor),
                               icon: Icon(
                                 Icons.menu_open,
                                 color: AppTheme.kPrimaryColor,
@@ -395,15 +395,18 @@ class _VacationRequestScreenState extends State<VacationRequestScreen>
                                 suffixIcon: IconButton(
                                   hoverColor: AppTheme.kPrimaryColor,
                                   onPressed: () async {
-                                    // Navigator.of(context).pushNamed<PickedFile>(PickerScreen.id).then((PickedFile result){
-                                    //   setState(() {
-                                    //     if(result!=null){
-                                    //       attachmentTextController.text=result.path;
-                                    //     }
+                                    //   Navigator.of(context)
+                                    //       .pushNamed<FilePicker>(PickerScreen.id)
+                                    //       .then((FilePicker result) {
+                                    //     setState(() {
+                                    //       if (result != null) {
+                                    //         attachmentTextController.text =
+                                    //             result as String;
+                                    //       }
+                                    //     });
                                     //   });
-                                    // });
-                                    // var result = await Navigator.pushNamed(
-                                    //     context, PickerScreen.id);
+                                    //   var result = await Navigator.pushNamed(
+                                    //       context, PickerScreen.id);
                                     String _filePath =
                                         await Navigator.push<String>(
                                             context,

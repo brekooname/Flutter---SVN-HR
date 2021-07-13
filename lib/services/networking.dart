@@ -3,13 +3,13 @@ import 'dart:convert';
 
 class NetworkHelper {
   final String url;
-  final Map<String,dynamic> map;
+  final Map<String, dynamic> map;
 
-  NetworkHelper({this.url,this.map});
+  NetworkHelper({this.url, this.map});
 
   Future getData() async {
     http.Response response = await http.post(
-      url,
+      Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -25,19 +25,15 @@ class NetworkHelper {
   }
 
   Future<bool> testConnection() async {
-    try{
-      http.Response response = await http.get(url);
+    try {
+      http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-
         return true;
       } else {
         return false;
       }
-    }catch(e){
+    } catch (e) {
       return false;
     }
-
-    return false;
-
   }
 }

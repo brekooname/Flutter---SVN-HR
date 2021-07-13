@@ -8,15 +8,14 @@ import 'package:sven_hr/dao/vacation_type.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/models/response/approval_inbox_attachments_response.dart';
 import 'package:sven_hr/models/response/approval_list.dart';
+import 'package:sven_hr/services/download_file.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
 class MultiSelectionLOVListView extends StatefulWidget {
   List<LovValue> lovs;
 
-  MultiSelectionLOVListView({@required
-  this.lovs
-  });
+  MultiSelectionLOVListView({@required this.lovs});
 
   @override
   _MultiSelectionLOVListViewState createState() =>
@@ -29,7 +28,6 @@ class _MultiSelectionLOVListViewState extends State<MultiSelectionLOVListView> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-
       actions: <Widget>[
         IconButton(
           icon: Icon(
@@ -260,7 +258,7 @@ class _ApprovalInboxAttachmentsListViewState
 
   void downLoadFile(String attachId, String attachName) async {
     setState(() {
-      showSpinner=true;
+      showSpinner = true;
     });
     _approvalInboxController = ApprovalInboxController();
 
@@ -269,8 +267,8 @@ class _ApprovalInboxAttachmentsListViewState
         .then((value) {
       setState(() {
         if (value != null && value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
-          ToastMessage.showSuccessMsg(
-              AppTranslations.of(context).text(Const.LOCALE_KEY_DOWNLOAD_FINISHED));
+          ToastMessage.showSuccessMsg(AppTranslations.of(context)
+              .text(Const.LOCALE_KEY_DOWNLOAD_FINISHED));
         } else {
           ToastMessage.showErrorMsg(AppTranslations.of(context).text(value));
         }
@@ -279,7 +277,7 @@ class _ApprovalInboxAttachmentsListViewState
     });
 
     setState(() {
-      showSpinner=false;
+      showSpinner = false;
     });
   }
 
@@ -329,11 +327,14 @@ class _ApprovalInboxAttachmentsListViewState
                       hoverColor: AppTheme.kPrimaryColor,
                       splashColor: AppTheme.kPrimaryColor,
                       onPressed: () {
-                        downLoadFile(attachmentsList[index].attachment_rowId,
-                            attachmentsList[index].attachment_name);
+                        setState(() {
+                          DownloadFile(
+                            attachmentsList[index].attachment_rowId,
+                            attachmentsList[index].attachment_name,
+                          );
+                        });
                       },
                     ),
-
                   ],
                 ),
               );
@@ -344,7 +345,4 @@ class _ApprovalInboxAttachmentsListViewState
       ),
     );
   }
-
-
-
 }

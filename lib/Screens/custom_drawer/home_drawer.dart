@@ -78,7 +78,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
             index: DrawerIndex.MY_PROFILE,
             labelName:
                 AppTranslations.of(context).text(Const.LOCALE_KEY_PROFILE),
-            icon: Icon(Icons.account_circle),
+            icon: Icon(Icons.account_circle_outlined),
           );
           drawerList.add(item);
         } else if (screen.screenName.compareTo(VacationsTransaction.id) == 0) {
@@ -86,7 +86,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
             index: DrawerIndex.VACATION,
             labelName:
                 AppTranslations.of(context).text(Const.LOCALE_KEY_MY_VACTIONS),
-            icon: Icon(Icons.new_releases),
+            icon: Icon(Icons.card_travel),
           );
           drawerList.add(item);
         } else if (screen.screenName.compareTo(LeavesTransaction.id) == 0) {
@@ -94,7 +94,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
             index: DrawerIndex.LEAVES,
             labelName:
                 AppTranslations.of(context).text(Const.LOCALE_KEY_MY_LEAVES),
-            icon: Icon(Icons.directions_run),
+            icon: Icon(Icons.directions_run_outlined),
           );
           drawerList.add(item);
         } else if (screen.screenName
@@ -104,7 +104,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
             index: DrawerIndex.APPROVAL_INBOX,
             labelName: AppTranslations.of(context)
                 .text(Const.LOCALE_KEY_APPROVAL_INBOX),
-            icon: Icon(Icons.approval),
+            icon: Icon(Icons.move_to_inbox_outlined),
           );
           drawerList.add(item);
         } else if (screen.screenName.compareTo(TimeSheetScreen.id) == 0) {
@@ -112,7 +112,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
             index: DrawerIndex.TIME_SHEET,
             labelName:
                 AppTranslations.of(context).text(Const.LOCALE_KEY_TIME_SHEET),
-            icon: Icon(Icons.timeline),
+            icon: Icon(Icons.timer),
           );
           drawerList.add(item);
         } else if (screen.screenName.compareTo(AppSettingsScreen.id) == 0) {
@@ -120,47 +120,52 @@ class _HomeDrawerState extends State<HomeDrawer> {
             index: DrawerIndex.APP_SETTINGS,
             labelName:
                 AppTranslations.of(context).text(Const.LOCALE_KEY_APP_SETTING),
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.settings_outlined),
           );
           drawerList.add(item);
-        }else if (screen.screenName.compareTo(AttendanceSummaryScreen.id) == 0) {
+        } else if (screen.screenName.compareTo(AttendanceSummaryScreen.id) ==
+            0) {
           DrawerList item = DrawerList(
             index: DrawerIndex.ATTENDANCE_SUMMARY,
-            labelName:
-            AppTranslations.of(context).text(Const.LOCALE_KEY_ATTENDANCE_SUMMARY),
-            icon: Icon(Icons.lock_clock),
+            labelName: AppTranslations.of(context)
+                .text(Const.LOCALE_KEY_ATTENDANCE_SUMMARY),
+            icon: Icon(Icons.library_books_outlined),
           );
           drawerList.add(item);
-        }else if (screen.screenName.compareTo(ExpenseTransactionScreen.id) == 0) {
+        } else if (screen.screenName.compareTo(ExpenseTransactionScreen.id) ==
+            0) {
           DrawerList item = DrawerList(
             index: DrawerIndex.EXPENSE,
             labelName:
-            AppTranslations.of(context).text(Const.LOCALE_KEY_MY_EXPENSE),
+                AppTranslations.of(context).text(Const.LOCALE_KEY_MY_EXPENSE),
             icon: Icon(Icons.monetization_on_outlined),
           );
           drawerList.add(item);
-        }else if (screen.screenName.compareTo(ExtraWorkTransactionScreen.id) == 0) {
+        } else if (screen.screenName.compareTo(ExtraWorkTransactionScreen.id) ==
+            0) {
           DrawerList item = DrawerList(
             index: DrawerIndex.EXTRA_WORK,
-            labelName:
-            AppTranslations.of(context).text(Const.LOCALE_KEY_MY_EXTRA_WORK),
-            icon: Icon(Icons.text_rotation_angledown),
+            labelName: AppTranslations.of(context)
+                .text(Const.LOCALE_KEY_MY_EXTRA_WORK),
+            icon: Icon(Icons.work_outline_outlined),
           );
           drawerList.add(item);
-        }else if (screen.screenName.compareTo(MessageBroadcasteScreen.id) == 0) {
+        } else if (screen.screenName.compareTo(MessageBroadcasteScreen.id) ==
+            0) {
           DrawerList item = DrawerList(
             index: DrawerIndex.ANNOUNCEMENTS,
-            labelName:
-            AppTranslations.of(context).text(Const.LOCALE_KEY_MY_ANNOUNCEMENTS),
-            icon: Icon(Icons.panorama_wide_angle_outlined),
+            labelName: AppTranslations.of(context)
+                .text(Const.LOCALE_KEY_MY_ANNOUNCEMENTS),
+            icon: Icon(Icons.announcement_outlined),
           );
           drawerList.add(item);
-        }else if (screen.screenName.compareTo(ServerConnectionScreen.id) == 0) {
+        } else if (screen.screenName.compareTo(ServerConnectionScreen.id) ==
+            0) {
           DrawerList item = DrawerList(
             index: DrawerIndex.SERVER_CONNECTION,
-            labelName:
-            AppTranslations.of(context).text(Const.LOCALE_KEY_SERVER_CONNECTION),
-            icon: Icon(Icons.connected_tv),
+            labelName: AppTranslations.of(context)
+                .text(Const.LOCALE_KEY_SERVER_CONNECTION),
+            icon: Icon(Icons.network_wifi_outlined),
           );
           drawerList.add(item);
         }
@@ -173,9 +178,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
       DrawerList(
         index: DrawerIndex.HOME,
         labelName: AppTranslations.of(context).text(Const.LOCALE_KEY_HOME),
-        icon: Icon(Icons.home),
+        icon: Icon(Icons.home_outlined),
       ),
-
     ];
     getProfileScreens();
   }
@@ -403,7 +407,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                     },
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 4),
+                    padding: const EdgeInsets.only(top: 21, left: 44),
                     child: Text(
                       _employeeNumber,
                       style: TextStyle(
@@ -436,8 +440,12 @@ class _HomeDrawerState extends State<HomeDrawer> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 4,
+          Container(
+            decoration:
+                BoxDecoration(border: Border.all(color: Color(0xFFd4ecfc))),
+            child: SizedBox(
+              height: 0.5,
+            ),
           ),
           Divider(
             height: 1,

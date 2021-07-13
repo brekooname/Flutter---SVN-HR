@@ -42,7 +42,7 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen>
   var attachmentTextController = new TextEditingController();
   var fromDateController = new TextEditingController();
   var toDateController = new TextEditingController();
-  List<String> attachmentsPaths = List();
+  List<String> attachmentsPaths = [];
 
   @override
   void initState() {
@@ -433,8 +433,7 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen>
                                   height: 48,
                                   decoration: BoxDecoration(
                                     color: buttonSendIsPressed
-                                        ? AppTheme.nearlyWhite
-                                            .withOpacity(0.1)
+                                        ? AppTheme.nearlyWhite.withOpacity(0.1)
                                         : AppTheme.nearlyBlue,
                                     borderRadius: const BorderRadius.all(
                                       Radius.circular(16.0),
@@ -449,8 +448,8 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen>
                                   ),
                                   child: Center(
                                     child: Text(
-                                      AppTranslations.of(context).text(
-                                          Const.LOCALE_KEY_SEND_LEAVE),
+                                      AppTranslations.of(context)
+                                          .text(Const.LOCALE_KEY_SEND_LEAVE),
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,

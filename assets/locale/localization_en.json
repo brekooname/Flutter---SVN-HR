@@ -6,8 +6,8 @@
 
   "home": "Home",
   "my_profile": "My Profile",
-  "leaves": "Leaves",
-  "vacations": "Vacations",
+  "leaves": "Leave request",
+  "vacations": "Vacation request",
   "time_sheet": "Time Sheet",
   "salary_increment_request": "Salary Inc. Request",
   "extra_work_request": "Extra Work Request",
@@ -65,6 +65,7 @@
   "location": "Location",
   "unpaid_days": "UnPaid Days",
   "paid_days": "Paid Days",
+
   "previous_balance": "Previous Balance",
   "new_balance": "New Balance",
   "start_time": "Start Time: ",
@@ -186,7 +187,7 @@
 
 
   "source": "Source",
-  "my_expense": "My Expense",
+  "my_expense": "My Expenses",
 
   "expenseApproveDate": "Approve Date",
   "expense_details": "Expense Details",

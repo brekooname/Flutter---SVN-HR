@@ -216,7 +216,8 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
                                   title: Text(AppTranslations.of(context)
                                       .text(Const.LOCALE_KEY_EMPLOYMENT_CLASS)),
                                   subtitle: Text(
-                                      _notificationDetail.employmentClass != null
+                                      _notificationDetail.employmentClass !=
+                                              null
                                           ? _notificationDetail.employmentClass
                                           : "-"),
                                 ),
@@ -231,12 +232,12 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
                                   title: Text(AppTranslations.of(context)
                                       .text(Const.LOCALE_KEY_ACTION_BY)),
                                   subtitle: Text(
-                                      _notificationDetail.action_user_name != null
+                                      _notificationDetail.action_user_name !=
+                                              null
                                           ? _notificationDetail.action_user_name
                                           : "-"),
                                 ),
                               ),
-
                             ],
                           ),
                         ],

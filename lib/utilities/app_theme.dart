@@ -28,7 +28,6 @@ class AppTheme {
   static const Color blue_dark = Color(0xFF1f89ed);
   static const Color orange = Color(0xFFfcb55d);
 
-
   static const TextTheme textTheme = TextTheme(
     headline4: display1,
     headline5: headline,
@@ -68,14 +67,13 @@ class AppTheme {
   );
 
   static const TextStyle subtitle = TextStyle(
-    // subtitle2 -> subtitle
-    fontFamily: 'WorkSans',
-    fontWeight: FontWeight.w400,
-    fontSize: 14,
-    letterSpacing: -0.04,
-    color: kPrimaryColor,
-    decoration: TextDecoration.none
-  );
+      // subtitle2 -> subtitle
+      fontFamily: 'WorkSans',
+      fontWeight: FontWeight.w400,
+      fontSize: 14,
+      letterSpacing: -0.04,
+      color: kPrimaryColor,
+      decoration: TextDecoration.none);
 
   static const TextStyle body2 = TextStyle(
     // body1 -> body2

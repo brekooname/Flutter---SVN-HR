@@ -4,15 +4,12 @@ import 'package:sven_hr/models/chart_sample_data.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CircularDefaultPie extends StatelessWidget {
-
   final List<ChartSampleData> pieData;
   final String title;
-
 
   CircularDefaultPie({this.pieData, this.title});
 
   List<PieSeries<ChartSampleData, String>> _getDefaultPieSeries() {
-
     return <PieSeries<ChartSampleData, String>>[
       PieSeries<ChartSampleData, String>(
           explode: true,
@@ -31,18 +28,17 @@ class CircularDefaultPie extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Directionality(
-      textDirection: MyApp.isEN ? TextDirection.ltr : TextDirection.rtl,
+    return Directionality(
+      textDirection: MyApp.isEN ? TextDirection.ltr : TextDirection.ltr,
       child: SfCircularChart(
-
         // title: ChartTitle(text:title ,textStyle: TextStyle(fontSize: 14)),
-        legend: Legend(isVisible:true,
-          textStyle: TextStyle(fontSize: 8),
+        legend: Legend(
+            isVisible: true,
+            textStyle: TextStyle(fontSize: 8),
             alignment: ChartAlignment.center,
-          orientation: LegendItemOrientation.auto,
-          overflowMode: LegendItemOverflowMode.scroll,
-          position: LegendPosition.auto
-        ),
+            orientation: LegendItemOrientation.auto,
+            overflowMode: LegendItemOverflowMode.scroll,
+            position: LegendPosition.auto),
         series: _getDefaultPieSeries(),
       ),
     );

@@ -5,6 +5,8 @@ import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
+import '../../main.dart';
+
 class ProfilePage extends StatefulWidget {
   static final String id = "employee_profile_screen";
 
@@ -78,7 +80,7 @@ class _UserInfoState extends State<UserInfo> {
             // color: Colors.transparent,
             child: Container(
               decoration: BoxDecoration(
-                  color: AppTheme.kPrimaryLightColor.withOpacity(0.2),
+                  color: AppTheme.kPrimaryLightColor.withOpacity(0.1),
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(30),
                       bottomRight: Radius.circular(30),
@@ -149,9 +151,11 @@ class _UserInfoState extends State<UserInfo> {
                     padding: EdgeInsets.all(10),
                   ),
                   Container(
-                    alignment: Alignment.topLeft,
+                    alignment: Alignment.center,
                     child: Text(
-                      AppTranslations.of(context).text(Const.LOCALE_KEY_USER_INFORMATION),
+                      AppTranslations.of(context).text(
+                        Const.LOCALE_KEY_USER_INFORMATION,
+                      ),
                       style: TextStyle(
                         color: AppTheme.kPrimaryColor,
                         fontWeight: FontWeight.w500,
@@ -173,32 +177,52 @@ class _UserInfoState extends State<UserInfo> {
                           Icons.perm_identity,
                           color: AppTheme.kPrimaryColor,
                         ),
-                        title: Text(AppTranslations.of(context).text(Const.LOCALE_KEY_EMPLOYEE_NUMBER)),
-                        subtitle: Text(_employeeNumber),
+                        title: Text(AppTranslations.of(context)
+                            .text(Const.LOCALE_KEY_EMPLOYEE_NUMBER)),
+                        subtitle: Text(
+                          _employeeNumber,
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
                       ),
                       ListTile(
                         leading: Icon(
-                          Icons.email,
+                          Icons.email_outlined,
                           color: AppTheme.kPrimaryColor,
                         ),
-                        title: Text(AppTranslations.of(context).text(Const.LOCALE_KEY_EMAIL)),
-                        subtitle: Text(_employeeEmail),
+                        title: Text(AppTranslations.of(context)
+                            .text(Const.LOCALE_KEY_EMAIL)),
+                        subtitle: Text(
+                          _employeeEmail,
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
                       ),
                       ListTile(
                         leading: Icon(
-                          Icons.phone,
+                          Icons.phone_outlined,
                           color: AppTheme.kPrimaryColor,
                         ),
-                        title: Text(AppTranslations.of(context).text(Const.LOCALE_KEY_TELEPHONE_NUMBER)),
-                        subtitle: Text(_employeeTel),
+                        title: Text(AppTranslations.of(context).text(
+                          Const.LOCALE_KEY_TELEPHONE_NUMBER,
+                        )),
+                        subtitle: Text(
+                          _employeeTel,
+                          textDirection: TextDirection.ltr,
+                          textAlign:
+                              MyApp.isEN ? TextAlign.left : TextAlign.right,
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
                       ),
                       ListTile(
                         leading: Icon(
-                          Icons.account_circle,
+                          Icons.account_circle_outlined,
                           color: AppTheme.kPrimaryColor,
                         ),
-                        title: Text(AppTranslations.of(context).text(Const.LOCALE_KEY_REPORTING_MANAGER)),
-                        subtitle: Text(_reportingManager),
+                        title: Text(AppTranslations.of(context)
+                            .text(Const.LOCALE_KEY_REPORTING_MANAGER)),
+                        subtitle: Text(
+                          _reportingManager,
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ],
                   ))

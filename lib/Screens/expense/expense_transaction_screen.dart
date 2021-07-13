@@ -252,7 +252,7 @@ class ExpenseView extends StatelessWidget {
               //   },
               // ),
 
-              FlatButton(
+              TextButton(
                   child: Text(
                     AppTranslations.of(context)
                         .text(Const.LOCALE_KEY_EMPLOYMENT_CLOSE),
@@ -374,31 +374,31 @@ class ExpenseView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    if(expenseListItem.approvalList!=null)
-                    Row(
-                      children: [
-                        Expanded(
-                            child: SizedBox(
-                          height: 100,
-                          child: ListView.builder(
-                            itemBuilder: (ctx, index) {
-                              return Text(
-                                expenseListItem
-                                            .approvalList[index].employeeName !=
-                                        null
-                                    ? expenseListItem
-                                        .approvalList[index].employeeName
-                                    : "-",
-                                style: TextStyle(
-                                  color: AppTheme.kPrimaryColor,
-                                ),
-                              );
-                            },
-                            itemCount: expenseListItem.approvalList.length,
-                          ),
-                        ))
-                      ],
-                    )
+                    if (expenseListItem.approvalList != null)
+                      Row(
+                        children: [
+                          Expanded(
+                              child: SizedBox(
+                            height: 100,
+                            child: ListView.builder(
+                              itemBuilder: (ctx, index) {
+                                return Text(
+                                  expenseListItem.approvalList[index]
+                                              .employeeName !=
+                                          null
+                                      ? expenseListItem
+                                          .approvalList[index].employeeName
+                                      : "-",
+                                  style: TextStyle(
+                                    color: AppTheme.kPrimaryColor,
+                                  ),
+                                );
+                              },
+                              itemCount: expenseListItem.approvalList.length,
+                            ),
+                          ))
+                        ],
+                      )
                   ],
                 ),
               ),
