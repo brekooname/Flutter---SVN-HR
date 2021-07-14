@@ -217,16 +217,18 @@ class ApprovalInboxController {
     if (attachId != null) {
       var url = host + ApiConnections.DOWN_LOAD_FILE;
       DownloadFile helper = DownloadFile(
-        attachId,
         attachName,
+        attachId,
         token_id: tokenId,
         url: url,
+        attach_name: attachName,
+        attach_rowId: attachId,
       );
       File file = await helper.downloadFile();
       if (file != null) {
         await OpenFile.open(file.path);
         print('fast');
-        // return Const.SYSTEM_SUCCESS_MSG;
+        return Const.SYSTEM_SUCCESS_MSG;
       }
     }
   }

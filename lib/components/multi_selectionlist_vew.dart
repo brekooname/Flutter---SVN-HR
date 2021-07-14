@@ -256,14 +256,20 @@ class _ApprovalInboxAttachmentsListViewState
   _ApprovalInboxAttachmentsListViewState(this.attachmentsList);
   ApprovalInboxController _approvalInboxController;
 
-  void downLoadFile(String attachId, String attachName) async {
+  void downLoadFile(
+    String attachId,
+    String attachName,
+  ) async {
     setState(() {
       showSpinner = true;
     });
     _approvalInboxController = ApprovalInboxController();
 
     await _approvalInboxController
-        .downloadFile(attachId, attachName)
+        .downloadFile(
+      attachId,
+      attachName,
+    )
         .then((value) {
       setState(() {
         if (value != null && value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
@@ -327,12 +333,10 @@ class _ApprovalInboxAttachmentsListViewState
                       hoverColor: AppTheme.kPrimaryColor,
                       splashColor: AppTheme.kPrimaryColor,
                       onPressed: () {
-                        setState(() {
-                          DownloadFile(
-                            attachmentsList[index].attachment_rowId,
-                            attachmentsList[index].attachment_name,
-                          );
-                        });
+                        downLoadFile(
+                          attachmentsList[index].attachment_rowId,
+                          attachmentsList[index].attachment_name,
+                        );
                       },
                     ),
                   ],

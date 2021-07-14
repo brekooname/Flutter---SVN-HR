@@ -401,7 +401,7 @@ class VacationTransactionResponse {
           0) {
         return Icon(
           Icons.done_outline_outlined,
-          color: Colors.white,
+          color: AppTheme.green,
         );
       } else if (request_status
               .compareTo(Const.VACATION_REQUEST_CANCELED_STATUS) ==

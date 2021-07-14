@@ -423,13 +423,13 @@ class _MenueTopBarState extends State<MenueTopBar> {
                                 child: Icon(
                                   Icons.lock_open,
                                   size: 14,
-                                  color: AppTheme.red,
+                                  color: Colors.black,
                                 ),
                               ),
                               TextSpan(
                                 text: AppTranslations.of(context)
                                     .text(Const.LOCALE_KEY_CHANGE_PASSWORD),
-                                style: TextStyle(color: AppTheme.kPrimaryColor),
+                                style: TextStyle(color: Colors.blueGrey),
                                 // recognizer: TapGestureRecognizer()
                                 //   ..onTap = () async {
                                 //     await _changePasswordDialog(context);
@@ -459,13 +459,13 @@ class _MenueTopBarState extends State<MenueTopBar> {
                                 child: Icon(
                                   Icons.logout,
                                   size: 14,
-                                  color: AppTheme.red,
+                                  color: Colors.black,
                                 ),
                               ),
                               TextSpan(
                                 text: AppTranslations.of(context)
                                     .text(Const.LOCALE_KEY_LOGOUT),
-                                style: TextStyle(color: AppTheme.kPrimaryColor),
+                                style: TextStyle(color: Colors.blueGrey),
                                 // recognizer: TapGestureRecognizer()
                                 //   ..onTap = () async {
                                 //     await _changePasswordDialog(context);
@@ -575,12 +575,12 @@ class _PopupSubMenuState<T> extends State<PopupSubMenuItem<T>> {
                     child: Icon(
                       Icons.language,
                       size: 14,
-                      color: AppTheme.red,
+                      color: Colors.black,
                     ),
                   ),
                   TextSpan(
                     text: widget.title,
-                    style: TextStyle(color: AppTheme.kPrimaryColor),
+                    style: TextStyle(color: Colors.blueGrey),
                     // recognizer: TapGestureRecognizer()
                     //   ..onTap = () async {
                     //     await _changePasswordDialog(context);

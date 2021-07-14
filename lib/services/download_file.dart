@@ -6,24 +6,34 @@ import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DownloadFile {
-  final String url;
-  final String attach_rowId;
-  final String attach_name;
-  final String token_id;
+  String url;
+  String attach_rowId;
+  String attach_name;
+  String token_id;
 
-  DownloadFile(String attachName, String attachId,
-      {this.url, this.attach_rowId, this.token_id, this.attach_name});
+  DownloadFile(
+    String attachName,
+    String attachId, {
+    this.attach_name,
+    this.attach_rowId,
+    this.url,
+    this.token_id,
+  });
 
   Future getData() async {
-    http.Response response = await http.get(Uri.parse(
-        url + "?" + "attach_rowId=" + attach_rowId + "&tokenId=" + token_id));
+    http.Response response = await http.get(Uri.parse(url +
+        "?" +
+        "attach_rowId=" +
+        this.attach_rowId +
+        "&tokenId=" +
+        this.token_id));
     if (response.statusCode == 200) {
       Uint8List bytes = response.bodyBytes;
       String dir = (await getApplicationDocumentsDirectory()).path;
       File file = File("$dir/" + attach_name);
       await file.writeAsBytes(bytes);
       print(file.path);
-//      print(response.body);weather[0].id
+
       print("Uploaded!");
       return 'Uploaded';
     } else {
@@ -53,8 +63,10 @@ class DownloadFile {
 
   Future<File> downloadFile() async {
     http.Client client = new http.Client();
-    var req = await client.get(Uri.parse(
-        url + "?" + "attach_rowId=" + attach_rowId + "&tokenId=" + token_id));
+    var req = await client.get(
+      Uri.parse(
+          url + "?" + "attach_rowId=" + attach_rowId + "&tokenId=" + token_id),
+    );
     var bytes = req.bodyBytes;
     Directory downloadsDirectory =
         await DownloadsPathProvider.downloadsDirectory;

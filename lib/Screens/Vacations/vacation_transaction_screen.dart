@@ -605,7 +605,7 @@ class VacationView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(50),
                         border: Border.all(
                           width: 3,
-                          color: Colors.white,
+                          color: vacationListItem.getRightColor(),
                         ),
                       ),
                       child: vacationListItem.getRightIcon(),
@@ -617,7 +617,7 @@ class VacationView extends StatelessWidget {
                           Text(
                             vacationListItem.vacation_Name,
                             style: TextStyle(
-                                color: Colors.white,
+                                color: vacationListItem.getRightColor(),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18),
                           ),
@@ -628,7 +628,7 @@ class VacationView extends StatelessWidget {
                             children: <Widget>[
                               Icon(
                                 Icons.adjust,
-                                color: Colors.white,
+                                color: vacationListItem.getRightColor(),
                                 size: 20,
                               ),
                               SizedBox(
@@ -638,7 +638,7 @@ class VacationView extends StatelessWidget {
                                   AppTranslations.of(context)
                                       .text(Const.LOCALE_KEY_STATUS),
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: vacationListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                               Text(
@@ -647,7 +647,7 @@ class VacationView extends StatelessWidget {
                                           .request_status_displayValue
                                       : '',
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: vacationListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                             ],
@@ -656,7 +656,7 @@ class VacationView extends StatelessWidget {
                             children: <Widget>[
                               Icon(
                                 Icons.calendar_today,
-                                color: Colors.white,
+                                color: vacationListItem.getRightColor(),
                                 size: 20,
                               ),
                               SizedBox(
@@ -667,7 +667,7 @@ class VacationView extends StatelessWidget {
                                           .text(Const.LOCALE_KEY_FROM) +
                                       " :",
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: vacationListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                               Text(
@@ -675,7 +675,7 @@ class VacationView extends StatelessWidget {
                                       ? vacationListItem.start_date
                                       : '',
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: vacationListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                             ],
@@ -684,7 +684,7 @@ class VacationView extends StatelessWidget {
                             children: <Widget>[
                               Icon(
                                 Icons.calendar_today,
-                                color: Colors.white,
+                                color: vacationListItem.getRightColor(),
                                 size: 20,
                               ),
                               SizedBox(
@@ -694,7 +694,7 @@ class VacationView extends StatelessWidget {
                                   AppTranslations.of(context)
                                       .text(Const.LOCALE_KEY_TO),
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: vacationListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                               Text(
@@ -702,7 +702,7 @@ class VacationView extends StatelessWidget {
                                       ? vacationListItem.end_date
                                       : '',
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: vacationListItem.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                             ],
@@ -715,12 +715,14 @@ class VacationView extends StatelessWidget {
                                 IconButton(
                                     icon: Icon(
                                       Icons.more_horiz,
-                                      color: Colors.white,
+                                      color: vacationListItem.getRightColor(),
                                       size: 25,
                                     ),
                                     tooltip: 'details',
-                                    hoverColor: Colors.white,
-                                    splashColor: Colors.white,
+                                    hoverColor:
+                                        vacationListItem.getRightColor(),
+                                    splashColor:
+                                        vacationListItem.getRightColor(),
                                     onPressed: () {
                                       _asyncConfirmDialog(context);
                                     }),

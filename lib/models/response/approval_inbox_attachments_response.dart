@@ -1,18 +1,17 @@
 import 'package:json_annotation/json_annotation.dart';
 
-
 part 'approval_inbox_attachments_response.g.dart';
 
 @JsonSerializable(nullable: false)
 class ApprovalInboxAttachmentsResponse {
-
-
   ApprovalInboxAttachmentsResponse();
 
-  factory ApprovalInboxAttachmentsResponse.fromJson(Map<String, dynamic> json) => _$ApprovalInboxAttachmentsResponseFromJson(json);
+  factory ApprovalInboxAttachmentsResponse.fromJson(
+          Map<String, dynamic> json) =>
+      _$ApprovalInboxAttachmentsResponseFromJson(json);
 
-
-  Map<String, dynamic> toJson() => _$ApprovalInboxAttachmentsResponseToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$ApprovalInboxAttachmentsResponseToJson(this);
 
   @JsonKey(name: 'attachment_rowId')
   String _attachment_rowId;
