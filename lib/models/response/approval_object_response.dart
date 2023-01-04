@@ -24,6 +24,18 @@ class ApprovalObjectResponse {
   @JsonKey(name: 'employee_id')
   String _employee_id;
 
+
+
+  @JsonKey(name: 'extra_work_date')
+  String _extra_work_date;
+
+
+  String get extra_work_date => _extra_work_date;
+
+  set extra_work_date(String value) {
+    _extra_work_date = value;
+  }
+
   @JsonKey(name: 'employeeName')
   String _employeeName;
 

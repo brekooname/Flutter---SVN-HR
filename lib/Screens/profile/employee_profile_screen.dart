@@ -63,7 +63,7 @@ class _UserInfoState extends State<UserInfo> {
       _employeePosition = prefs.getString(Const.SHARED_KEY_POSITION) ?? "";
       _employeeDepartment = prefs.getString(Const.SHARED_KEY_DEPARTMENT) ?? "";
       _employeeNumber = prefs.getString(Const.SHARED_KEY_EMPLOYEE_NUMBER) ?? "";
-      _employeeEmail = prefs.getString(Const.SHARED_KEY_EMAIL) ?? "";
+      // _employeeEmail = prefs.getString(Const.SHARED_KEY_EMAIL) ?? "";
       _employeeTel = prefs.getString(Const.SHARED_KEY_TELEPHONE_NUMBER) ?? "";
       _reportingManager =
           prefs.getString(Const.SHARED_KEY_REPORTING_MANAGER) ?? "";
@@ -192,7 +192,7 @@ class _UserInfoState extends State<UserInfo> {
                         title: Text(AppTranslations.of(context)
                             .text(Const.LOCALE_KEY_EMAIL)),
                         subtitle: Text(
-                          _employeeEmail,
+                          '_employeeEmail',
                           style: TextStyle(fontWeight: FontWeight.w500),
                         ),
                       ),

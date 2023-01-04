@@ -18,7 +18,8 @@ ExtraWorkRequest _$ExtraWorkRequestFromJson(Map<String, dynamic> json) {
     ..extra_details = json['extra_details'] as String
     ..day_type = json['day_type'] as String
     ..request_date = json['request_date'] as String
-    ..approved_by = json['approved_by'] as String;
+    ..approved_by = json['approved_by'] as String
+    ..extra_work_date = json['extra_work_date'] as String;
 }
 
 Map<String, dynamic> _$ExtraWorkRequestToJson(ExtraWorkRequest instance) =>
@@ -34,4 +35,5 @@ Map<String, dynamic> _$ExtraWorkRequestToJson(ExtraWorkRequest instance) =>
       'day_type': instance.day_type,
       'request_date': instance.request_date,
       'approved_by': instance.approved_by,
+      'extra_work_date': instance.extra_work_date,
     };

@@ -13,15 +13,12 @@ import 'package:sven_hr/utilities/api_connectons.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
 class ExpenseController {
-
   DateFormat format = DateFormat(Const.DATE_FORMAT);
 
   List<ExpenseTransactionResponse> _expenseList;
 
-
-
-  ExpenseController(){
-    _expenseList =List();
+  ExpenseController() {
+    _expenseList = List();
   }
 
   Future<List<LovValue>> loadCurrency() async {
@@ -85,7 +82,6 @@ class ExpenseController {
 
   Future<String> uploadAttachment(
       {String filePath, String tokenId, String approval_inbox_row_id}) async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
@@ -103,7 +99,7 @@ class ExpenseController {
         approval_inbox_row_id: approval_inbox_row_id);
 
     var userData = await request.getData();
-    return userData;
+
     if (userData != null &&
         userData[Const.SYSTEM_RESPONSE_CODE] != null &&
         userData[Const.SYSTEM_RESPONSE_CODE]
@@ -127,9 +123,9 @@ class ExpenseController {
   }
 
   Future<String> getExpenseTransaction(
-      String fromDate,
-      String toDate,
-      ) async {
+    String fromDate,
+    String toDate,
+  ) async {
     _expenseList = List();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -147,7 +143,7 @@ class ExpenseController {
           userData[Const.SYSTEM_MSG_CODE].compareTo(Const.SYSTEM_SUCCESS_MSG) ==
               0) {
         ExpenseTransactionBaseResponse baseResponse =
-        ExpenseTransactionBaseResponse.fromJson(userData);
+            ExpenseTransactionBaseResponse.fromJson(userData);
 
         if (baseResponse.expenseList != null) {
           _expenseList = baseResponse.expenseList;

@@ -9,6 +9,7 @@ part of 'extra_work_transaction_response.dart';
 ExtraWorkTransactionResponse _$ExtraWorkTransactionResponseFromJson(
     Map<String, dynamic> json) {
   return ExtraWorkTransactionResponse()
+    ..extra_work_date = json['extra_work_date'] as String
     ..approvalList = (json['approvalList'] as List)
         .map((e) => ApprovalList.fromJson(e as Map<String, dynamic>))
         .toList()
@@ -33,6 +34,7 @@ ExtraWorkTransactionResponse _$ExtraWorkTransactionResponseFromJson(
 Map<String, dynamic> _$ExtraWorkTransactionResponseToJson(
         ExtraWorkTransactionResponse instance) =>
     <String, dynamic>{
+      'extra_work_date': instance.extra_work_date,
       'approvalList': instance.approvalList,
       'approved_by': instance.approved_by,
       'day_type_display_value': instance.day_type_display_value,

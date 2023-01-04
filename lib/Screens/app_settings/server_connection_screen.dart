@@ -22,34 +22,35 @@ class ServerConnectionScreen extends StatefulWidget {
   ServerConnectionScreen({this.inside});
 
   @override
-  _ServerConnectionScreenState createState() => _ServerConnectionScreenState(inside);
+  _ServerConnectionScreenState createState() =>
+      _ServerConnectionScreenState(inside);
 }
 
 class _ServerConnectionScreenState extends State<ServerConnectionScreen> {
   bool inside;
-  bool showSpinner=false;
+  bool showSpinner = false;
   String _serverIP, _port;
-  bool _isIntegrated=false;
+  bool _isIntegrated = false;
 
-  _ServerConnectionScreenState(this.inside){
-    if(inside == null){
-      inside=false;
+  _ServerConnectionScreenState(this.inside) {
+    if (inside == null) {
+      inside = false;
     }
   }
 
   void saveServerHost() async {
     setState(() {
-      showSpinner=true;
+      showSpinner = true;
     });
     if (_serverIP == null || _serverIP.isEmpty) {
-      ToastMessage.showErrorMsg(AppTranslations.of(context)
-          .text(Const.INVALID_SERVER_IP));
+      ToastMessage.showErrorMsg(
+          AppTranslations.of(context).text(Const.INVALID_SERVER_IP));
       return;
     }
 
     if (_port == null || _port.isEmpty) {
-      ToastMessage.showErrorMsg(AppTranslations.of(context)
-          .text(Const.INVALID_SERVER_PORT));
+      ToastMessage.showErrorMsg(
+          AppTranslations.of(context).text(Const.INVALID_SERVER_PORT));
       return;
     }
     String full_url = ApiConnections.main_part + _serverIP + ":" + _port;
@@ -61,12 +62,13 @@ class _ServerConnectionScreenState extends State<ServerConnectionScreen> {
     // test connection
     NetworkHelper helper = NetworkHelper(url: full_url);
     bool isConnected = await helper.testConnection();
-
-    if(!isConnected){
-      ToastMessage.showErrorMsg(AppTranslations.of(context)
-          .text(Const.INVALID_SERVER_IP));
+    print('isConnected:'+isConnected.toString());
+    print('url:'+full_url.toString());
+    if (!isConnected) {
+      ToastMessage.showErrorMsg(
+          AppTranslations.of(context).text(Const.INVALID_SERVER_IP));
       setState(() {
-        showSpinner=false;
+        showSpinner = false;
       });
       return;
     }
@@ -79,11 +81,10 @@ class _ServerConnectionScreenState extends State<ServerConnectionScreen> {
     prefs.setString(Const.SHARED_KEY_SERVER_PORT, _port);
     prefs.setBool(Const.SHARED_KEY_IS_INTEGRATED, _isIntegrated);
 
-
     prefs.setString(Const.SHARED_KEY_FULL_HOST_URL, full_url);
 
     setState(() {
-      showSpinner=false;
+      showSpinner = false;
     });
     Navigator.pop(context);
     Navigator.pushNamed(context, LoginScreen.id);
@@ -91,17 +92,16 @@ class _ServerConnectionScreenState extends State<ServerConnectionScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     Size size = MediaQuery.of(context).size;
 
-    Widget screen_body(){
+    Widget screen_body() {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           RoundedInputField(
             icon: Icons.miscellaneous_services,
-            hintText: AppTranslations.of(context)
-                .text(Const.LOCALE_KEY_SERVER_IP),
+            hintText:
+            AppTranslations.of(context).text(Const.LOCALE_KEY_SERVER_IP),
             inputType: TextInputType.numberWithOptions(decimal: true),
             onChanged: (value) {
               _serverIP = value;
@@ -109,8 +109,8 @@ class _ServerConnectionScreenState extends State<ServerConnectionScreen> {
           ),
           RoundedInputField(
             icon: Icons.point_of_sale,
-            hintText: AppTranslations.of(context)
-                .text(Const.LOCALE_KEY_SERVER_PORT),
+            hintText:
+            AppTranslations.of(context).text(Const.LOCALE_KEY_SERVER_PORT),
             inputType: TextInputType.number,
             onChanged: (value) {
               _port = value;
@@ -118,12 +118,15 @@ class _ServerConnectionScreenState extends State<ServerConnectionScreen> {
           ),
           RoundedCheckBoxField(
             value: _isIntegrated,
-            hintText: AppTranslations.of(context)
-                .text(Const.LOCALE_KEY_IS_INTEGRATED),
+            hintText: AppTranslations.of(context).text(
+              Const.LOCALE_KEY_IS_INTEGRATED,
+            ),
             onChanged: (value) {
-              setState(() {
-                _isIntegrated = value;
-              });
+              setState(
+                    () {
+                  _isIntegrated = value;
+                },
+              );
             },
           ),
           RoundedButton(
@@ -137,13 +140,14 @@ class _ServerConnectionScreenState extends State<ServerConnectionScreen> {
       );
     }
 
-
-    if(inside){
+    if (inside) {
       return ScreenLoader(
-        screenName: AppTranslations.of(context).text(Const.LOCALE_KEY_SERVER_CONNECTION),
-        screenWidget: ModalProgressHUD(inAsyncCall: showSpinner, child: Center(child: screen_body())),
+        screenName: AppTranslations.of(context)
+            .text(Const.LOCALE_KEY_SERVER_CONNECTION),
+        screenWidget: ModalProgressHUD(
+            inAsyncCall: showSpinner, child: Center(child: screen_body())),
       );
-    }else{
+    } else {
       return Scaffold(
           body: ModalProgressHUD(
             inAsyncCall: showSpinner,
@@ -154,13 +158,5 @@ class _ServerConnectionScreenState extends State<ServerConnectionScreen> {
             ),
           ));
     }
-
-
-
-
   }
-
-
 }
-
-

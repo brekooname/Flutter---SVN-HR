@@ -36,8 +36,13 @@ class _LoginScreenState extends State<LoginScreen> {
       showSpinner = true;
     });
     await loginController
-        .loginVerifications(_username, _password)
-        .then((value) {
+        .loginVerifications(
+      _username,
+      _password,
+    )
+        .then((
+      value,
+    ) {
       if (value != null) {
         if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
           Navigator.pop(context);

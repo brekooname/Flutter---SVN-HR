@@ -1,4 +1,3 @@
-
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sven_hr/components/flutter_toast_message.dart';
@@ -129,15 +128,14 @@ class VacationTransactionController {
           !approval_inbox_row_id.isEmpty &&
           filePaths != null &&
           !filePaths.isEmpty) {
-        for(int i=0;i<filePaths.length;i++){
-          String path=filePaths[i];
+        for (int i = 0; i < filePaths.length; i++) {
+          String path = filePaths[i];
           String res = await uploadAttachment(
               filePath: path,
               tokenId: tokenId,
               approval_inbox_row_id: approval_inbox_row_id);
           print(path);
         }
-
       }
       return Const.SYSTEM_SUCCESS_MSG;
     } else {
@@ -154,8 +152,9 @@ class VacationTransactionController {
 
     var url = host + ApiConnections.UPLOAD_FILE;
     String fileNameWithExtenstion = filePath.split('/').last;
-    String fileName=fileNameWithExtenstion.split('.').first;;
-    String fileType =  fileNameWithExtenstion.split('.').last;
+    String fileName = fileNameWithExtenstion.split('.').first;
+    ;
+    String fileType = fileNameWithExtenstion.split('.').last;
     MultiPartFileUpload request = MultiPartFileUpload(
         url: url,
         filePath: filePath,
@@ -169,7 +168,7 @@ class VacationTransactionController {
     if (userData != null &&
         userData[Const.SYSTEM_RESPONSE_CODE] != null &&
         userData[Const.SYSTEM_RESPONSE_CODE]
-            .compareTo(Const.SYSTEM_SUCCESS_MSG) ==
+                .compareTo(Const.SYSTEM_SUCCESS_MSG) ==
             0) {
       return Const.SYSTEM_SUCCESS_MSG;
     } else {
@@ -230,7 +229,7 @@ class VacationTransactionController {
             VacationTransactionBaseResponse.fromJson(userData);
         // add returned vacation to vacation list item view
         if (baseResponse.vacationTransactions != null) {
-          vacationList=baseResponse.vacationTransactions;
+          vacationList = baseResponse.vacationTransactions;
           // for (VacationTransactionResponse vac
           //     in baseResponse.vacationTransactions) {
           //   LovValue statusLov = LovValue();
@@ -253,7 +252,7 @@ class VacationTransactionController {
           //   vacationList.add(vacItem);
           // }
         }
-        print("Finshed");
+        // print("Finshed");
         return Const.SYSTEM_SUCCESS_MSG;
       } else {
         ToastMessage.showErrorMsg(userData[Const.SYSTEM_MSG_CODE]);

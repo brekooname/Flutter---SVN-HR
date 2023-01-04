@@ -86,7 +86,9 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
     }
     showSpinner = true;
     await _approvalInboxController
-        .approvalInboxAction(requestInput: _requestDetails, action: action)
+        .approvalInboxAction(
+        requestInput: _requestDetails,
+        action: action,)
         .then((value) {
       if (value == null) {
         ToastMessage.showErrorMsg(Const.REQUEST_FAILED);

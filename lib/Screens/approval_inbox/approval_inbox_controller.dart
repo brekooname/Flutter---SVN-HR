@@ -126,7 +126,8 @@ class ApprovalInboxController {
   }
 
   Future<String> approvalInboxAction(
-      {ApprovalObjectResponse requestInput, String action}) async {
+      {ApprovalObjectResponse requestInput,
+        String action}) async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
     String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);

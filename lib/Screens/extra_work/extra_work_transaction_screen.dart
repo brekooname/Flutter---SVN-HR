@@ -64,7 +64,8 @@ class _ExtraWorkTransactionScreenState extends State<ExtraWorkTransactionScreen>
   @override
   Widget build(BuildContext context) {
     return ScreenLoader(
-      screenName: AppTranslations.of(context).text(Const.LOCALE_KEY_MY_EXTRA_WORK),
+      screenName:
+          AppTranslations.of(context).text(Const.LOCALE_KEY_MY_EXTRA_WORK),
       screenWidget: ExtraWorkScreen(),
     );
   }
@@ -78,7 +79,7 @@ class _ExtraWorkTransactionScreenState extends State<ExtraWorkTransactionScreen>
           Container(
             margin: EdgeInsets.all(5),
             decoration: BoxDecoration(
-              // color: AppTheme.kPrimaryLightColor.withOpacity(.6),
+                // color: AppTheme.kPrimaryLightColor.withOpacity(.6),
                 borderRadius: BorderRadius.circular(30)),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 1),
@@ -189,19 +190,20 @@ class _ExtraWorkTransactionScreenState extends State<ExtraWorkTransactionScreen>
                     scrollDirection: Axis.vertical,
                     itemBuilder: (BuildContext context, int index) {
                       final int count =
-                      _extraWorkController.extraWorkList.length > 10
-                          ? 10
-                          : _extraWorkController.extraWorkList.length;
+                          _extraWorkController.extraWorkList.length > 10
+                              ? 10
+                              : _extraWorkController.extraWorkList.length;
                       final Animation<double> animation =
-                      Tween<double>(begin: 0.0, end: 1.0).animate(
-                          CurvedAnimation(
-                              parent: animationController,
-                              curve: Interval((1 / count) * index, 1.0,
-                                  curve: Curves.fastOutSlowIn)));
+                          Tween<double>(begin: 0.0, end: 1.0).animate(
+                              CurvedAnimation(
+                                  parent: animationController,
+                                  curve: Interval((1 / count) * index, 1.0,
+                                      curve: Curves.fastOutSlowIn)));
                       animationController.forward();
 
                       return ExtraWorkView(
-                        extraWorkListItem: _extraWorkController.extraWorkList[index],
+                        extraWorkListItem:
+                            _extraWorkController.extraWorkList[index],
                         animation: animation,
                         animationController: animationController,
                         callback: () {
@@ -223,10 +225,10 @@ class _ExtraWorkTransactionScreenState extends State<ExtraWorkTransactionScreen>
 class ExtraWorkView extends StatelessWidget {
   const ExtraWorkView(
       {Key key,
-        this.extraWorkListItem,
-        this.animationController,
-        this.animation,
-        this.callback})
+      this.extraWorkListItem,
+      this.animationController,
+      this.animation,
+      this.callback})
       : super(key: key);
 
   final VoidCallback callback;
@@ -280,12 +282,12 @@ class ExtraWorkView extends StatelessWidget {
                         Expanded(
                           flex: 1,
                           child: ListTile(
-                            title: Text(AppTranslations.of(context).text(
-                                Const.LOCALE_KEY_EXTRA_WORK_DAY_TYPE)),
-                            subtitle: Text(
-                                extraWorkListItem.day_type != null
-                                    ? extraWorkListItem.day_type_display_value.toString()
-                                    : "-"),
+                            title: Text(AppTranslations.of(context)
+                                .text(Const.LOCALE_KEY_EXTRA_WORK_DAY_TYPE)),
+                            subtitle: Text(extraWorkListItem.day_type != null
+                                ? extraWorkListItem.day_type_display_value
+                                    .toString()
+                                : "-"),
                           ),
                         ),
                         Expanded(
@@ -301,7 +303,6 @@ class ExtraWorkView extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     Row(
                       children: [
                         Expanded(
@@ -310,18 +311,20 @@ class ExtraWorkView extends StatelessWidget {
                             title: Text(AppTranslations.of(context)
                                 .text(Const.LOCALE_KEY_EXTRA_WORK_UNIT)),
                             subtitle: Text(extraWorkListItem.unit != null
-                                ? extraWorkListItem.unit_display_value.toString()
+                                ? extraWorkListItem.unit_display_value
+                                    .toString()
                                 : "-"),
                           ),
                         ),
                         Expanded(
                           flex: 1,
                           child: ListTile(
-                            title: Text(AppTranslations.of(context)
-                                .text(Const.LOCALE_KEY_EXTRA_WORK_UNIT_QUANTITY)),
-                            subtitle: Text(extraWorkListItem.unit_quantity != null
-                                ? extraWorkListItem.unit_quantity.toString()
-                                : "-"),
+                            title: Text(AppTranslations.of(context).text(
+                                Const.LOCALE_KEY_EXTRA_WORK_UNIT_QUANTITY)),
+                            subtitle: Text(
+                                extraWorkListItem.unit_quantity != null
+                                    ? extraWorkListItem.unit_quantity.toString()
+                                    : "-"),
                           ),
                         ),
                       ],
@@ -333,9 +336,10 @@ class ExtraWorkView extends StatelessWidget {
                           child: ListTile(
                             title: Text(AppTranslations.of(context)
                                 .text(Const.LOCALE_KEY_NOTES)),
-                            subtitle: Text(extraWorkListItem.extra_details != null
-                                ? extraWorkListItem.extra_details
-                                : "-"),
+                            subtitle: Text(
+                                extraWorkListItem.extra_details != null
+                                    ? extraWorkListItem.extra_details
+                                    : "-"),
                           ),
                         ),
                       ],
@@ -345,34 +349,34 @@ class ExtraWorkView extends StatelessWidget {
                         Expanded(
                           flex: 1,
                           child: Text(AppTranslations.of(context)
-                              .text(Const.LOCALE_KEY_APPROVAL_INBOX) +
+                                  .text(Const.LOCALE_KEY_APPROVAL_INBOX) +
                               ": "),
                         ),
                       ],
                     ),
-                    if(extraWorkListItem.approvalList!=null)
+                    if (extraWorkListItem.approvalList != null)
                       Row(
                         children: [
                           Expanded(
                               child: SizedBox(
-                                height: 100,
-                                child: ListView.builder(
-                                  itemBuilder: (ctx, index) {
-                                    return Text(
-                                      extraWorkListItem
-                                          .approvalList[index].employeeName !=
+                            height: 100,
+                            child: ListView.builder(
+                              itemBuilder: (ctx, index) {
+                                return Text(
+                                  extraWorkListItem.approvalList[index]
+                                              .employeeName !=
                                           null
-                                          ? extraWorkListItem
+                                      ? extraWorkListItem
                                           .approvalList[index].employeeName
-                                          : "-",
-                                      style: TextStyle(
-                                        color: AppTheme.kPrimaryColor,
-                                      ),
-                                    );
-                                  },
-                                  itemCount: extraWorkListItem.approvalList.length,
-                                ),
-                              ))
+                                      : "-",
+                                  style: TextStyle(
+                                    color: AppTheme.kPrimaryColor,
+                                  ),
+                                );
+                              },
+                              itemCount: extraWorkListItem.approvalList.length,
+                            ),
+                          ))
                         ],
                       )
                   ],
@@ -419,10 +423,7 @@ class ExtraWorkView extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                         border: Border.all(
-                            width: 3,
-                            color: extraWorkListItem
-                                .getRightColor()
-                                .withOpacity(0.2)),
+                            width: 3, color: extraWorkListItem.getRightColor()),
                       ),
                       child: extraWorkListItem.getRightIcon(),
                     ),
@@ -475,7 +476,7 @@ class ExtraWorkView extends StatelessWidget {
                               ),
                               Text(
                                   AppTranslations.of(context).text(Const
-                                      .LOCALE_KEY_EXTRA_WORK_REQUEST_DATE) +
+                                          .LOCALE_KEY_EXTRA_WORK_REQUEST_DATE) +
                                       ": ",
                                   style: TextStyle(
                                       color: extraWorkListItem.getRightColor(),
@@ -503,9 +504,10 @@ class ExtraWorkView extends StatelessWidget {
                                       size: 25,
                                     ),
                                     tooltip: 'search',
-                                    hoverColor: extraWorkListItem.getRightColor(),
+                                    hoverColor:
+                                        extraWorkListItem.getRightColor(),
                                     splashColor:
-                                    extraWorkListItem.getRightColor(),
+                                        extraWorkListItem.getRightColor(),
                                     onPressed: () {
                                       _asyncConfirmDialog(context);
                                     }),

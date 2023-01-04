@@ -40,7 +40,8 @@ class ExtraWorkController {
       String unit,
       num unitQuantity,
       String notes,
-      List<String> filePaths}) async {
+      List<String> filePaths,
+      String extra_work_date}) async {
     final prefs = await SharedPreferences.getInstance();
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
     String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
@@ -54,6 +55,7 @@ class ExtraWorkController {
     extraWorkRequest.unit = unit;
     extraWorkRequest.unit_quantity = unitQuantity;
     extraWorkRequest.extra_details = notes;
+    extraWorkRequest.extra_work_date= extra_work_date;
 
     ExtraWorkBaseRequest request = ExtraWorkBaseRequest(
         tokenID: tokenId, extraWorkTrans: extraWorkRequest);

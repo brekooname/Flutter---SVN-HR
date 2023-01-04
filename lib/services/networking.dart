@@ -17,7 +17,7 @@ class NetworkHelper {
     );
     if (response.statusCode == 200) {
       String data = utf8.decode(response.bodyBytes);
-      // print(response.body);
+      print(response.body);
       return jsonDecode(data);
     } else {
       print(response.statusCode);
@@ -28,8 +28,10 @@ class NetworkHelper {
     try {
       http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
+        print('response'+response.toString());
         return true;
       } else {
+        print('response'+response.toString());
         return false;
       }
     } catch (e) {

@@ -9,6 +9,7 @@ part of 'approval_object_response.dart';
 ApprovalObjectResponse _$ApprovalObjectResponseFromJson(
     Map<String, dynamic> json) {
   return ApprovalObjectResponse()
+    ..extra_work_date = json['extra_work_date'] as String
     ..row_id = json['row_id'] as String
     ..approvalInboxType = json['approvalInboxType'] as String
     ..approvalInboxID = json['approvalInboxID'] as String
@@ -90,6 +91,7 @@ ApprovalObjectResponse _$ApprovalObjectResponseFromJson(
 Map<String, dynamic> _$ApprovalObjectResponseToJson(
         ApprovalObjectResponse instance) =>
     <String, dynamic>{
+      'extra_work_date': instance.extra_work_date,
       'row_id': instance.row_id,
       'approvalInboxType': instance.approvalInboxType,
       'approvalInboxID': instance.approvalInboxID,

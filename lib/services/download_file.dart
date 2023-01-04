@@ -29,8 +29,8 @@ class DownloadFile {
         this.token_id));
     if (response.statusCode == 200) {
       Uint8List bytes = response.bodyBytes;
-      String dir = (await getApplicationDocumentsDirectory()).path;
-      File file = File("$dir/" + attach_name);
+      final dir = await getApplicationDocumentsDirectory();
+      File file = File('${dir.path}' + attach_name);
       await file.writeAsBytes(bytes);
       print(file.path);
 

@@ -4,13 +4,10 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:sven_hr/models/response/approval_list.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 
-
 part 'extra_work_transaction_response.g.dart';
 
 @JsonSerializable(nullable: false)
-class ExtraWorkTransactionResponse{
-
-
+class ExtraWorkTransactionResponse {
   String _row_id;
 
   String _employee_id;
@@ -43,13 +40,21 @@ class ExtraWorkTransactionResponse{
 
   String _approved_by;
 
-  List<ApprovalList> _approvalList;
+  String _extra_work_date;
 
+
+  String get extra_work_date => _extra_work_date;
+
+  set extra_work_date(String value) {
+    _extra_work_date = value;
+  }
+
+  List<ApprovalList> _approvalList;
 
   ExtraWorkTransactionResponse();
 
-  factory ExtraWorkTransactionResponse.fromJson(Map<String, dynamic> json) => _$ExtraWorkTransactionResponseFromJson(json);
-
+  factory ExtraWorkTransactionResponse.fromJson(Map<String, dynamic> json) =>
+      _$ExtraWorkTransactionResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ExtraWorkTransactionResponseToJson(this);
 
@@ -152,12 +157,20 @@ class ExtraWorkTransactionResponse{
   Icon getRightIcon() {
     return Icon(
       Icons.work_outline,
-      color:AppTheme.green,
+      color: getRightColor(),
     );
   }
 
   Color getRightColor() {
-    return AppTheme.green;
+    return status_display_value.toString() == 'Approved'
+        ? Colors.green
+        : status_display_value.toString() == 'Rejected'
+            ? Colors.red
+            : status_display_value.toString() == 'Declined'
+                ? Colors.red
+                : status_display_value.toString() == 'New'
+                    ? Colors.orange
+                    : Colors.blue;
   }
 
   String get approval_date => _approval_date;

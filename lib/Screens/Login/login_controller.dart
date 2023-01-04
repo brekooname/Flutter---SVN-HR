@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sven_hr/components/flutter_toast_message.dart';
 import 'package:sven_hr/dao/lov_value.dart';
 import 'package:sven_hr/dao/vacation_type.dart';
@@ -17,19 +15,16 @@ import 'package:sven_hr/services/networking.dart';
 import 'package:sven_hr/utilities/api_connectons.dart';
 import 'package:sven_hr/utilities/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sven_hr/utilities/database_helpers.dart';
-
-import '../navigation_home_screen.dart';
 
 class LoginController {
   SharedPreferences prefs;
   static List<ProfileScreenResponse> listOfProfileScreens;
-  String _username , _password;
+  String _username, _password;
 
   Future<dynamic> loginVerifications(String username, String password) async {
     prefs = await SharedPreferences.getInstance();
-    this._username=username;
-    this._password=password;
+    this._username = username;
+    this._password = password;
 
     // //check if user login or not
     // String prefTokenId = prefs.get(Const.SHARED_KEY_TOKEN_ID);
@@ -50,8 +45,11 @@ class LoginController {
 
     try {
       bool _isIntegrated = prefs.getBool(Const.SHARED_KEY_IS_INTEGRATED);
-      User user =
-          User(username: username, password: password, netsuitFlag: _isIntegrated);
+      User user = User(
+        username: username,
+        password: password,
+        netsuitFlag: _isIntegrated,
+      );
       dynamic res = await getLoginAPI(user.toJson());
       if (res != null &&
           res.toString().compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
@@ -80,8 +78,8 @@ class LoginController {
       Employee employee = Employee();
       employee = Employee.fromJson(userData);
 
-      await _saveToSharedPreferences(employee);
-      String result = null;
+      _saveToSharedPreferences(employee);
+      // String result = null;
       // String result = await loadLovValues();
       // await loadVacationType();
       // Future.wait([loadLovValues(), loadVacationType()])
@@ -116,10 +114,9 @@ class LoginController {
   }
 
   void _saveToSharedPreferences(Employee employee) async {
-
     String server_ip = prefs.getString(Const.SHARED_KEY_SERVER_IP);
     String server_port = prefs.getString(Const.SHARED_KEY_SERVER_PORT);
-    String imageUrl=ApiConnections.main_part+server_ip+":"+server_port;
+    String imageUrl = ApiConnections.main_part + server_ip + ":" + server_port;
 
     prefs.setString(Const.SHARED_KEY_USERNAME, _username);
     prefs.setString(Const.SHARED_KEY_PASSWORD, _password);
@@ -128,11 +125,16 @@ class LoginController {
     prefs.setString(Const.SHARED_KEY_EMPLOYEE_ID, employee.employee_id);
     prefs.setString(Const.SHARED_KEY_POSITION, employee.position);
     prefs.setString(Const.SHARED_KEY_DEPARTMENT, employee.department);
-    prefs.setString(Const.SHARED_KEY_EMAIL, employee.email);
-    prefs.setString(
-        Const.SHARED_KEY_TELEPHONE_NUMBER, employee.telephoneNumber);
-    prefs.setString(
-        Const.SHARED_KEY_EMPLOYEE_PIC_LINK, imageUrl+employee.employee_profile_pic_link);
+    if (employee.email != null) {
+      prefs.setString(Const.SHARED_KEY_EMAIL, employee.email);
+    }
+    if (employee.telephoneNumber != null) {
+      prefs.setString(
+          Const.SHARED_KEY_TELEPHONE_NUMBER, employee.telephoneNumber);
+    }
+
+    prefs.setString(Const.SHARED_KEY_EMPLOYEE_PIC_LINK,
+        imageUrl + employee.employee_profile_pic_link);
     prefs.setString(Const.SHARED_KEY_EMPLOYEE_NAME, employee.employeeName);
     prefs.setString(
         Const.SHARED_KEY_REPORTING_MANAGER, employee.reportingManager);
@@ -152,14 +154,14 @@ class LoginController {
     String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
     String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
-    var url = host+ ApiConnections.lov_values;
+    var url = host + ApiConnections.lov_values;
     LovValuesRequest request = LovValuesRequest(tokenID: tokenId);
     NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
     var userData = await helper.getData();
     if (userData != null &&
         userData[Const.SYSTEM_RESPONSE_CODE] != null &&
         userData[Const.SYSTEM_RESPONSE_CODE]
-                .compareTo(Const.SYSTEM_SUCCESS_MSG) ==
+            .compareTo(Const.SYSTEM_SUCCESS_MSG) ==
             0) {
       // free Lov table
 
@@ -203,7 +205,7 @@ class LoginController {
     if (userData != null &&
         userData[Const.SYSTEM_RESPONSE_CODE] != null &&
         userData[Const.SYSTEM_RESPONSE_CODE]
-                .compareTo(Const.SYSTEM_SUCCESS_MSG) ==
+            .compareTo(Const.SYSTEM_SUCCESS_MSG) ==
             0) {
       // free Vacation type table
       try {
@@ -235,7 +237,7 @@ class LoginController {
           await value.insert(value);
         }
 
-        print("Vacation Type load finished");
+        // print("Vacation Type load finished");
         // VacationType vacationType = VacationType();
         // List<VacationType> list = await vacationType.getAllVacationsType();
         // print(list.length);
@@ -259,13 +261,13 @@ class LoginController {
     if (userData != null &&
         userData[Const.SYSTEM_RESPONSE_CODE] != null &&
         userData[Const.SYSTEM_RESPONSE_CODE]
-                .compareTo(Const.SYSTEM_SUCCESS_MSG) ==
+            .compareTo(Const.SYSTEM_SUCCESS_MSG) ==
             0) {
       ProfileScreenBaseResponse reponse = ProfileScreenBaseResponse();
       reponse = ProfileScreenBaseResponse.fromJson(userData);
       if (reponse.listOfAllScreensDisplay != null &&
-          !reponse.listOfAllScreensDisplay.isEmpty) {
-        listOfProfileScreens = List();
+          reponse.listOfAllScreensDisplay.isNotEmpty) {
+        listOfProfileScreens = [];
         listOfProfileScreens = reponse.listOfAllScreensDisplay
             .where((element) => element.displayFlag)
             .toList();

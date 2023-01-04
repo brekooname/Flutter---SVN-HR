@@ -4,13 +4,10 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:sven_hr/models/response/approval_list.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 
-
 part 'expense_transaction_response.g.dart';
 
 @JsonSerializable(nullable: false)
-class ExpenseTransactionResponse{
-
-
+class ExpenseTransactionResponse {
   String _row_id;
 
   String _description;
@@ -35,11 +32,10 @@ class ExpenseTransactionResponse{
 
   List<ApprovalList> _approvalList;
 
-
   ExpenseTransactionResponse();
 
-  factory ExpenseTransactionResponse.fromJson(Map<String, dynamic> json) => _$ExpenseTransactionResponseFromJson(json);
-
+  factory ExpenseTransactionResponse.fromJson(Map<String, dynamic> json) =>
+      _$ExpenseTransactionResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ExpenseTransactionResponseToJson(this);
 
@@ -91,7 +87,6 @@ class ExpenseTransactionResponse{
     _approvalList = value;
   }
 
-
   String get request_status => _request_status;
 
   set request_status(String value) {
@@ -101,12 +96,20 @@ class ExpenseTransactionResponse{
   Icon getRightIcon() {
     return Icon(
       Icons.monetization_on_outlined,
-      color: AppTheme.nearlyBlue,
+      color: getRightColor(),
     );
   }
 
   Color getRightColor() {
-    return AppTheme.nearlyBlue;
+    if (status_display_name.toString() == 'Approved') {
+      return Colors.green;
+    } else if (status_display_name.toString() == 'Rejected') {
+      return Colors.red;
+    } else if (status_display_name.toString() == 'New') {
+      return Colors.orange;
+    } else if (status_display_name.toString() == 'Canceled') {
+      return Colors.blue;
+    }
   }
 
   String get approval_date => _approval_date;

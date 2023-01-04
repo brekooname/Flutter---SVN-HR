@@ -16,6 +16,7 @@ class ExtraWorkRequest {
   String day_type;
   String request_date;
   String approved_by;
+  String extra_work_date;
 
 
   ExtraWorkRequest();

@@ -55,12 +55,14 @@ Future<void> main() async {
       await loginController
           .loginVerifications(username, password)
           .then((value) {
+        print(value);
         if (value != null) {
           if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
             initialRoute = NavigationHomeScreen.id;
 
             // ToastMessage.showSuccessMsg(value.message);
           } else {
+            print("va" + value);
             ToastMessage.showErrorMsg(value.message);
           }
         }

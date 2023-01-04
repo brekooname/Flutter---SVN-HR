@@ -19,9 +19,8 @@ class LeavesController {
   DateFormat format = DateFormat(Const.DATE_FORMAT);
   DateFormat dateTimeFormat = DateFormat(Const.DATE_TIME_FORMAT);
 
-
-  LeavesController(){
-    _leaveList=List();
+  LeavesController() {
+    _leaveList = List();
   }
 
   Future<List<LovValue>> loadLeavesStatus() async {
@@ -99,7 +98,7 @@ class LeavesController {
             LeaveTransactionBaseResponse.fromJson(userData);
         // add returned leaves to leaves list item view
         if (baseResponse.leaveTransactions != null) {
-          leaveList=baseResponse.leaveTransactions;
+          leaveList = baseResponse.leaveTransactions;
           // for (LeaveTransactionResponse vac in baseResponse.leaveTransactions) {
           //   LovValue statusLov = LovValue();
           //   statusLov.row_id = vac.request_status;
@@ -122,7 +121,7 @@ class LeavesController {
           //   leaveList.add(levItem);
           // }
         }
-        print("Finshed");
+        // print("Finshed");
         return Const.SYSTEM_SUCCESS_MSG;
       } else {
         ToastMessage.showErrorMsg(userData[Const.SYSTEM_MSG_CODE]);

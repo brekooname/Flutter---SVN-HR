@@ -52,7 +52,7 @@ class NotificationController {
           }
         }
 
-        print("Finshed");
+        // print("Finshed");
         return Const.SYSTEM_SUCCESS_MSG;
       } else {
         ToastMessage.showErrorMsg(userData[Const.SYSTEM_MSG_CODE]);
@@ -86,7 +86,7 @@ class NotificationController {
         if (baseResponse.notificationObject != null) {
           _notificationDetail = baseResponse.notificationObject;
         }
-        print("Finshed");
+        // print("Finshed");
         return Const.SYSTEM_SUCCESS_MSG;
       } else {
         ToastMessage.showErrorMsg(userData[Const.SYSTEM_MSG_CODE]);

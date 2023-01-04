@@ -19,7 +19,7 @@ Salary _$SalaryFromJson(Map<String, dynamic> json) {
     ..net_salary = json['net_salary'] as num
     ..original_date_of_hire = json['original_date_of_hire'] as String
     ..org_id = json['org_id'] as String
-    ..hour_base_salary = json['hour_base_salary'] as num
+    ..hour_base_salary = (json['hour_base_salary'] as num).toDouble()
     ..retroactive_amt = json['retroactive_amt'] as num
     ..hour_value = json['hour_value'] as num
     ..updatedate = json['updatedate'] as String

@@ -39,6 +39,7 @@ class _ExtraWorkScreenState extends State<ExtraWorkScreen>
   String notes;
   bool showSpinner = false;
   List<String> attachmentsPaths = List();
+  String date2;
   var attachmentTextController = new TextEditingController();
   @override
   void initState() {
@@ -90,7 +91,9 @@ class _ExtraWorkScreenState extends State<ExtraWorkScreen>
             unit: unitValue.row_id,
             unitQuantity: unitQuantity,
             notes: notes,
-        filePaths: attachmentsPaths)
+            filePaths: attachmentsPaths,
+         extra_work_date: '2022-12-25',
+    )
         .then((value) {
       if (value == null) {
         ToastMessage.showErrorMsg(Const.REQUEST_FAILED);
