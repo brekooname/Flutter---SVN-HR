@@ -43,7 +43,7 @@ Welcome to the **Sven HR Mobile Application**. This innovative Flutter-built app
 Get started with the Sven HR Mobile Application:
 
 ```bash
-git clone https://github.com/yourusername/sven_hr.git
+git clone https://github.com/WasimAnabtawi/sven_hr.git
 cd sven_hr
 flutter run
 
