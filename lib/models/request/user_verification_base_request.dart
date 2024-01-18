@@ -5,8 +5,8 @@ part 'user_verification_base_request.g.dart';
 
 @JsonSerializable(nullable: false)
 class UserVerificationBaseRequest{
-  String tokenId;
-  UserVerificationRequest userVerificationRequest;
+  String? tokenId;
+  UserVerificationRequest? userVerificationRequest;
 
 
   UserVerificationBaseRequest({this.tokenId, this.userVerificationRequest});

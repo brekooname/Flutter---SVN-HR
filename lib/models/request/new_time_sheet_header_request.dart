@@ -4,9 +4,9 @@ part 'new_time_sheet_header_request.g.dart';
 
 @JsonSerializable(nullable: false , explicitToJson: true)
 class NewTimeSheetHeaderRequest{
-  String start_date;
+  String? start_date;
 
-  String row_id;
+  String? row_id;
 
   NewTimeSheetHeaderRequest({this.start_date, this.row_id});
 

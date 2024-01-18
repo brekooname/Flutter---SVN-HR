@@ -9,13 +9,13 @@ part of 'employee_vacation_base_response.dart';
 EmployeeVacationBaseResponse _$EmployeeVacationBaseResponseFromJson(
     Map<String, dynamic> json) {
   return EmployeeVacationBaseResponse()
-    ..response = json['response'] as String
-    ..employeeVacations = (json['employeeVacations'] as List)
-        .map(
-            (e) => EmployeeVacationResponse.fromJson(e as Map<String, dynamic>))
-        .toList()
-    ..err_MSG = json['err_MSG'] as String;
+    ..response = json['response'] as String? ?? 'default_response'
+    ..employeeVacations = (json['employeeVacations'] as List<dynamic>?)
+        ?.map((e) => EmployeeVacationResponse.fromJson(e as Map<String, dynamic>))
+        .toList() ?? []
+    ..err_MSG = json['err_MSG'] as String? ?? 'default_err_msg';
 }
+
 
 Map<String, dynamic> _$EmployeeVacationBaseResponseToJson(
         EmployeeVacationBaseResponse instance) =>

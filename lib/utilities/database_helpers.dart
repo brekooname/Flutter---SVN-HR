@@ -16,12 +16,14 @@ class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
   // Only allow a single open connection to the database.
-  static Database _database;
+  static Database? _database;
   Future<Database> get database async {
-    if (_database != null) return _database;
-    _database = await _initDatabase();
-    return _database;
+    if (_database == null) {
+      _database = await _initDatabase();
+    }
+    return _database!;
   }
+
 
   // open the database
   // _initDatabase() async {
@@ -87,21 +89,35 @@ class DatabaseHelper {
 
   // Database helper methods:
 
-  Future<void> insert(String tableName, Map ob) async {
-    Database db = await database;
-    var batch = db.batch();
-    batch.insert(tableName, ob);
-    await batch.commit(noResult: true);
+  Future<void> insert(String tableName, Map<String, Object?> map) async {
+    // Check for null values in the map
+    if (map.containsValue(null)) {
+      print('Error: Map contains null values. Map: $map');
+      return;
+    }
 
-    // int id = await db.transaction((txn) async => insert(tableName, ob));
-    // int id = await db.insert(tableName, ob);
-    // return id;
+    try {
+      // Ensure the database instance is not null
+      Database? db = await database;
+      if (db == null) {
+        print('Error: Database instance is null.');
+        return;
+      }
+
+      // Log before attempting to insert
+      print('Attempting to insert into $tableName: $map');
+      await db.insert(tableName, map);
+      print('Successfully inserted into $tableName');
+    } catch (e) {
+      print('Error during insertion into $tableName: $e');
+    }
   }
+
 
   Future<dynamic> queryWord(String tableName, List<String> columns,
       String where, List<dynamic> whereArgs) async {
-    Database db = await database;
-    List<Map> maps = await db.transaction((txn) => txn.query(tableName,
+    Database? db = await database;
+    List<Map> maps = await db!.transaction((txn) => txn.query(tableName,
         columns: columns, where: where, whereArgs: whereArgs));
     if (maps.length > 0) {
       return maps.first;
@@ -109,10 +125,10 @@ class DatabaseHelper {
     return null;
   }
 
-  Future<List<Map>> queryWhereList(String tableName, List<String> columns,
+  Future<List<Map>?> queryWhereList(String tableName, List<String> columns,
       String where, List<dynamic> whereArgs) async {
-    Database db = await database;
-    List<Map> maps = await db.query(tableName,
+    Database? db = await database;
+    List<Map> maps = await db!.query(tableName,
         columns: columns, where: where, whereArgs: whereArgs);
     if (maps.length > 0) {
       return maps;
@@ -120,9 +136,9 @@ class DatabaseHelper {
     return null;
   }
 
-  Future<List<Map>> queryAllList(String tableName, List<String> columns) async {
-    Database db = await database;
-    List<Map> maps = await db.query(tableName,
+  Future<List<Map>?> queryAllList(String tableName, List<String> columns) async {
+    Database? db = await database;
+    List<Map> maps = await db!.query(tableName,
         columns: columns);
     if (maps.length > 0) {
       return maps;
@@ -131,8 +147,8 @@ class DatabaseHelper {
   }
 
   Future<int> delete(String tableName) async {
-    Database db = await database;
-    int id = await db.transaction((txn) => txn.delete(tableName));
+    Database? db = await database;
+    int id = await db!.transaction((txn) => txn.delete(tableName));
     return id;
   }
 

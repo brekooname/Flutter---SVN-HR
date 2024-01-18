@@ -5,18 +5,18 @@ part 'extra_work_request.g.dart';
 @JsonSerializable(nullable: false)
 class ExtraWorkRequest {
 
-  String employee_id;
-  String unit;
-  num unit_quantity;
-  String reason_id;
-  String row_id;
-  String status;
-  String requested_by;
-  String extra_details;
-  String day_type;
-  String request_date;
-  String approved_by;
-  String extra_work_date;
+  String? employee_id;
+  String? unit;
+  num? unit_quantity;
+  String? reason_id;
+  String? row_id;
+  String? status;
+  String? requested_by;
+  String? extra_details;
+  String? day_type;
+  String? request_date;
+  String? approved_by;
+  String? extra_work_date;
 
 
   ExtraWorkRequest();

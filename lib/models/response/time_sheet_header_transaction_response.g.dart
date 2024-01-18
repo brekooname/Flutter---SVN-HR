@@ -9,18 +9,18 @@ part of 'time_sheet_header_transaction_response.dart';
 TimeSheetHeaderTransactionResponse _$TimeSheetHeaderTransactionResponseFromJson(
     Map<String, dynamic> json) {
   return TimeSheetHeaderTransactionResponse()
-    ..difference_hour = json['difference_hour'] as num
-    ..shit_type_hour = json['shit_type_hour'] as num
-    ..work_hour = json['work_hour'] as num
-    ..row_id = json['row_id'] as String
-    ..updated_at = json['updated_at'] as String
-    ..start_date = json['start_date'] as String
-    ..deleted_at = json['deleted_at'] as String
-    ..updated_by = json['updated_by'] as String
-    ..created_at = json['created_at'] as String
-    ..employee_id = json['employee_id'] as String
-    ..deleted_by = json['deleted_by'] as String
-    ..created_by = json['created_by'] as String;
+    ..difference_hour = json['difference_hour'] as num? ?? 0
+    ..shit_type_hour = json['shit_type_hour'] as num? ?? 0
+    ..work_hour = json['work_hour'] as num? ?? 0
+    ..row_id = json['row_id'] as String? ?? 'default_row_id'
+    ..updated_at = json['updated_at'] as String? ?? 'default_updated_at'
+    ..start_date = json['start_date'] as String? ?? 'default_start_date'
+    ..deleted_at = json['deleted_at'] as String? ?? 'default_deleted_at'
+    ..updated_by = json['updated_by'] as String? ?? 'default_updated_by'
+    ..created_at = json['created_at'] as String? ?? 'default_created_at'
+    ..employee_id = json['employee_id'] as String? ?? 'default_employee_id'
+    ..deleted_by = json['deleted_by'] as String? ?? 'default_deleted_by'
+    ..created_by = json['created_by'] as String? ?? 'default_created_by';
 }
 
 Map<String, dynamic> _$TimeSheetHeaderTransactionResponseToJson(

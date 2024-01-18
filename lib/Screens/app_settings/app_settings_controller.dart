@@ -7,14 +7,15 @@ import 'package:sven_hr/utilities/constants.dart';
 
 class APPSettingsController {
   Future<String> addNewLocation(
-      {String latitude,
-      String longitude,
-      String locationName,
-      num locationRange}) async {
+      {
+      String? latitude,
+      String? longitude,
+      String? locationName,
+      num? locationRange}) async {
     final prefs = await SharedPreferences.getInstance();
-    String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
-    var url = host + ApiConnections.ADD_NEW_LOCATION;
+    String? tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
+    String? host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    var url = host! + ApiConnections.ADD_NEW_LOCATION;
 
     NewLocationRequest request = NewLocationRequest(
         tokenId: tokenId,
@@ -38,12 +39,12 @@ class APPSettingsController {
   }
 
   Future<String> addNewNetwork(
-      {String wifiName, String wifiBSSID, String wifiIP}) async {
+      {String? wifiName, String? wifiBSSID, String? wifiIP}) async {
     final prefs = await SharedPreferences.getInstance();
-    String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    String? tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
+    String? host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
-    var url = host + ApiConnections.ADD_NEW_NETWORK;
+    var url = host! + ApiConnections.ADD_NEW_NETWORK;
 
     NewNetworkRequest request = NewNetworkRequest(
         tokenId: tokenId,

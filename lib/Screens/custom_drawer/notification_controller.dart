@@ -12,55 +12,51 @@ import 'package:sven_hr/utilities/api_connectons.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
 class NotificationController {
-  List<NotificationListResponse> _notificationList;
-  NotificationObjectResponse _notificationDetail;
+  List<NotificationListResponse>? _notificationList;
+  NotificationObjectResponse? _notificationDetail;
 
-  List<NotificationListResponse> get notificationList => _notificationList;
+  List<NotificationListResponse> get notificationList => _notificationList!;
 
   set notificationList(List<NotificationListResponse> value) {
     _notificationList = value;
   }
 
-  NotificationObjectResponse get notificationDetail => _notificationDetail;
+  NotificationObjectResponse get notificationDetail => _notificationDetail!;
 
   set notificationDetail(NotificationObjectResponse value) {
     _notificationDetail = value;
   }
 
-  Future<String> getLastNotifications() async {
-    _notificationList = List();
+  Future<String?> getLastNotifications() async {
+    _notificationList = <NotificationListResponse>[];
     BaseRequest request = BaseRequest();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
     request.tokenID = tokenId;
-    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    String? host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
-    if (request != null) {
-      var url = host + ApiConnections.GET_ALL_NOTIFICATION_LIST;
-      NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
-      var userData = await helper.getData();
-      if (userData != null &&
-          userData[Const.SYSTEM_MSG_CODE] != null &&
-          userData[Const.SYSTEM_MSG_CODE].compareTo(Const.SYSTEM_SUCCESS_MSG) ==
-              0) {
-        NotificationListBaseResponse baseResponse =
-            NotificationListBaseResponse.fromJson(userData);
-        if (baseResponse.listOfAllNotifications != null) {
-          for (NotificationListResponse inbox
-              in baseResponse.listOfAllNotifications) {
-            _notificationList = baseResponse.listOfAllNotifications;
-          }
-        }
-
-        // print("Finshed");
-        return Const.SYSTEM_SUCCESS_MSG;
-      } else {
-        ToastMessage.showErrorMsg(userData[Const.SYSTEM_MSG_CODE]);
+    var url = host! + ApiConnections.GET_ALL_NOTIFICATION_LIST;
+    NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
+    var userData = await helper.getData();
+    if (userData != null &&
+        userData[Const.SYSTEM_MSG_CODE] != null &&
+        userData[Const.SYSTEM_MSG_CODE].compareTo(Const.SYSTEM_SUCCESS_MSG) ==
+            0) {
+      NotificationListBaseResponse baseResponse =
+          NotificationListBaseResponse.fromJson(userData);
+      for (NotificationListResponse inbox
+          in baseResponse.listOfAllNotifications) {
+        _notificationList = baseResponse.listOfAllNotifications;
       }
+    
+      // print("Finshed");
+      return Const.SYSTEM_SUCCESS_MSG;
+    } else {
+      ToastMessage.showErrorMsg(userData[Const.SYSTEM_MSG_CODE]);
     }
-  }
+    }
 
-  Future<String> geNotificationObject(String approvalInboxId) async {
+  Future<String?> geNotificationObject(String approvalInboxId) async {
     _notificationDetail = NotificationObjectResponse();
     ApprovalObjectRequest request = ApprovalObjectRequest();
 
@@ -70,36 +66,32 @@ class NotificationController {
     baseRequest.tokenID = tokenId;
     request.tokenWrapper = baseRequest;
     request.par_row_id = approvalInboxId;
-    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    String? host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
-    if (request != null) {
-      var url = host + ApiConnections.GET_NOTIFICATION_OBJECT;
-      NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
-      var userData = await helper.getData();
-      if (userData != null &&
-          userData[Const.SYSTEM_MSG_CODE] != null &&
-          userData[Const.SYSTEM_MSG_CODE].compareTo(Const.SYSTEM_SUCCESS_MSG) ==
-              0) {
-        NotificationObjectBaseResponse baseResponse =
-            NotificationObjectBaseResponse.fromJson(userData);
-        // add returned vacation to vacation list item view
-        if (baseResponse.notificationObject != null) {
-          _notificationDetail = baseResponse.notificationObject;
-        }
-        // print("Finshed");
-        return Const.SYSTEM_SUCCESS_MSG;
-      } else {
-        ToastMessage.showErrorMsg(userData[Const.SYSTEM_MSG_CODE]);
-      }
+    var url = host! + ApiConnections.GET_NOTIFICATION_OBJECT;
+    NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
+    var userData = await helper.getData();
+    if (userData != null &&
+        userData[Const.SYSTEM_MSG_CODE] != null &&
+        userData[Const.SYSTEM_MSG_CODE].compareTo(Const.SYSTEM_SUCCESS_MSG) ==
+            0) {
+      NotificationObjectBaseResponse baseResponse =
+          NotificationObjectBaseResponse.fromJson(userData);
+      // add returned vacation to vacation list item view
+      _notificationDetail = baseResponse.notificationObject;
+          // print("Finshed");
+      return Const.SYSTEM_SUCCESS_MSG;
+    } else {
+      ToastMessage.showErrorMsg(userData[Const.SYSTEM_MSG_CODE]);
     }
-  }
+    }
 
-  Future<String> closeNotification({String notifId}) async {
+  Future<String> closeNotification({String? notifId}) async {
     final prefs = await SharedPreferences.getInstance();
-    String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    String? tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
+    String? host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
-    var url = host + ApiConnections.CLOSE_NOTIFICATION;
+    var url = host! + ApiConnections.CLOSE_NOTIFICATION;
 
     NotificationCloseRequest request =
         NotificationCloseRequest(tokenId: tokenId, notifId: notifId);

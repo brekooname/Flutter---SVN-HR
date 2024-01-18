@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:sven_hr/models/response/vacation_transaction_response.dart';
 
 import 'leave_transaction_response.dart';
 
@@ -13,10 +11,10 @@ class LeaveTransactionBaseResponse{
   LeaveTransactionBaseResponse();
 
   @JsonKey(name: 'err_MSG')
-  String _err_MSG;
+  String? _err_MSG;
 
   @JsonKey(name: 'leaveTransactions')
-  List<LeaveTransactionResponse> _leaveTransactions;
+  List<LeaveTransactionResponse>? _leaveTransactions;
 
 
   factory LeaveTransactionBaseResponse.fromJson(Map<String, dynamic> json) => _$LeaveTransactionBaseResponseFromJson(json);
@@ -25,13 +23,13 @@ class LeaveTransactionBaseResponse{
   Map<String, dynamic> toJson() => _$LeaveTransactionBaseResponseToJson(this);
 
 
-  List<LeaveTransactionResponse> get leaveTransactions => _leaveTransactions;
+  List<LeaveTransactionResponse> get leaveTransactions => _leaveTransactions!;
 
   set leaveTransactions(List<LeaveTransactionResponse> value) {
     _leaveTransactions = value;
   }
 
-  String get err_MSG => _err_MSG;
+  String get err_MSG => _err_MSG!;
 
   set err_MSG(String value) {
     _err_MSG = value;

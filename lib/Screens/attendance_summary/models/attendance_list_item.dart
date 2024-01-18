@@ -1,14 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:sven_hr/dao/lov_value.dart';
-import 'package:sven_hr/utilities/app_theme.dart';
-import 'package:sven_hr/utilities/constants.dart';
 
 class AttendanceListItem {
-  String rec_date;
-  String rec_type;
-  String rec_time_in;
-  String rec_time_Out;
+  String? rec_date;
+  String? rec_type;
+  String? rec_time_in;
+  String? rec_time_Out;
 
 
   // Icon getRightIcon() {

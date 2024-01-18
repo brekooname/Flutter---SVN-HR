@@ -8,8 +8,8 @@ part of 'approval_list.dart';
 
 ApprovalList _$ApprovalListFromJson(Map<String, dynamic> json) {
   return ApprovalList()
-    ..employeeName = json['employeeName'] as String
-    ..employeeId = json['employeeId'] as String;
+    ..employeeName = json['employeeName'] as String? ?? ''
+    ..employeeId = json['employeeId'] as String? ?? '';
 }
 
 Map<String, dynamic> _$ApprovalListToJson(ApprovalList instance) =>

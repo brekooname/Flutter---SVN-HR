@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:sven_hr/Screens/Home/home_screen.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_controller.dart';
 import 'package:sven_hr/Screens/approval_inbox/models/approval_inbox_item_list.dart';
 import 'package:sven_hr/Screens/approval_inbox/request_details_screen.dart';
 import 'package:sven_hr/Screens/custom_drawer/home_drawer.dart';
-import 'package:sven_hr/Screens/custom_drawer/menue_top_bar.dart';
 import 'package:sven_hr/Screens/custom_drawer/notification_controller.dart';
 import 'package:sven_hr/Screens/screen_loader.dart';
 import 'package:sven_hr/localization/app_translations.dart';
@@ -13,6 +11,7 @@ import 'package:sven_hr/main.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
+import '../app_settings/server_connection_screen.dart';
 import '../navigation_home_screen.dart';
 
 class ApprovalInboxTransactionScreen extends StatefulWidget {
@@ -25,8 +24,8 @@ class ApprovalInboxTransactionScreen extends StatefulWidget {
 class _ApprovalInboxTransactionScreenState
     extends State<ApprovalInboxTransactionScreen>
     with TickerProviderStateMixin {
-  AnimationController animationController;
-  ApprovalInboxController _approvalInboxController;
+  AnimationController? animationController;
+  ApprovalInboxController? _approvalInboxController=ApprovalInboxController();
   bool showSpinner = false;
   NotificationController _notificationController = NotificationController();
 
@@ -40,7 +39,7 @@ class _ApprovalInboxTransactionScreenState
   }
 
   void getLastApprovalInboxTransaction() async {
-    await _approvalInboxController
+    await _approvalInboxController!
         .getLastApprovalInboxTransaction()
         .then((value) {
       setState(() {
@@ -53,7 +52,7 @@ class _ApprovalInboxTransactionScreenState
   Widget build(BuildContext context) {
     return ScreenLoader(
       screenName:
-          AppTranslations.of(context).text(Const.LOCALE_KEY_APPROVAL_INBOX),
+          AppTranslations.of(context)!.text(Const.LOCALE_KEY_APPROVAL_INBOX),
       screenWidget: ApprovalInboxScreen(),
     );
   }
@@ -80,39 +79,41 @@ class _ApprovalInboxTransactionScreenState
                     shrinkWrap: true,
                     padding: const EdgeInsets.only(
                         top: 0, bottom: 0, right: 16, left: 16),
-                    itemCount: _approvalInboxController.approvalList.length,
+                    itemCount: _approvalInboxController!.approvalList.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (BuildContext context, int index) {
                       final int count =
-                          _approvalInboxController.approvalList.length > 10
+                          _approvalInboxController!.approvalList.length > 10
                               ? 10
-                              : _approvalInboxController.approvalList.length;
+                              : _approvalInboxController!.approvalList.length;
                       final Animation<double> animation =
                           Tween<double>(begin: 0.0, end: 1.0).animate(
                               CurvedAnimation(
-                                  parent: animationController,
+                                  parent: animationController!,
                                   curve: Interval((1 / count) * index, 1.0,
                                       curve: Curves.fastOutSlowIn)));
-                      animationController.forward();
+                      animationController!.forward();
 
                       return ApprovalInboxView(
                         approvalInboxListItem:
-                            _approvalInboxController.approvalList[index],
+                            _approvalInboxController!.approvalList[index],
                         animation: animation,
                         index: index,
-                        approvalInboxController: _approvalInboxController,
-                        animationController: animationController,
+                        approvalInboxController: _approvalInboxController!,
+                        animationController: animationController!,
                         callback: () {
+
                           Navigator.of(context)
                               .push(
                                 MaterialPageRoute(
                                     builder: (context) => RequestDetailsScreen(
                                           approvalInboxItenm:
-                                              _approvalInboxController
+                                              _approvalInboxController!
                                                   .inboxlList[index],
                                         )),
                               )
                               .then((value) => {
+
                                     if (value != null)
                                       {
                                         if (value.toString().compareTo(
@@ -136,6 +137,7 @@ class _ApprovalInboxTransactionScreenState
                                           }
                                       }
                                   });
+
                         },
                       );
                     },
@@ -152,7 +154,7 @@ class _ApprovalInboxTransactionScreenState
 
 class ApprovalInboxView extends StatelessWidget {
   const ApprovalInboxView(
-      {Key key,
+      {Key? key,
       this.approvalInboxListItem,
       this.animationController,
       this.animation,
@@ -161,32 +163,39 @@ class ApprovalInboxView extends StatelessWidget {
       this.approvalInboxController})
       : super(key: key);
 
-  final VoidCallback callback;
-  final ApprovalInboxListItem approvalInboxListItem;
-  final AnimationController animationController;
-  final Animation<dynamic> animation;
-  final int index;
-  final ApprovalInboxController approvalInboxController;
+  final VoidCallback? callback;
+  final ApprovalInboxListItem? approvalInboxListItem;
+  final AnimationController? animationController;
+  final Animation<dynamic>? animation;
+  final int? index;
+  final ApprovalInboxController? approvalInboxController;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
+      animation: animationController!,
+      builder: (BuildContext? context, Widget? child) {
         return FadeTransition(
-          opacity: animation,
+          opacity: animation as Animation<double>,
           child: Transform(
-            transform: Matrix4.translationValues(
-                100 * (1.0 - animation.value), 0.0, 0.0),
+            transform: Matrix4.translationValues(100 * (1.0 - animation!.value), 0.0, 0.0),
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
-                callback();
+                callback!();
               },
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  color: AppTheme.kPrimaryLightColor.withOpacity(0.4),
+                  gradient: LinearGradient(
+                    colors: [
+                      ModernTheme.gradientStart,
+                      ModernTheme.textColor
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+
                 ),
                 width: double.infinity,
                 height: 140,
@@ -195,94 +204,12 @@ class ApprovalInboxView extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      width: 50,
-                      height: 50,
-                      margin: MyApp.isEN
-                          ? EdgeInsets.only(right: 15)
-                          : EdgeInsets.only(left: 15),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(
-                            width: 3,
-                            color: approvalInboxListItem
-                                .getRightColor()
-                                .withOpacity(0.2)),
-                      ),
-                      child: approvalInboxListItem.getRightIcon(),
-                    ),
+                    // Icon and title row
+                    _buildIconAndTitle(approvalInboxListItem),
+                    // Expanded to include status, date, and other details
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            approvalInboxListItem.titleName,
-                            style: TextStyle(
-                                color: approvalInboxListItem.getRightColor(),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
-                          ),
-                          SizedBox(
-                            height: 6,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.adjust,
-                                color: approvalInboxListItem.getRightColor(),
-                                size: 20,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                  AppTranslations.of(context)
-                                      .text(Const.LOCALE_KEY_STATUS),
-                                  style: TextStyle(
-                                      color:
-                                          approvalInboxListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                              Text(approvalInboxListItem.status,
-                                  style: TextStyle(
-                                      color:
-                                          approvalInboxListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 6,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.calendar_today,
-                                color: approvalInboxListItem.getRightColor(),
-                                size: 20,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                  AppTranslations.of(context)
-                                      .text(Const.LOCALE_KEY_REQUEST_DATE),
-                                  style: TextStyle(
-                                      color:
-                                          approvalInboxListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                              Text(approvalInboxListItem.requestDate,
-                                  style: TextStyle(
-                                      color:
-                                          approvalInboxListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
+                      child: _buildDetails(context!, approvalInboxListItem),
+                    ),
                   ],
                 ),
               ),
@@ -292,4 +219,95 @@ class ApprovalInboxView extends StatelessWidget {
       },
     );
   }
+  Widget _buildIconAndTitle(ApprovalInboxListItem? item) {
+    return Container(
+      width: 50,
+      height: 50,
+      margin: MyApp.isEN ? EdgeInsets.only(right: 15) : EdgeInsets.only(left: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
+        border: Border.all(
+            width: 3,
+            color: item!.getRightColor()!.withOpacity(0.2)),
+      ),
+      child: item.getRightIcon(),
+    );
+    // Add title widget here if needed
+  }
+  Widget _buildDetails(BuildContext context, ApprovalInboxListItem? item) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        // Title
+        Text(
+          item!.titleName!,
+          style: TextStyle(
+            color: item.getRightColor(),
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        SizedBox(height: 6),
+
+        // Status row
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.adjust,
+              color: item.getRightColor(),
+              size: 20,
+            ),
+            SizedBox(width: 5),
+            Text(
+              AppTranslations.of(context)!.text(Const.LOCALE_KEY_STATUS),
+              style: TextStyle(
+                color: item.getRightColor(),
+                fontSize: 13,
+                letterSpacing: .3,
+              ),
+            ),
+            Text(
+              item.status!,
+              style: TextStyle(
+                color: item.getRightColor(),
+                fontSize: 13,
+                letterSpacing: .3,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 6),
+
+        // Request Date row
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.calendar_today,
+              color: item.getRightColor(),
+              size: 20,
+            ),
+            SizedBox(width: 5),
+            Text(
+              AppTranslations.of(context)!.text(Const.LOCALE_KEY_REQUEST_DATE),
+              style: TextStyle(
+                color: item.getRightColor(),
+                fontSize: 13,
+                letterSpacing: .3,
+              ),
+            ),
+            Text(
+              item.requestDate!,
+              style: TextStyle(
+                color: item.getRightColor(),
+                fontSize: 13,
+                letterSpacing: .3,
+              ),
+            ),
+          ],
+        ),
+        // Add more details as needed
+      ],
+    );
+  }
+
 }

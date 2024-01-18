@@ -16,20 +16,20 @@ class TimeSheetHeaderTransactionBaseResponse{
 
 
   @JsonKey(name: 'timesheetTransactions')
-  List<TimeSheetHeaderTransactionResponse> _timesheetTransactions;
+  List<TimeSheetHeaderTransactionResponse>? _timesheetTransactions;
 
   @JsonKey(name: 'err_MSG')
-  String _err_MSG;
+  String? _err_MSG;
 
 
   List<TimeSheetHeaderTransactionResponse> get timesheetTransactions =>
-      _timesheetTransactions;
+      _timesheetTransactions!;
 
   set timesheetTransactions(List<TimeSheetHeaderTransactionResponse> value) {
     _timesheetTransactions = value;
   }
 
-  String get err_MSG => _err_MSG;
+  String get err_MSG => _err_MSG!;
 
   set err_MSG(String value) {
     _err_MSG = value;

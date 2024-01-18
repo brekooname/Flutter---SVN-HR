@@ -1,20 +1,12 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:sven_hr/Screens/Leaves/leaves_controller.dart';
-import 'package:sven_hr/Screens/Leaves/models/leave_list_item.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:sven_hr/Screens/attendance_summary/attendance_summary_controller.dart';
-import 'package:sven_hr/Screens/attendance_summary/models/attendance_list_item.dart';
 import 'package:sven_hr/Screens/screen_loader.dart';
-import 'package:sven_hr/components/multi_selectionlist_vew.dart';
-import 'package:sven_hr/dao/lov_value.dart';
-import 'package:sven_hr/dao/vacation_type.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/main.dart';
 import 'package:sven_hr/models/response/attendance_summary_response.dart';
-import 'package:sven_hr/utilities/app_controller.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
@@ -28,10 +20,10 @@ class AttendanceSummaryScreen extends StatefulWidget {
 
 class _AttendanceSummaryScreenState extends State<AttendanceSummaryScreen>
     with TickerProviderStateMixin {
-  AnimationController animationController;
-  AttendanceSummaryController _attendanceSummaryController;
-  String fromDate;
-  String toDate;
+  AnimationController? animationController;
+  AttendanceSummaryController? _attendanceSummaryController;
+  String? fromDate;
+  String? toDate;
   bool showSpinner = false;
   @override
   void initState() {
@@ -43,7 +35,7 @@ class _AttendanceSummaryScreenState extends State<AttendanceSummaryScreen>
   }
 
   void getLastAttendanceTransaction() async {
-    await _attendanceSummaryController.getDefualtSearch().then((value) {
+    await _attendanceSummaryController!.getDefualtSearch().then((value) {
       setState(() {
         print(value);
       });
@@ -59,7 +51,7 @@ class _AttendanceSummaryScreenState extends State<AttendanceSummaryScreen>
   Widget build(BuildContext context) {
     return ScreenLoader(
       screenName:
-          AppTranslations.of(context).text(Const.LOCALE_KEY_ATTENDANCE_SUMMARY),
+          AppTranslations.of(context)!.text(Const.LOCALE_KEY_ATTENDANCE_SUMMARY),
       screenWidget: AttendanceScreen(),
     );
   }
@@ -87,7 +79,7 @@ class _AttendanceSummaryScreenState extends State<AttendanceSummaryScreen>
                       Expanded(
                           flex: 0,
                           child: Text(
-                              AppTranslations.of(context)
+                              AppTranslations.of(context)!
                                   .text(Const.LOCALE_KEY_FROM),
                               style: AppTheme.subtitle)),
                       Expanded(
@@ -115,7 +107,7 @@ class _AttendanceSummaryScreenState extends State<AttendanceSummaryScreen>
                       Expanded(
                           flex: 0,
                           child: Text(
-                              AppTranslations.of(context)
+                              AppTranslations.of(context)!
                                   .text(Const.LOCALE_KEY_TO),
                               style: AppTheme.subtitle)),
                       Expanded(
@@ -152,8 +144,8 @@ class _AttendanceSummaryScreenState extends State<AttendanceSummaryScreen>
                           setState(() {
                             showSpinner = true;
                           });
-                          await _attendanceSummaryController
-                              .getAttendanceSummaryTransaction(fromDate, toDate)
+                          await _attendanceSummaryController!
+                              .getAttendanceSummaryTransaction(fromDate!, toDate!)
                               .then((value) {
                             setState(() {
                               print(value);
@@ -182,28 +174,28 @@ class _AttendanceSummaryScreenState extends State<AttendanceSummaryScreen>
                     padding: const EdgeInsets.only(
                         top: 0, bottom: 0, right: 16, left: 16),
                     itemCount:
-                        _attendanceSummaryController.attendanceList.length,
+                        _attendanceSummaryController!.attendanceList.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (BuildContext context, int index) {
                       final int count = _attendanceSummaryController
-                                  .attendanceList.length >
+                      ! .attendanceList.length >
                               10
                           ? 10
-                          : _attendanceSummaryController
+                          : _attendanceSummaryController!
                               .attendanceList.length;
                       final Animation<double> animation =
                           Tween<double>(begin: 0.0, end: 1.0).animate(
                               CurvedAnimation(
-                                  parent: animationController,
+                                  parent: animationController!,
                                   curve: Interval((1 / count) * index, 1.0,
                                       curve: Curves.fastOutSlowIn)));
-                      animationController.forward();
+                      animationController!.forward();
 
                       return AttendanceView(
-                        attendanceItem: _attendanceSummaryController
+                        attendanceItem: _attendanceSummaryController!
                             .attendanceList[index],
                         animation: animation,
-                        animationController: animationController,
+                        animationController: animationController!,
                         callback: () {
                           // widget.callBack();
                         },
@@ -223,32 +215,32 @@ class _AttendanceSummaryScreenState extends State<AttendanceSummaryScreen>
 
 class AttendanceView extends StatelessWidget {
   const AttendanceView(
-      {Key key,
+      {Key? key,
       this.attendanceItem,
       this.animationController,
       this.animation,
       this.callback})
       : super(key: key);
 
-  final VoidCallback callback;
-  final AttendanceSummaryResponse attendanceItem;
-  final AnimationController animationController;
-  final Animation<dynamic> animation;
+  final VoidCallback? callback;
+  final AttendanceSummaryResponse? attendanceItem;
+  final AnimationController? animationController;
+  final Animation<dynamic>? animation;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
+      animation: animationController!,
+      builder: (BuildContext? context, Widget? child) {
         return FadeTransition(
-          opacity: animation,
+          opacity: animation as Animation<double>,
           child: Transform(
             transform: Matrix4.translationValues(
-                100 * (1.0 - animation.value), 0.0, 0.0),
+                100 * (1.0 - animation!.value), 0.0, 0.0),
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
-                callback();
+                callback!();
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -280,8 +272,8 @@ class AttendanceView extends StatelessWidget {
                                 width: 5,
                               ),
                               Text(
-                                  attendanceItem.rec_date != null
-                                      ? attendanceItem.rec_date
+                                  attendanceItem!.rec_date != null
+                                      ? attendanceItem!.rec_date
                                       : '',
                                   style: TextStyle(
                                       color: AppTheme.green,
@@ -316,7 +308,7 @@ class AttendanceView extends StatelessWidget {
                                 SizedBox(
                                   width: 3,
                                 ),
-                                Text(attendanceItem.check_in!=null ?attendanceItem.check_in:"-",
+                                Text(attendanceItem!.check_in!=null ?attendanceItem!.check_in:"-",
                                     style: TextStyle(
                                         color: AppTheme.green,
                                         fontSize: 13,
@@ -347,8 +339,8 @@ class AttendanceView extends StatelessWidget {
                                   width: 3,
                                 ),
                                 Text(
-                                    attendanceItem.check_out != null
-                                        ? attendanceItem.check_out
+                                    attendanceItem!.check_out != null
+                                        ? attendanceItem!.check_out
                                         : '-',
                                     style: TextStyle(
                                         color: AppTheme.red,

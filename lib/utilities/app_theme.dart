@@ -29,13 +29,13 @@ class AppTheme {
   static const Color orange = Color(0xFFfcb55d);
 
   static const TextTheme textTheme = TextTheme(
-    headline4: display1,
-    headline5: headline,
-    headline6: title,
-    subtitle2: subtitle,
-    bodyText1: body2,
-    bodyText2: body1,
-    caption: caption,
+    headlineMedium: display1,
+    headlineSmall: headline,
+    titleLarge: title,
+    titleSmall: subtitle,
+    bodyLarge: body2,
+    bodyMedium: body1,
+    bodySmall: caption,
   );
 
   static const TextStyle display1 = TextStyle(

@@ -8,9 +8,10 @@ part of 'lov_value_request.dart';
 
 LovValuesRequest _$LovValuesRequestFromJson(Map<String, dynamic> json) {
   return LovValuesRequest(
-    tokenID: json['tokenID'] as String,
-  )..lovID = json['lovID'] as String;
+    tokenID: json['tokenID'] as String? ?? 'default_tokenID',
+  )..lovID = json['lovID'] as String? ?? 'default_lovID';
 }
+
 
 Map<String, dynamic> _$LovValuesRequestToJson(LovValuesRequest instance) =>
     <String, dynamic>{

@@ -7,6 +7,7 @@
   "my_profile": "حسابي",
   "leaves": "طلب مغادرة",
   "vacations": "طلب إجازة",
+  "vacations2": "الإجازات",
   "time_sheet": "سجل الحضور",
   "salary_increment_request": "طلب زيادة راتب",
   "extra_work_request": "طلب عمل اضافي",
@@ -173,6 +174,7 @@
 
   "my_vacations": "إجازاتي",
   "my_leaves": "مغادراتي",
+  "my_loans": "طلب سلفة",
 
   "view_attachment": "View Attachments",
   "download_finished": "Download Finished",

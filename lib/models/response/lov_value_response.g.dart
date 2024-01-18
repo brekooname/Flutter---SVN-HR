@@ -8,12 +8,14 @@ part of 'lov_value_response.dart';
 
 LovValuesResponse _$LovValuesResponseFromJson(Map<String, dynamic> json) {
   return LovValuesResponse()
-    ..response = json['response'] as String
-    ..lovs = (json['lovs'] as List)
-        .map((e) => LovValues.fromJson(e as Map<String, dynamic>))
-        .toList()
-    ..err_MSG = json['err_MSG'] as String;
+    ..response = json['response'] as String? ?? 'default_response'
+    ..lovs = (json['lovs'] as List<dynamic>?)
+        ?.map((e) => LovValues.fromJson(e as Map<String, dynamic>))
+        .toList() ?? []
+    ..err_MSG = json['err_MSG'] as String? ?? 'default_err_msg';
 }
+
+
 
 Map<String, dynamic> _$LovValuesResponseToJson(LovValuesResponse instance) =>
     <String, dynamic>{

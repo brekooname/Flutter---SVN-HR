@@ -1,13 +1,12 @@
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class MultiPartFileUpload {
-  final String url;
-  final String filePath;
-  final String file_name;
-  final String file_type;
-  final String approval_inbox_row_id;
-  final String token_id;
+  final String? url;
+  final String? filePath;
+  final String? file_name;
+  final String? file_type;
+  final String? approval_inbox_row_id;
+  final String? token_id;
 
   MultiPartFileUpload(
       {this.url,
@@ -18,13 +17,13 @@ class MultiPartFileUpload {
       this.token_id});
 
   Future getData() async {
-    var request = http.MultipartRequest('POST', Uri.parse(url));
-    request.fields['file_name'] = file_name;
-    request.fields['file_type'] = file_type;
-    request.fields['approval_inbox_row_id'] = approval_inbox_row_id;
-    request.fields['token_id'] = token_id;
+    var request = http.MultipartRequest('POST', Uri.parse(url!));
+    request.fields['file_name'] = file_name!;
+    request.fields['file_type'] = file_type!;
+    request.fields['approval_inbox_row_id'] = approval_inbox_row_id!;
+    request.fields['token_id'] = token_id!;
     request.files.add(
-      await http.MultipartFile.fromPath('file', filePath),
+      await http.MultipartFile.fromPath('file', filePath!),
     );
 
     request.send().then((response) {

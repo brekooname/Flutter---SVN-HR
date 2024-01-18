@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:sven_hr/models/request/base_request.dart';
 
 import 'approval_object_response.dart';
 
@@ -14,29 +13,29 @@ class ApprovalObjectBaseResponse{
   Map<String, dynamic> toJson() => _$ApprovalObjectBaseResponseToJson(this);
 
   @JsonKey(name: 'response')
-  String _response;
+  String? _response;
 
   @JsonKey(name: 'approvalInboxObject')
-  ApprovalObjectResponse _approvalInboxObject;
+  ApprovalObjectResponse? _approvalInboxObject;
 
   @JsonKey(name: 'err_MSG')
-  String _err_MSG;
+  String? _err_MSG;
 
   ApprovalObjectBaseResponse();
 
-  String get err_MSG => _err_MSG;
+  String get err_MSG => _err_MSG!;
 
   set err_MSG(String value) {
     _err_MSG = value;
   }
 
-  ApprovalObjectResponse get approvalInboxObject => _approvalInboxObject;
+  ApprovalObjectResponse get approvalInboxObject => _approvalInboxObject!;
 
   set approvalInboxObject(ApprovalObjectResponse value) {
     _approvalInboxObject = value;
   }
 
-  String get response => _response;
+  String get response => _response!;
 
   set response(String value) {
     _response = value;

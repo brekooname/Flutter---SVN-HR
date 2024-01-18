@@ -6,20 +6,21 @@ import 'package:sven_hr/utilities/constants.dart';
 
 class EmployeeProfileController {
   Future<String> changePasswordRequest(
-      {String oldPassword,
-      String newPassword,
-      String confirmedPassword}) async {
+      {
+      String? oldPassword,
+      String? newPassword,
+      String? confirmedPassword}) async {
     final prefs = await SharedPreferences.getInstance();
-    String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    String? tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
+    String? host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
-    var url = host + ApiConnections.CHANGE_PASSWORD;
+    var url = host! + ApiConnections.CHANGE_PASSWORD;
 
     NewPasswordRequest request = NewPasswordRequest(
-        tokenID: tokenId,
-        newPassword: newPassword,
-        oldPassword: oldPassword,
-        repatedPassword: confirmedPassword);
+        tokenID: tokenId!,
+        newPassword: newPassword!,
+        oldPassword: oldPassword!,
+        repatedPassword: confirmedPassword!);
 
     NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
     var userData = await helper.getData();

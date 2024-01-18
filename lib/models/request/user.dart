@@ -4,9 +4,9 @@ part 'user.g.dart';
 
 @JsonSerializable(nullable: false)
 class User{
-  String username;
-  String password;
-  bool netsuitFlag;
+  String? username;
+  String? password;
+  bool? netsuitFlag;
 
 
   User({this.username, this.password, this.netsuitFlag});

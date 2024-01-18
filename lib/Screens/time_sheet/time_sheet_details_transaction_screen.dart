@@ -1,8 +1,6 @@
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:sven_hr/Screens/screen_loader.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:sven_hr/Screens/time_sheet/new_time_sheet_details_screen.dart';
 import 'package:sven_hr/Screens/time_sheet/time_sheet_controller.dart';
 import 'package:sven_hr/components/text_field_container.dart';
@@ -13,6 +11,7 @@ import 'package:sven_hr/utilities/app_controller.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
+import '../app_settings/server_connection_screen.dart';
 import 'models/time_sheet_details_list_item.dart';
 
 class TimeSheetDetailsTransactionScreen extends StatefulWidget {
@@ -29,13 +28,13 @@ class TimeSheetDetailsTransactionScreen extends StatefulWidget {
 class _TimeSheetDetailsTransactionScreenState
     extends State<TimeSheetDetailsTransactionScreen>
     with TickerProviderStateMixin {
-  AnimationController animationController;
-  TimeSheetController _timeSheetController;
-  List<TimeSheetDetailsListItem> _detalisListItem;
-  List<TimeSheetDetailsResponse> _detalisList;
+  AnimationController? animationController;
+  TimeSheetController? _timeSheetController;
+  List<TimeSheetDetailsListItem>? _detalisListItem;
+  List<TimeSheetDetailsResponse>? _detalisList;
   DateFormat format = DateFormat(Const.DATE_FORMAT);
-  String timeSheetId;
-  String startTime;
+  String? timeSheetId;
+  String? startTime;
   String endTime = "";
   bool showSpinner = false;
 
@@ -44,8 +43,8 @@ class _TimeSheetDetailsTransactionScreenState
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     _timeSheetController = TimeSheetController();
-    _detalisListItem = List();
-    _detalisList = List();
+    _detalisListItem = <TimeSheetDetailsListItem>[]; // Initialize as an empty list
+    _detalisList = <TimeSheetDetailsResponse>[]; // Initialize as an empty list
     timeSheetId = this.widget.timeSheetId;
     getDetailsTransaction();
     super.initState();
@@ -53,11 +52,11 @@ class _TimeSheetDetailsTransactionScreenState
 
   void getDetailsTransaction() async {
     await _timeSheetController
-        .getTimeSheetDetailsTransaction(timeSheetId)
+        !.getTimeSheetDetailsTransaction(timeSheetId!)
         .then((value) {
       setState(() {
-        _detalisListItem = _timeSheetController.detalisListItem;
-        _detalisList = _timeSheetController.detalisList;
+        _detalisListItem = _timeSheetController!.detalisListItem;
+        _detalisList = _timeSheetController!.detalisList;
       });
     });
   }
@@ -86,9 +85,10 @@ class _TimeSheetDetailsTransactionScreenState
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.white,
+      backgroundColor: ModernTheme.backgroundColor, // Updated background color
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -103,6 +103,7 @@ class _TimeSheetDetailsTransactionScreenState
     );
   }
 
+
   Widget TimeSheetDetailsScreen() {
     final format = DateFormat(Const.DATE_FORMAT);
     bool _isPressed = false;
@@ -110,16 +111,27 @@ class _TimeSheetDetailsTransactionScreenState
       inAsyncCall: showSpinner,
       child: Column(
         children: [
+
           Container(
-            margin: EdgeInsets.all(10),
+
             decoration: BoxDecoration(
-                // color: AppTheme.kPrimaryLightColor.withOpacity(.6),
-                borderRadius: BorderRadius.circular(30)),
+               gradient: LinearGradient(
+                colors: [ModernTheme.gradientStart, ModernTheme.gradientEnd],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: ModernTheme.accentColor.withOpacity(0.4),
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 1),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -127,28 +139,27 @@ class _TimeSheetDetailsTransactionScreenState
                         child: IconButton(
                           icon: Icon(
                             Icons.arrow_back,
-                            color: AppTheme.kPrimaryColor,
+                            color: ModernTheme.accentColor,
                           ),
                           tooltip: 'search',
-                          hoverColor: AppTheme.kPrimaryColor,
-                          splashColor: AppTheme.kPrimaryColor,
+                          hoverColor: ModernTheme.accentColor.withOpacity(0.7),
+                          splashColor: ModernTheme.accentColor,
                           onPressed: () async {
                             Navigator.pop(context);
                           },
                         ),
                         flex: 1,
                       ),
-
                       Expanded(
-                        child: Text(AppTranslations.of(context)
-                            .text(Const.LOCALE_KEY_TIME_SHEET_DETAILS),
+                        child: Text(
+                          AppTranslations.of(context)!
+                              .text(Const.LOCALE_KEY_TIME_SHEET_DETAILS),
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 22,
                             letterSpacing: 0.27,
-                            color: AppTheme.kPrimaryColor,
+                            color: ModernTheme.textColor,
                           ),
-
                         ),
                         flex: 4,
                       ),
@@ -156,18 +167,19 @@ class _TimeSheetDetailsTransactionScreenState
                         child: IconButton(
                           icon: Icon(
                             Icons.add_circle_outline,
-                            color: AppTheme.red,semanticLabel: "test",
+                            color: ModernTheme.textColor, // Adjust if needed
+                            semanticLabel: "add new",
                           ),
                           tooltip: 'add',
-                          hoverColor: AppTheme.kPrimaryColor,
-                          splashColor: AppTheme.kPrimaryColor,
+                          hoverColor: ModernTheme.accentColor.withOpacity(0.7),
+                          splashColor: ModernTheme.accentColor,
                           onPressed: () async {
                             Navigator.of(context)
                                 .push(
                               MaterialPageRoute(
                                   builder: (context) =>
                                       NewTimeSheetDetailsScreen(
-                                        timeSheetId: timeSheetId,
+                                        timeSheetId: timeSheetId!,
                                       )),
                             )
                                 .then((value) => {getDetailsTransaction()});
@@ -177,7 +189,7 @@ class _TimeSheetDetailsTransactionScreenState
                       ),
                     ],
                   ),
-                  Divider(color: AppTheme.kPrimaryLightColor,height: 5,)
+                  Divider(color: Color(0xFFE0E0E0), height: 5,) // Updated color
                 ],
               ),
             ),
@@ -193,34 +205,34 @@ class _TimeSheetDetailsTransactionScreenState
                     shrinkWrap: true,
                     padding: const EdgeInsets.only(
                         top: 0, bottom: 0, right: 16, left: 16),
-                    itemCount: _detalisListItem.length,
+                    itemCount: _detalisListItem!.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (BuildContext context, int index) {
-                      final int count = _detalisListItem.length > 10
+                      final int count = _detalisListItem!.length > 10
                           ? 10
-                          : _detalisListItem.length;
+                          : _detalisListItem!.length;
                       final Animation<double> animation =
                           Tween<double>(begin: 0.0, end: 1.0).animate(
                               CurvedAnimation(
-                                  parent: animationController,
+                                  parent: animationController!,
                                   curve: Interval((1 / count) * index, 1.0,
                                       curve: Curves.fastOutSlowIn)));
-                      animationController.forward();
+                      animationController!.forward();
 
                       return TimeSheetDetailsView(
-                        detailsListItem: _detalisListItem[index],
+                        detailsListItem: _detalisListItem![index],
                         animation: animation,
-                        animationController: animationController,
+                        animationController: animationController!,
                         callback: () {},
-                        detail: _detalisList[index],
+                        detail: _detalisList![index],
                         editDetails: () {
                           Navigator.of(context)
                               .push(
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         NewTimeSheetDetailsScreen(
-                                          timeSheetId: timeSheetId,
-                                          detailId: _detalisList[index],
+                                          timeSheetId: timeSheetId!,
+                                          detailId: _detalisList![index],
                                         )),
                               )
                               .then((value) => {getDetailsTransaction()});
@@ -240,7 +252,7 @@ class _TimeSheetDetailsTransactionScreenState
 
 class TimeSheetDetailsView extends StatelessWidget {
   const TimeSheetDetailsView(
-      {Key key,
+      {Key? key,
       this.detailsListItem,
       this.animationController,
       this.animation,
@@ -249,81 +261,117 @@ class TimeSheetDetailsView extends StatelessWidget {
       this.editDetails})
       : super(key: key);
 
-  final VoidCallback callback;
-  final TimeSheetDetailsListItem detailsListItem;
-  final AnimationController animationController;
-  final Animation<dynamic> animation;
-  final TimeSheetDetailsResponse detail;
-  final Function editDetails;
+  final VoidCallback? callback;
+  final TimeSheetDetailsListItem? detailsListItem;
+  final AnimationController? animationController;
+  final Animation<dynamic>? animation;
+  final TimeSheetDetailsResponse? detail;
+  final VoidCallback? editDetails;
+
 
   Future _asyncConfirmDialog(BuildContext context) async {
     return await showDialog(
         context: context,
         builder: (ctx) {
           return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            backgroundColor: ModernTheme.backgroundColor,
             actions: <Widget>[
               IconButton(
                 icon: Icon(
                   Icons.close,
-                  color: AppTheme.kPrimaryColor,
+                  color: ModernTheme.accentColor,
                 ),
                 tooltip: 'select',
-                hoverColor: AppTheme.kPrimaryColor,
-                splashColor: AppTheme.kPrimaryColor,
+                hoverColor: ModernTheme.accentColor.withOpacity(0.7),
+                splashColor: ModernTheme.accentColor,
                 onPressed: () async {
                   Navigator.pop(context);
                 },
               ),
             ],
             content: Container(
-              color: AppTheme.white,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                gradient: LinearGradient(
+                  colors: [ModernTheme.gradientStart, ModernTheme.gradientEnd],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
               height: 300,
               width: 200.0,
               child: Column(
                 children: [
                   Expanded(
-                      flex: 0,
+                    flex: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Text(
-                          AppTranslations.of(context)
-                              .text(Const.LOCALE_KEY_NOTES),
-                          style: AppTheme.subtitle)),
-                  SizedBox(
-                    height: 20,
+                        AppTranslations.of(context)!
+                            .text(Const.LOCALE_KEY_NOTES),
+                        style: TextStyle(
+                          color: ModernTheme.textColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
                   ),
+                  SizedBox(height: 20),
                   Expanded(
                     flex: 3,
-                    child: TextFieldContainer(
-                        child: Padding(
+                    child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(detail.description),
-                    )),
+                      child: Text(
+                        detail!.description,
+                        style: TextStyle(
+                          color: ModernTheme.textColor,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
           );
-        });
+        }
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
+      animation: animationController!,
+      builder: (BuildContext? context, Widget? child) {
         return FadeTransition(
-          opacity: animation,
+          opacity: animation as Animation<double>,
           child: Transform(
             transform: Matrix4.translationValues(
-                100 * (1.0 - animation.value), 0.0, 0.0),
+                100 * (1.0 - animation!.value), 0.0, 0.0),
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
-                callback();
+                callback!();
               },
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  color: AppTheme.kPrimaryLightColor.withOpacity(0.4),
+                  gradient: LinearGradient(
+                    colors: [ModernTheme.gradientStart, ModernTheme.gradientEnd],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: ModernTheme.accentColor.withOpacity(0.4),
+                      blurRadius: 8,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
                 ),
                 width: double.infinity,
                 height: 180,
@@ -342,11 +390,11 @@ class TimeSheetDetailsView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(50),
                         border: Border.all(
                             width: 3,
-                            color: detailsListItem
+                            color: detailsListItem!
                                 .getRightColor()
                                 .withOpacity(0.2)),
                       ),
-                      child: detailsListItem.getRightIcon(),
+                      child: detailsListItem!.getRightIcon(),
                     ),
                     Expanded(
                       child: Column(
@@ -359,26 +407,26 @@ class TimeSheetDetailsView extends StatelessWidget {
                             children: <Widget>[
                               Icon(
                                 Icons.lock_clock,
-                                color: detailsListItem.getRightColor(),
+                                color: detailsListItem!.getRightColor(),
                                 size: 20,
                               ),
                               SizedBox(
                                 width: 5,
                               ),
                               Text(
-                                  AppTranslations.of(context)
+                                  AppTranslations.of(context!)!
                                       .text(Const.LOCALE_KEY_LEAVE_START_TIME),
                                   style: TextStyle(
-                                      color: detailsListItem.getRightColor(),
+                                      color: detailsListItem!.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                               Text(
-                                  detailsListItem.startTime != null
+                                  detailsListItem!.startTime != null
                                       ? ApplicationController.formatToHours(
-                                          detailsListItem.startTime)
+                                      detailsListItem!.startTime!.toInt())
                                       : '',
                                   style: TextStyle(
-                                      color: detailsListItem.getRightColor(),
+                                      color: detailsListItem!.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                             ],
@@ -390,26 +438,26 @@ class TimeSheetDetailsView extends StatelessWidget {
                             children: <Widget>[
                               Icon(
                                 Icons.lock_clock,
-                                color: detailsListItem.getRightColor(),
+                                color: detailsListItem!.getRightColor(),
                                 size: 20,
                               ),
                               SizedBox(
                                 width: 5,
                               ),
                               Text(
-                                  AppTranslations.of(context)
+                                  AppTranslations.of(context)!
                                       .text(Const.LOCALE_KEY_LEAVE_END_TIME),
                                   style: TextStyle(
-                                      color: detailsListItem.getRightColor(),
+                                      color: detailsListItem!.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                               Text(
-                                  detailsListItem.endTime != null
+                                  detailsListItem!.endTime != null
                                       ? ApplicationController.formatToHours(
-                                          detailsListItem.endTime)
+                                      detailsListItem!.endTime!.toInt())
                                       : '',
                                   style: TextStyle(
-                                      color: detailsListItem.getRightColor(),
+                                      color: detailsListItem!.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                             ],
@@ -421,25 +469,25 @@ class TimeSheetDetailsView extends StatelessWidget {
                             children: <Widget>[
                               Icon(
                                 Icons.hourglass_bottom,
-                                color: detailsListItem.getRightColor(),
+                                color: detailsListItem!.getRightColor(),
                                 size: 20,
                               ),
                               SizedBox(
                                 width: 5,
                               ),
                               Text(
-                                  AppTranslations.of(context)
+                                  AppTranslations.of(context)!
                                       .text(Const.LOCALE_KEY_WORKING_HOUR),
                                   style: TextStyle(
-                                      color: detailsListItem.getRightColor(),
+                                      color: detailsListItem!.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                               Text(
-                                  detailsListItem.workingHour != null
-                                      ? detailsListItem.workingHour.toStringAsFixed(3)
+                                  detailsListItem!.workingHour != null
+                                      ? detailsListItem!.workingHour!.toStringAsFixed(3)
                                       : '',
                                   style: TextStyle(
-                                      color: detailsListItem.getRightColor(),
+                                      color: detailsListItem!.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                             ],
@@ -451,25 +499,25 @@ class TimeSheetDetailsView extends StatelessWidget {
                             children: <Widget>[
                               Icon(
                                 Icons.filter_tilt_shift_sharp,
-                                color: detailsListItem.getRightColor(),
+                                color: detailsListItem!.getRightColor(),
                                 size: 20,
                               ),
                               SizedBox(
                                 width: 5,
                               ),
                               Text(
-                                  AppTranslations.of(context)
+                                  AppTranslations.of(context)!
                                       .text(Const.LOCALE_KEY_STATUS),
                                   style: TextStyle(
-                                      color: detailsListItem.getRightColor(),
+                                      color: detailsListItem!.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                               Text(
-                                  detailsListItem.status != null
-                                      ? detailsListItem.status.toString()
+                                  detailsListItem!.status != null
+                                      ? detailsListItem!.status.toString()
                                       : '',
                                   style: TextStyle(
-                                      color: detailsListItem.getRightColor(),
+                                      color: detailsListItem!.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                             ],
@@ -478,28 +526,28 @@ class TimeSheetDetailsView extends StatelessWidget {
                             children: <Widget>[
                               Icon(
                                 Icons.dynamic_feed,
-                                color: detailsListItem.getRightColor(),
+                                color: detailsListItem!.getRightColor(),
                                 size: 20,
                               ),
                               SizedBox(
                                 width: 5,
                               ),
                               Text(
-                                  AppTranslations.of(context)
+                                  AppTranslations.of(context!)!
                                       .text(Const.LOCALE_KEY_TIME_PROJECT_NAME),
                                   style: TextStyle(
-                                      color: detailsListItem.getRightColor(),
+                                      color: detailsListItem!.getRightColor(),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                               Expanded(
                                 child: Text(
-                                    detailsListItem.projectName != null
-                                        ? detailsListItem.projectName.toString()
+                                    detailsListItem!.projectName != null
+                                        ? detailsListItem!.projectName.toString()
                                         : '',
                                     overflow: TextOverflow.clip,
                                     maxLines: 2,
                                     style: TextStyle(
-                                        color: detailsListItem.getRightColor(),
+                                        color: detailsListItem!.getRightColor(),
                                         fontSize: 13,
                                         letterSpacing: .3)),
                               ),
@@ -513,13 +561,13 @@ class TimeSheetDetailsView extends StatelessWidget {
                                 IconButton(
                                     icon: Icon(
                                       Icons.edit,
-                                      color: detailsListItem.getRightColor(),
+                                      color: detailsListItem!.getRightColor(),
                                       size: 25,
                                     ),
                                     tooltip: 'search',
-                                    hoverColor: detailsListItem.getRightColor(),
+                                    hoverColor: detailsListItem!.getRightColor(),
                                     splashColor:
-                                        detailsListItem.getRightColor(),
+                                    detailsListItem!.getRightColor(),
                                     onPressed: editDetails),
                                 SizedBox(
                                   width: 5,
@@ -527,15 +575,15 @@ class TimeSheetDetailsView extends StatelessWidget {
                                 IconButton(
                                     icon: Icon(
                                       Icons.notes,
-                                      color: detailsListItem.getRightColor(),
+                                      color: detailsListItem!.getRightColor(),
                                       size: 25,
                                     ),
                                     tooltip: 'search',
-                                    hoverColor: detailsListItem.getRightColor(),
+                                    hoverColor: detailsListItem!.getRightColor(),
                                     splashColor:
-                                        detailsListItem.getRightColor(),
+                                    detailsListItem!.getRightColor(),
                                     onPressed: () {
-                                      _asyncConfirmDialog(context);
+                                      _asyncConfirmDialog(context!);
                                     }),
                               ],
                             ),
@@ -552,4 +600,5 @@ class TimeSheetDetailsView extends StatelessWidget {
       },
     );
   }
+
 }

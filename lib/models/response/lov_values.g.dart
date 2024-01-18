@@ -8,11 +8,12 @@ part of 'lov_values.dart';
 
 LovValues _$LovValuesFromJson(Map<String, dynamic> json) {
   return LovValues()
-    ..par_row_id = json['par_row_id'] as String
-    ..code = json['code'] as String
-    ..row_id = json['row_id'] as String
-    ..dispaly_value = json['dispaly_value'] as String;
+    ..par_row_id = json['par_row_id'] as String? ?? 'default_par_row_id'
+    ..code = json['code'] as String? ?? 'default_code'
+    ..row_id = json['row_id'] as String? ?? 'default_row_id'
+    ..dispaly_value = json['dispaly_value'] as String? ?? 'default_dispaly_value';
 }
+
 
 Map<String, dynamic> _$LovValuesToJson(LovValues instance) => <String, dynamic>{
       'par_row_id': instance.par_row_id,

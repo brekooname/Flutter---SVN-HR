@@ -9,10 +9,10 @@ class VacationTransactionRequest{
   VacationTransactionRequest();
 
   @JsonKey(name: 'tokenID')
-  String tokenID;
+  String? tokenID;
 
   @JsonKey(name: 'vac')
-  VacationTransactionRequestWrapper vac;
+  VacationTransactionRequestWrapper? vac;
 
   factory VacationTransactionRequest.fromJson(Map<String, dynamic> json) => _$VacationTransactionRequestFromJson(json);
 

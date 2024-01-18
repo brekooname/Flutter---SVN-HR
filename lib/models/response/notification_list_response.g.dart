@@ -9,13 +9,14 @@ part of 'notification_list_response.dart';
 NotificationListResponse _$NotificationListResponseFromJson(
     Map<String, dynamic> json) {
   return NotificationListResponse()
-    ..notificationId = json['notificationId'] as String
-    ..approvalInboxId = json['approvalInboxId'] as String
-    ..requestedDate = json['requestedDate'] as String
-    ..name = json['name'] as String
-    ..type = json['type'] as String
-    ..requestedBy = json['requestedBy'] as String;
+    ..notificationId = json['notificationId'] as String? ?? 'default_notificationId'
+    ..approvalInboxId = json['approvalInboxId'] as String? ?? 'default_approvalInboxId'
+    ..requestedDate = json['requestedDate'] as String? ?? 'default_requestedDate'
+    ..name = json['name'] as String? ?? 'default_name'
+    ..type = json['type'] as String? ?? 'default_type'
+    ..requestedBy = json['requestedBy'] as String? ?? 'default_requestedBy';
 }
+
 
 Map<String, dynamic> _$NotificationListResponseToJson(
         NotificationListResponse instance) =>

@@ -1,19 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:sven_hr/Screens/app_settings/server_connection_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_controller.dart';
 import 'package:sven_hr/components/flutter_toast_message.dart';
 import 'package:sven_hr/dao/lov_value.dart';
 import 'package:sven_hr/dao/vacation_type.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/models/response/approval_inbox_attachments_response.dart';
-import 'package:sven_hr/models/response/approval_list.dart';
-import 'package:sven_hr/services/download_file.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
 class MultiSelectionLOVListView extends StatefulWidget {
-  List<LovValue> lovs;
+  List<LovValue>? lovs;
 
   MultiSelectionLOVListView({@required this.lovs});
 
@@ -23,7 +21,7 @@ class MultiSelectionLOVListView extends StatefulWidget {
 }
 
 class _MultiSelectionLOVListViewState extends State<MultiSelectionLOVListView> {
-  List<String> listofSelected = List();
+  List<String> listofSelected = [];
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +30,7 @@ class _MultiSelectionLOVListViewState extends State<MultiSelectionLOVListView> {
         IconButton(
           icon: Icon(
             Icons.send,
-            color: AppTheme.kPrimaryColor,
+            color: ModernTheme.backgroundColor,
           ),
           tooltip: 'select',
           hoverColor: AppTheme.kPrimaryColor,
@@ -52,36 +50,37 @@ class _MultiSelectionLOVListViewState extends State<MultiSelectionLOVListView> {
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                widget.lovs[index].isSelected = !widget.lovs[index].isSelected;
+                widget.lovs![index].isSelected = !widget.lovs![index].isSelected;
                 setState(() {});
               },
               child: Container(
-                color: widget.lovs[index].isSelected
+                color: widget.lovs![index].isSelected
                     ? AppTheme.kPrimaryColor.withOpacity(0.2)
                     : null,
                 child: Row(
                   children: <Widget>[
-                    Checkbox(
-                        value: widget.lovs[index].isSelected,
+                    Checkbox(          activeColor: ModernTheme.gradientEnd,
+
+                        value: widget.lovs![index].isSelected,
                         onChanged: (s) {
-                          widget.lovs[index].isSelected =
-                              !widget.lovs[index].isSelected;
-                          if (widget.lovs[index].isSelected) {
-                            listofSelected.add(widget.lovs[index].row_id);
+                          widget.lovs![index].isSelected =
+                              !widget.lovs![index].isSelected;
+                          if (widget.lovs![index].isSelected) {
+                            listofSelected.add(widget.lovs![index].row_id);
                           } else {
-                            listofSelected.remove(widget.lovs[index].row_id);
+                            listofSelected.remove(widget.lovs![index].row_id);
                           }
                           setState(() {
                             print(listofSelected);
                           });
                         }),
-                    Text(widget.lovs[index].display)
+                    Text(widget.lovs![index].display)
                   ],
                 ),
               ),
             );
           },
-          itemCount: widget.lovs.length,
+          itemCount: widget.lovs!.length,
         ),
       ),
     );
@@ -89,7 +88,7 @@ class _MultiSelectionLOVListViewState extends State<MultiSelectionLOVListView> {
 }
 
 class MultiSelectionTypeListView extends StatefulWidget {
-  List<VacationType> types;
+  List<VacationType>? types;
 
   MultiSelectionTypeListView({@required this.types});
 
@@ -100,7 +99,7 @@ class MultiSelectionTypeListView extends StatefulWidget {
 
 class _MultiSelectionTypeListViewState
     extends State<MultiSelectionTypeListView> {
-  List<String> listofSelected = List();
+  List<String> listofSelected = [];
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +108,7 @@ class _MultiSelectionTypeListViewState
         IconButton(
           icon: Icon(
             Icons.send,
-            color: AppTheme.kPrimaryColor,
+            color: ModernTheme.backgroundColor,
           ),
           tooltip: 'search',
           hoverColor: AppTheme.kPrimaryColor,
@@ -129,37 +128,38 @@ class _MultiSelectionTypeListViewState
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                widget.types[index].isSelected =
-                    !widget.types[index].isSelected;
+                widget.types![index].isSelected =
+                    !widget.types![index].isSelected;
                 setState(() {});
               },
               child: Container(
-                color: widget.types[index].isSelected
+                color: widget.types![index].isSelected
                     ? AppTheme.kPrimaryColor.withOpacity(0.2)
                     : null,
                 child: Row(
                   children: <Widget>[
-                    Checkbox(
-                        value: widget.types[index].isSelected,
+                    Checkbox(          activeColor: ModernTheme.gradientEnd,
+
+                        value: widget.types![index].isSelected,
                         onChanged: (s) {
-                          widget.types[index].isSelected =
-                              !widget.types[index].isSelected;
-                          if (widget.types[index].isSelected) {
-                            listofSelected.add(widget.types[index].row_id);
+                          widget.types![index].isSelected =
+                              !widget.types![index].isSelected;
+                          if (widget.types![index].isSelected) {
+                            listofSelected.add(widget.types![index].row_id);
                           } else {
-                            listofSelected.remove(widget.types[index].row_id);
+                            listofSelected.remove(widget.types![index].row_id);
                           }
                           setState(() {
                             print(listofSelected);
                           });
                         }),
-                    Text(widget.types[index].name)
+                    Text(widget.types![index].name)
                   ],
                 ),
               ),
             );
           },
-          itemCount: widget.types.length,
+          itemCount: widget.types!.length,
         ),
       ),
     );
@@ -167,7 +167,7 @@ class _MultiSelectionTypeListViewState
 }
 
 class AttachmentsListView extends StatefulWidget {
-  List<String> paths;
+  List<String>? paths;
 
   AttachmentsListView({@required this.paths});
 
@@ -176,7 +176,7 @@ class AttachmentsListView extends StatefulWidget {
 }
 
 class _AttachmentsListViewState extends State<AttachmentsListView> {
-  List<String> listofSelected = List();
+  List<String> listofSelected = [];
 
   @override
   Widget build(BuildContext context) {
@@ -221,17 +221,17 @@ class _AttachmentsListViewState extends State<AttachmentsListView> {
                       splashColor: AppTheme.kPrimaryColor,
                       onPressed: () {
                         setState(() {
-                          widget.paths.removeAt(index);
+                          widget.paths!.removeAt(index);
                         });
                       },
                     ),
-                    Flexible(child: Text(widget.paths[index].split('/').last))
+                    Flexible(child: Text(widget.paths![index].split('/').last))
                   ],
                 ),
               ),
             );
           },
-          itemCount: widget.paths.length,
+          itemCount: widget.paths!.length,
         ),
       ),
     );
@@ -239,22 +239,22 @@ class _AttachmentsListViewState extends State<AttachmentsListView> {
 }
 
 class ApprovalInboxAttachmentsListView extends StatefulWidget {
-  List<ApprovalInboxAttachmentsResponse> attachmentsList;
+  List<ApprovalInboxAttachmentsResponse>? attachmentsList;
 
   ApprovalInboxAttachmentsListView({this.attachmentsList});
 
   @override
   _ApprovalInboxAttachmentsListViewState createState() =>
-      _ApprovalInboxAttachmentsListViewState(attachmentsList);
+      _ApprovalInboxAttachmentsListViewState(attachmentsList!);
 }
 
 class _ApprovalInboxAttachmentsListViewState
     extends State<ApprovalInboxAttachmentsListView> {
-  List<ApprovalInboxAttachmentsResponse> attachmentsList;
+  List<ApprovalInboxAttachmentsResponse>? attachmentsList;
   bool showSpinner = false;
 
   _ApprovalInboxAttachmentsListViewState(this.attachmentsList);
-  ApprovalInboxController _approvalInboxController;
+  ApprovalInboxController? _approvalInboxController;
 
   void downLoadFile(
     String attachId,
@@ -266,17 +266,17 @@ class _ApprovalInboxAttachmentsListViewState
     _approvalInboxController = ApprovalInboxController();
 
     await _approvalInboxController
-        .downloadFile(
+        !.downloadFile(
       attachId,
       attachName,
     )
         .then((value) {
       setState(() {
-        if (value != null && value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
+        if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
           ToastMessage.showSuccessMsg(AppTranslations.of(context)
-              .text(Const.LOCALE_KEY_DOWNLOAD_FINISHED));
+              !.text(Const.LOCALE_KEY_DOWNLOAD_FINISHED));
         } else {
-          ToastMessage.showErrorMsg(AppTranslations.of(context).text(value));
+          ToastMessage.showErrorMsg(AppTranslations.of(context)!.text(value));
         }
         print(value);
       });
@@ -290,19 +290,21 @@ class _ApprovalInboxAttachmentsListViewState
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      backgroundColor: ModernTheme.backgroundColor,
       actions: <Widget>[
         IconButton(
           icon: Icon(
             Icons.close,
-            color: AppTheme.kPrimaryColor,
+            color: ModernTheme.accentColor,
           ),
           tooltip: 'close',
-          hoverColor: AppTheme.kPrimaryColor,
-          splashColor: AppTheme.kPrimaryColor,
+          hoverColor: ModernTheme.accentColor.withOpacity(0.7),
+          splashColor: ModernTheme.accentColor,
           onPressed: () {
-            setState(() {
-              Navigator.of(context, rootNavigator: true).pop('dialog');
-            });
+            Navigator.of(context, rootNavigator: true).pop('dialog');
           },
         ),
       ],
@@ -315,38 +317,42 @@ class _ApprovalInboxAttachmentsListViewState
             itemBuilder: (ctx, index) {
               return Container(
                 margin: EdgeInsets.all(5),
-                color: AppTheme.kPrimaryColor.withOpacity(0.2),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(attachmentsList[index].attachment_name),
-                        )),
-                    IconButton(
-                      icon: Icon(
-                        Icons.download_outlined,
-                        color: AppTheme.kPrimaryColor,
-                      ),
-                      tooltip: 'view',
-                      hoverColor: AppTheme.kPrimaryColor,
-                      splashColor: AppTheme.kPrimaryColor,
-                      onPressed: () {
-                        downLoadFile(
-                          attachmentsList[index].attachment_rowId,
-                          attachmentsList[index].attachment_name,
-                        );
-                      },
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  gradient: LinearGradient(
+                    colors: [ModernTheme.gradientStart, ModernTheme.gradientEnd],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: ListTile(
+                  title: Text(
+                    attachmentsList![index].attachment_name,
+                    style: TextStyle(color: ModernTheme.textColor),
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(
+                      Icons.download_outlined,
+                      color: ModernTheme.accentColor,
                     ),
-                  ],
+                    tooltip: 'Download',
+                    hoverColor: ModernTheme.accentColor.withOpacity(0.7),
+                    splashColor: ModernTheme.accentColor,
+                    onPressed: () {
+                      downLoadFile(
+                        attachmentsList![index].attachment_rowId,
+                        attachmentsList![index].attachment_name,
+                      );
+                    },
+                  ),
                 ),
               );
             },
-            itemCount: attachmentsList.length,
+            itemCount: attachmentsList!.length,
           ),
         ),
       ),
     );
   }
+
 }

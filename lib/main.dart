@@ -1,18 +1,16 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sven_hr/Screens/Home/home_screen.dart';
 import 'package:sven_hr/Screens/Leaves/leave_request_screen.dart';
 import 'package:sven_hr/Screens/Leaves/leaves_transaction_screen.dart';
+import 'package:sven_hr/Screens/Loans/LoanRequestScreen.dart';
 import 'package:sven_hr/Screens/Login/login_controller.dart';
 import 'package:sven_hr/Screens/Vacations/picker_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_request_screen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
 import 'package:sven_hr/Screens/app_settings/server_connection_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
-import 'package:sven_hr/Screens/approval_inbox/request_details_screen.dart';
 import 'package:sven_hr/Screens/attendance_summary/attendance_summary_screen.dart';
 import 'package:sven_hr/Screens/clock_record/clock_record_screen.dart';
 import 'package:sven_hr/Screens/custom_drawer/home_drawer.dart';
@@ -27,8 +25,6 @@ import 'package:sven_hr/Screens/profile/change_password_screen.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_screen.dart';
 import 'package:sven_hr/Screens/time_sheet/time_sheet_screen.dart';
 import 'package:sven_hr/localization/app_translations_delegate.dart';
-import 'package:sven_hr/models/request/extra_work_request.dart';
-import 'package:sven_hr/models/request/user.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
@@ -43,11 +39,11 @@ Future<void> main() async {
   initialRoute = LoginScreen.id;
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  var full_url = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL) ?? "";
-  if (full_url.isNotEmpty) {
-    //check if user login or not
-    String prefTokenId = prefs.get(Const.SHARED_KEY_TOKEN_ID);
-    if (prefTokenId != null && !prefTokenId.isEmpty) {
+  var fullUrl = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL) ?? "";
+  if (fullUrl.isNotEmpty) {
+    // Check if user login or not
+    String? prefTokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
+    if (prefTokenId != null && prefTokenId.isNotEmpty) {
       var username = prefs.getString(Const.SHARED_KEY_USERNAME) ?? "";
       var password = prefs.getString(Const.SHARED_KEY_PASSWORD) ?? "";
 
@@ -55,14 +51,10 @@ Future<void> main() async {
       await loginController
           .loginVerifications(username, password)
           .then((value) {
-        print(value);
         if (value != null) {
           if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
             initialRoute = NavigationHomeScreen.id;
-
-            // ToastMessage.showSuccessMsg(value.message);
           } else {
-            print("va" + value);
             ToastMessage.showErrorMsg(value.message);
           }
         }
@@ -80,8 +72,8 @@ class MyApp extends StatefulWidget {
 
   // AppTranslationsDelegate _newLocaleDelegate;
   static void setLocale(BuildContext context, Locale newLocale) async {
-    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
-    state.changeLanguage(newLocale);
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state!.changeLanguage(newLocale);
 
     if (newLocale.languageCode.compareTo(Const.LANGUAGE_CODE_EN) == 0) {
       isEN = true;
@@ -95,7 +87,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _locale;
+  Locale? _locale;
 
   changeLanguage(Locale locale) {
     setState(() {
@@ -154,11 +146,11 @@ class _MyAppState extends State<MyApp> {
         VacationsTransaction.id: (context) => VacationsTransaction(),
         PickerScreen.id: (context) => PickerScreen(),
         LeavesTransaction.id: (context) => LeavesTransaction(),
-        VacationRequestScreen.id: (context) => VacationRequestScreen(),
+         VacationRequestScreen.id: (context) => VacationRequestScreen(),
         LeaveRequestScreen.id: (context) => LeaveRequestScreen(),
         ApprovalInboxTransactionScreen.id: (context) =>
             ApprovalInboxTransactionScreen(),
-        ClockRecordScreen.id: (context) => ClockRecordScreen(),
+        // ClockRecordScreen.id: (context) => ClockRecordScreen(),
         TimeSheetScreen.id: (context) => TimeSheetScreen(),
         AppSettingsScreen.id: (context) => AppSettingsScreen(),
         ChangePasswordScreen.id: (context) => ChangePasswordScreen(),
@@ -169,7 +161,8 @@ class _MyAppState extends State<MyApp> {
         ExtraWorkTransactionScreen.id: (context) =>
             ExtraWorkTransactionScreen(),
         MessageBroadcasteScreen.id: (context) => MessageBroadcasteScreen(),
-        ServerConnectionScreen.id: (context) => ServerConnectionScreen()
+        ServerConnectionScreen.id: (context) => ServerConnectionScreen(),
+        LoanRequestScreen.id: (context) => LoanRequestScreen()
       },
       localizationsDelegates: [
         newLocaleDelegate,

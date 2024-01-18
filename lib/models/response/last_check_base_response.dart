@@ -9,10 +9,10 @@ class LastCheckBaseResponse{
   LastCheckBaseResponse();
 
   @JsonKey(name: 'err_MSG')
-  String _err_MSG;
+  String? _err_MSG;
 
   @JsonKey(name: 'checkWra')
-  LastCheckResponse _checkWra;
+  LastCheckResponse? _checkWra;
 
 
   factory LastCheckBaseResponse.fromJson(Map<String, dynamic> json) => _$LastCheckBaseResponseFromJson(json);
@@ -21,13 +21,13 @@ class LastCheckBaseResponse{
   Map<String, dynamic> toJson() => _$LastCheckBaseResponseToJson(this);
 
 
-  LastCheckResponse get checkWra => _checkWra;
+  LastCheckResponse get checkWra => _checkWra!;
 
   set checkWra(LastCheckResponse value) {
     _checkWra = value;
   }
 
-  String get err_MSG => _err_MSG;
+  String get err_MSG => _err_MSG!;
 
   set err_MSG(String value) {
     _err_MSG = value;

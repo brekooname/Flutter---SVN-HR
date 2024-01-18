@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:sven_hr/Screens/profile/employee_profile_controller.dart';
 import 'package:sven_hr/components/flutter_toast_message.dart';
 import 'package:sven_hr/components/rounded_password_field.dart';
@@ -18,8 +17,8 @@ class ChangePasswordScreen extends StatefulWidget {
 class _ChangePasswordScreenState extends State<ChangePasswordScreen>  with TickerProviderStateMixin
 {
   final double infoHeight = 364.0;
-  AnimationController animationController;
-  Animation<double> animation;
+  AnimationController? animationController;
+  Animation<double>? animation;
   double opacity1 = 0.0;
   double opacity2 = 0.0;
   double opacity3 = 0.0;
@@ -27,13 +26,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>  with Ticke
   var newPasswordTextController = new TextEditingController();
   var oldPasswordTextController = new TextEditingController();
   var confirmedPasswordTextController = new TextEditingController();
-  EmployeeProfileController _employeeProfileController;
+  EmployeeProfileController? _employeeProfileController;
   @override
   void initState() {
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-        parent: animationController,
+        parent: animationController!,
         curve: Interval(0, 1.0, curve: Curves.fastOutSlowIn)));
     _employeeProfileController= EmployeeProfileController();
     super.initState();
@@ -44,21 +43,19 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>  with Ticke
     showSpinner = true;
 
 
-    await _employeeProfileController
+    await _employeeProfileController!
         .changePasswordRequest(
       oldPassword: oldPasswordTextController.text,
       newPassword: newPasswordTextController.text,
         confirmedPassword:confirmedPasswordTextController.text
        )
         .then((value) {
-      if (value == null) {
-        ToastMessage.showErrorMsg(Const.REQUEST_FAILED);
-      } else if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
-        ToastMessage.showSuccessMsg(Const.REQUEST_SENT_SUCCESSFULLY);
-        Navigator.pop(context);
-      } else {
-        ToastMessage.showErrorMsg(value);
-      }
+      if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
+      ToastMessage.showSuccessMsg(Const.REQUEST_SENT_SUCCESSFULLY);
+      Navigator.pop(context);
+    } else {
+      ToastMessage.showErrorMsg(value);
+    }
       showSpinner = false;
       setState(() {});
     });
@@ -105,7 +102,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>  with Ticke
                               width: 16,
                             ),
                             Text(
-                              AppTranslations.of(context).text(
+                              AppTranslations.of(context)!.text(
                                   Const.LOCALE_KEY_CHANGE_PASSWORD),
                               textAlign: TextAlign.left,
                               style: TextStyle(
@@ -123,7 +120,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>  with Ticke
                         child: TextFieldContainer(
                           child: RoundedPasswordField(
                             textController: oldPasswordTextController,
-                            text: AppTranslations.of(context)
+                            text: AppTranslations.of(context)!
                                 .text(Const.LOCALE_KEY_OLD_PASSWORD),
                           ),
                         ),
@@ -134,7 +131,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>  with Ticke
                         child: TextFieldContainer(
                           child: RoundedPasswordField(
                             textController: newPasswordTextController,
-                            text: AppTranslations.of(context)
+                            text: AppTranslations.of(context)!
                                 .text(Const.LOCALE_KEY_NEW_PASSWORD),
                           ),
                         ),
@@ -145,7 +142,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>  with Ticke
                         child: TextFieldContainer(
                           child: RoundedPasswordField(
                             textController: confirmedPasswordTextController,
-                            text: AppTranslations.of(context)
+                            text: AppTranslations.of(context)!
                                 .text(Const.LOCALE_KEY_CONFRIMED_PASSWORD),
                           ),
                         ),
@@ -155,8 +152,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>  with Ticke
                       Flexible(
                         child: GestureDetector(
                           onTap: () {
-                            if (_formKey.currentState.validate()) {
-                              _formKey.currentState.save();
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
                               changePassword();
                             }
                           },
@@ -180,7 +177,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>  with Ticke
                               ),
                               child: Center(
                                 child: Text(
-                                  AppTranslations.of(context)
+                                  AppTranslations.of(context)!
                                       .text(Const.LOCALE_KEY_CHANGE_PASSWORD),
                                   textAlign: TextAlign.left,
                                   style: TextStyle(

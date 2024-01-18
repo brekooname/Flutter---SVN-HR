@@ -12,7 +12,7 @@ NotificationObjectBaseResponse _$NotificationObjectBaseResponseFromJson(
     ..response = json['response'] as String
     ..notificationObject = NotificationObjectResponse.fromJson(
         json['notificationObject'] as Map<String, dynamic>)
-    ..err_MSG = json['err_MSG'] as String;
+    ..err_MSG = json['err_MSG']as String? ?? 'Default Message';
 }
 
 Map<String, dynamic> _$NotificationObjectBaseResponseToJson(

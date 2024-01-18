@@ -15,15 +15,15 @@ class ApprovalInboxAttachmentsBaseResponse {
   Map<String, dynamic> toJson() => _$ApprovalInboxAttachmentsBaseResponseToJson(this);
 
   @JsonKey(name: 'response')
-  String _response;
+  String? _response;
 
   @JsonKey(name: 'listOfAttachments')
-  List<ApprovalInboxAttachmentsResponse> _listOfAttachments;
+  List<ApprovalInboxAttachmentsResponse>? _listOfAttachments;
 
   @JsonKey(name: 'err_MSG')
-  String _err_MSG;
+  String? _err_MSG;
 
-  String get response => _response;
+  String get response => _response!;
 
   set response(String value) {
     _response = value;
@@ -31,13 +31,13 @@ class ApprovalInboxAttachmentsBaseResponse {
 
 
   List<ApprovalInboxAttachmentsResponse> get listOfAttachments =>
-      _listOfAttachments;
+      _listOfAttachments!;
 
   set listOfAttachments(List<ApprovalInboxAttachmentsResponse> value) {
     _listOfAttachments = value;
   }
 
-  String get err_MSG => _err_MSG;
+  String get err_MSG => _err_MSG!;
 
   set err_MSG(String value) {
     _err_MSG = value;

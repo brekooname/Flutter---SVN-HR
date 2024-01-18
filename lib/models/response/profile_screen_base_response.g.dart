@@ -6,15 +6,16 @@ part of 'profile_screen_base_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ProfileScreenBaseResponse _$ProfileScreenBaseResponseFromJson(
-    Map<String, dynamic> json) {
+ProfileScreenBaseResponse _$ProfileScreenBaseResponseFromJson(Map<String, dynamic> json) {
   return ProfileScreenBaseResponse()
-    ..response = json['response'] as String
-    ..err_MSG = json['err_MSG'] as String
-    ..listOfAllScreensDisplay = (json['listOfAllScreensDisplay'] as List)
-        .map((e) => ProfileScreenResponse.fromJson(e as Map<String, dynamic>))
-        .toList();
+    ..response = json['response'] as String? ?? 'default_response'
+    ..err_MSG = json['err_MSG'] as String? ?? 'default_err_msg'
+    ..listOfAllScreensDisplay = (json['listOfAllScreensDisplay'] as List<dynamic>?)
+        ?.map((e) => ProfileScreenResponse.fromJson(e as Map<String, dynamic>))
+        .toList() ?? [];
 }
+
+
 
 Map<String, dynamic> _$ProfileScreenBaseResponseToJson(
         ProfileScreenBaseResponse instance) =>

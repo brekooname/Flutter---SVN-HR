@@ -5,8 +5,8 @@ part 'extra_work_base_request.g.dart';
 
 @JsonSerializable(nullable: false)
 class ExtraWorkBaseRequest{
-  String tokenID;
-  ExtraWorkRequest extraWorkTrans;
+  String? tokenID;
+  ExtraWorkRequest? extraWorkTrans;
 
 
   ExtraWorkBaseRequest({this.tokenID, this.extraWorkTrans});

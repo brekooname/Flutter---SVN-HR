@@ -6,11 +6,11 @@ part 'expense_transaction_request.g.dart';
 @JsonSerializable(nullable: false)
 class ExpenseTransactionRequest{
 
-  String tokenId;
+  String? tokenId;
 
-  String fromDate;
+  String? fromDate;
 
-  String toDate;
+  String? toDate;
 
   ExpenseTransactionRequest({this.tokenId, this.fromDate, this.toDate});
 

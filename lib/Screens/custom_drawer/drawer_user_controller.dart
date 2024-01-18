@@ -1,13 +1,14 @@
-import 'package:sven_hr/localization/application.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/Screens/custom_drawer/home_drawer.dart';
 import 'package:flutter/material.dart';
+
+import '../app_settings/server_connection_screen.dart';
 class DrawerUserController extends StatefulWidget {
 
 
 
   const DrawerUserController({
-    Key key,
+    Key? key,
     this.drawerWidth = 250,
     this.onDrawerCall,
     this.screenView,
@@ -17,13 +18,13 @@ class DrawerUserController extends StatefulWidget {
     this.screenIndex,
   }) : super(key: key);
 
-  final double drawerWidth;
-  final Function(DrawerIndex) onDrawerCall;
-  final Widget screenView;
-  final Function(bool) drawerIsOpen;
-  final AnimatedIconData animatedIconData;
-  final Widget menuView;
-  final DrawerIndex screenIndex;
+  final double? drawerWidth;
+  final Function(DrawerIndex)? onDrawerCall;
+  final Widget? screenView;
+  final Function(bool)? drawerIsOpen;
+  final AnimatedIconData? animatedIconData;
+  final Widget? menuView;
+  final DrawerIndex? screenIndex;
 
   @override
   _DrawerUserControllerState createState() => _DrawerUserControllerState();
@@ -31,9 +32,9 @@ class DrawerUserController extends StatefulWidget {
 
 class _DrawerUserControllerState extends State<DrawerUserController>
     with TickerProviderStateMixin {
-  ScrollController scrollController;
-  AnimationController iconAnimationController;
-  AnimationController animationController;
+  ScrollController? scrollController;
+  AnimationController? iconAnimationController;
+  AnimationController? animationController;
 
   double scrolloffset = 0.0;
 
@@ -44,30 +45,30 @@ class _DrawerUserControllerState extends State<DrawerUserController>
         duration: const Duration(milliseconds: 2000), vsync: this);
     iconAnimationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 0));
-    iconAnimationController
+    iconAnimationController!
       ..animateTo(1.0,
           duration: const Duration(milliseconds: 0),
           curve: Curves.fastOutSlowIn);
     scrollController =
-        ScrollController(initialScrollOffset: widget.drawerWidth);
-    scrollController
+        ScrollController(initialScrollOffset: widget.drawerWidth!.toDouble());
+    scrollController!
       ..addListener(() {
-        if (scrollController.offset <= 0) {
+        if (scrollController!.offset <= 0) {
           if (scrolloffset != 1.0) {
             setState(() {
               scrolloffset = 1.0;
               try {
-                widget.drawerIsOpen(true);
+                widget.drawerIsOpen!(true);
               } catch (_) {}
             });
           }
-          iconAnimationController.animateTo(0.0,
+          iconAnimationController!.animateTo(0.0,
               duration: const Duration(milliseconds: 0),
               curve: Curves.fastOutSlowIn);
-        } else if (scrollController.offset > 0 &&
-            scrollController.offset < widget.drawerWidth.floor()) {
-          iconAnimationController.animateTo(
-              (scrollController.offset * 100 / (widget.drawerWidth)) / 100,
+        } else if (scrollController!.offset > 0 &&
+            scrollController!.offset < widget.drawerWidth!.floor()) {
+          iconAnimationController!.animateTo(
+              (scrollController!.offset * 100 / (widget.drawerWidth!)) / 100,
               duration: const Duration(milliseconds: 0),
               curve: Curves.fastOutSlowIn);
         } else {
@@ -75,11 +76,11 @@ class _DrawerUserControllerState extends State<DrawerUserController>
             setState(() {
               scrolloffset = 0.0;
               try {
-                widget.drawerIsOpen(false);
+                widget.drawerIsOpen!(false);
               } catch (_) {}
             });
           }
-          iconAnimationController.animateTo(1.0,
+          iconAnimationController!.animateTo(1.0,
               duration: const Duration(milliseconds: 0),
               curve: Curves.fastOutSlowIn);
         }
@@ -89,8 +90,8 @@ class _DrawerUserControllerState extends State<DrawerUserController>
   }
 
   Future<bool> getInitState() async {
-    scrollController.jumpTo(
-      widget.drawerWidth,
+    scrollController!.jumpTo(
+      widget.drawerWidth!,
     );
     return true;
   }
@@ -98,40 +99,45 @@ class _DrawerUserControllerState extends State<DrawerUserController>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.white,
+      backgroundColor: ModernTheme.backgroundColor,
       body: SingleChildScrollView(
         controller: scrollController,
         scrollDirection: Axis.horizontal,
         physics: const PageScrollPhysics(parent: ClampingScrollPhysics()),
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width + widget.drawerWidth,
+          width: MediaQuery.of(context).size.width + widget.drawerWidth!,
           //we use with as screen width and add drawerWidth (from navigation_home_screen)
           child: Row(
             children: <Widget>[
-              SizedBox(
+              Container(
                 width: widget.drawerWidth,
-                //we divided first drawer Width with HomeDrawer and second full-screen Width with all home screen, we called screen View
                 height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  gradient: ModernTheme.backgroundGradient, // Utilized gradient for the drawer
+                  boxShadow: [
+                    BoxShadow(
+                      color: ModernTheme.accentColor.withOpacity(0.5),
+                      blurRadius: 24,
+                    ),
+                  ],
+                ),
                 child: AnimatedBuilder(
-                  animation: iconAnimationController,
-                  builder: (BuildContext context, Widget child) {
+                  animation: iconAnimationController!,
+                  builder: (BuildContext? context, Widget? child) {
                     return Transform(
-                      //transform we use for the stable drawer  we, not need to move with scroll view
-                      transform: Matrix4.translationValues(
-                          scrollController.offset, 0.0, 0.0),
+                      transform: Matrix4.translationValues(scrollController!.offset, 0.0, 0.0),
                       child: HomeDrawer(
-                        screenIndex: widget.screenIndex == null
-                            ? DrawerIndex.HOME
-                            : widget.screenIndex,
-                        iconAnimationController: iconAnimationController,
+                        screenIndex: widget.screenIndex ?? DrawerIndex.HOME,
+                        iconAnimationController: iconAnimationController!,
                         callBackIndex: (DrawerIndex indexType) {
                           onDrawerClick();
                           try {
-                            widget.onDrawerCall(indexType);
+                            widget.onDrawerCall!(indexType);
                           } catch (e) {}
                         },
                       ),
+
                     );
                   },
                 ),
@@ -142,11 +148,9 @@ class _DrawerUserControllerState extends State<DrawerUserController>
                 //full-screen Width with widget.screenView
                 child: Container(
                   decoration: BoxDecoration(
-                    color: AppTheme.white,
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                          color: AppTheme.kPrimaryColor.withOpacity(0.5),
-                          blurRadius: 24),
+                    color: ModernTheme.backgroundColor, // Consistent with the theme
+                    boxShadow: [
+                      BoxShadow(color: ModernTheme.accentColor.withOpacity(0.5), blurRadius: 24),
                     ],
                   ),
                   child: Stack(
@@ -178,14 +182,14 @@ class _DrawerUserControllerState extends State<DrawerUserController>
                                   AppBar().preferredSize.height),
                               child: widget.menuView != null
                                   ? widget.menuView
-                                  : AnimatedIcon(
-                                      color: AppTheme.nearlyWhite,
-                                      icon: widget.animatedIconData != null
-                                          ? widget.animatedIconData
-                                          : AnimatedIcons.arrow_menu,
-                                      size: 30,
-                                      progress: iconAnimationController),
-                              onTap: () {
+                                  :AnimatedIcon(
+                                color: ModernTheme.textColor,
+                                icon: widget.animatedIconData ?? AnimatedIcons.arrow_menu,
+                                size: 30,
+                                progress: iconAnimationController!,
+                              )
+,
+                                onTap: () {
                                 FocusScope.of(context)
                                     .requestFocus(FocusNode());
                                 onDrawerClick();
@@ -207,15 +211,15 @@ class _DrawerUserControllerState extends State<DrawerUserController>
 
   void onDrawerClick() {
     //if scrollcontroller.offset != 0.0 then we set to closed the drawer(with animation to offset zero position) if is not 1 then open the drawer
-    if (scrollController.offset != 0.0) {
-      scrollController.animateTo(
+    if (scrollController!.offset != 0.0) {
+      scrollController!.animateTo(
         0.0,
         duration: const Duration(milliseconds: 400),
         curve: Curves.fastOutSlowIn,
       );
     } else {
-      scrollController.animateTo(
-        widget.drawerWidth,
+      scrollController!.animateTo(
+        widget.drawerWidth!,
         duration: const Duration(milliseconds: 400),
         curve: Curves.fastOutSlowIn,
       );

@@ -8,11 +8,11 @@ part 'extra_work_transaction_base_response.g.dart';
 @JsonSerializable(nullable: false)
 class ExtraWorkTransactionBaseResponse{
 
-  String _response;
+  String? _response;
 
-  String _err_MSG;
+  String? _err_MSG;
 
-  List<ExtraWorkTransactionResponse> _extraWorkList;
+  List<ExtraWorkTransactionResponse>? _extraWorkList;
 
 
   ExtraWorkTransactionBaseResponse();
@@ -22,19 +22,19 @@ class ExtraWorkTransactionBaseResponse{
 
   Map<String, dynamic> toJson() => _$ExtraWorkTransactionBaseResponseToJson(this);
 
-  List<ExtraWorkTransactionResponse> get extraWorkList => _extraWorkList;
+  List<ExtraWorkTransactionResponse> get extraWorkList => _extraWorkList!;
 
   set extraWorkList(List<ExtraWorkTransactionResponse> value) {
     _extraWorkList = value;
   }
 
-  String get err_MSG => _err_MSG;
+  String get err_MSG => _err_MSG!;
 
   set err_MSG(String value) {
     _err_MSG = value;
   }
 
-  String get response => _response;
+  String get response => _response!;
 
   set response(String value) {
     _response = value;

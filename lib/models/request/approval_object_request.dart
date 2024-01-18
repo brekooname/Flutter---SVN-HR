@@ -8,9 +8,9 @@ part 'approval_object_request.g.dart';
 @JsonSerializable(nullable: false)
 class ApprovalObjectRequest{
 
-  BaseRequest tokenWrapper;
+  BaseRequest? tokenWrapper;
 
-  String par_row_id;
+  String? par_row_id;
 
 
   ApprovalObjectRequest({this.tokenWrapper, this.par_row_id});

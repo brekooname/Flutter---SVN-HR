@@ -6,6 +6,7 @@ import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
 import '../../main.dart';
+import '../app_settings/server_connection_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   static final String id = "employee_profile_screen";
@@ -18,19 +19,20 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return ScreenLoader(
-      screenName: AppTranslations.of(context).text(Const.LOCALE_KEY_PROFILE),
+      screenName: AppTranslations.of(context)!.text(Const.LOCALE_KEY_PROFILE),
       screenWidget: ProfileScreen(),
     );
   }
 
   Widget ProfileScreen() {
-    return ListView(
-      children: <Widget>[
-        UserInfo(),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          UserInfo(),
+         ],
+      ),
     );
-  }
-}
+  }}
 
 class UserInfo extends StatefulWidget {
   @override
@@ -46,7 +48,7 @@ class _UserInfoState extends State<UserInfo> {
   String _employeeEmail = "";
   String _employeeTel = "";
   String _reportingManager = "";
-  SharedPreferences prefs = null;
+  SharedPreferences? prefs = null;
 
   @override
   void initState() {
@@ -57,181 +59,90 @@ class _UserInfoState extends State<UserInfo> {
   void getEmployeeDetails() async {
     prefs = await SharedPreferences.getInstance();
     setState(() {
-      _employeeName = prefs.getString(Const.SHARED_KEY_EMPLOYEE_NAME) ?? "";
+      _employeeName = prefs!.getString(Const.SHARED_KEY_EMPLOYEE_NAME) ?? "";
       _employeePicLink =
-          prefs.getString(Const.SHARED_KEY_EMPLOYEE_PIC_LINK) ?? "";
-      _employeePosition = prefs.getString(Const.SHARED_KEY_POSITION) ?? "";
-      _employeeDepartment = prefs.getString(Const.SHARED_KEY_DEPARTMENT) ?? "";
-      _employeeNumber = prefs.getString(Const.SHARED_KEY_EMPLOYEE_NUMBER) ?? "";
-      // _employeeEmail = prefs.getString(Const.SHARED_KEY_EMAIL) ?? "";
-      _employeeTel = prefs.getString(Const.SHARED_KEY_TELEPHONE_NUMBER) ?? "";
+          prefs!.getString(Const.SHARED_KEY_EMPLOYEE_PIC_LINK) ?? "";
+      _employeePosition = prefs!.getString(Const.SHARED_KEY_POSITION) ?? "";
+      _employeeDepartment = prefs!.getString(Const.SHARED_KEY_DEPARTMENT) ?? "";
+      _employeeNumber = prefs!.getString(Const.SHARED_KEY_EMPLOYEE_NUMBER) ?? "";
+       _employeeEmail = prefs!.getString(Const.SHARED_KEY_EMAIL) ?? "";
+      _employeeTel = prefs!.getString(Const.SHARED_KEY_TELEPHONE_NUMBER) ?? "";
       _reportingManager =
-          prefs.getString(Const.SHARED_KEY_REPORTING_MANAGER) ?? "";
+          prefs!.getString(Const.SHARED_KEY_REPORTING_MANAGER) ?? "";
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    Color complementaryBackgroundColor = Colors.grey.shade200; // A light grey color that complements the theme
+
     return Container(
-      padding: EdgeInsets.all(20),
+       padding: EdgeInsets.all(15),
       child: Column(
-        children: <Widget>[
+         children: <Widget>[
           Card(
-            // color: Colors.transparent,
+            elevation: 14, // Increased elevation for a prominent effect
+            shadowColor: ModernTheme.accentColor.withOpacity(0.5),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
             child: Container(
               decoration: BoxDecoration(
-                  color: AppTheme.kPrimaryLightColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30))),
-              alignment: Alignment.topLeft,
+                gradient: LinearGradient( // Gradient background
+                  colors: [ModernTheme.gradientStart, ModernTheme.gradientEnd],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(30),
+              ),
               padding: EdgeInsets.all(15),
               child: Column(
                 children: <Widget>[
                   Container(
-                      height: 90,
-                      margin: EdgeInsets.only(top: 60),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: AppTheme.nearlyBlue.withOpacity(0.6),
-                              offset: const Offset(2.0, 4.0),
-                              blurRadius: 8),
-                        ],
-                      ),
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundColor: AppTheme.kPrimaryLightColor,
-                        child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(60.0)),
-                            child: FadeInImage(
-                                image: NetworkImage(_employeePicLink),
-                                placeholder:
-                                    AssetImage("assets/images/avatar.png"))),
-                      )),
-                  Padding(
-                    padding: EdgeInsets.all(4),
-                  ),
-                  Text(
-                    _employeeName,
-                    style: TextStyle(
-                        color: AppTheme.kPrimaryColor,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20),
-                    textAlign: TextAlign.center,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(4),
-                  ),
-                  Text(
-                    _employeePosition,
-                    style: TextStyle(
-                        color: AppTheme.kPrimaryColor,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(4),
-                  ),
-                  Text(
-                    _employeeDepartment,
-                    style: TextStyle(
-                        color: AppTheme.kPrimaryColor,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 20),
-                    padding: EdgeInsets.all(10),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      AppTranslations.of(context).text(
-                        Const.LOCALE_KEY_USER_INFORMATION,
-                      ),
-                      style: TextStyle(
-                        color: AppTheme.kPrimaryColor,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                      textAlign: TextAlign.left,
+                    height: 111,
+                    margin: EdgeInsets.only(top: 60),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: ModernTheme.accentColor.withOpacity(0.6),
+                          offset: const Offset(2.0, 4.0),
+                          blurRadius: 8,
+                        ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      radius: 45,
+                        // _employeePicLink.isNotEmpty
+                        //     ? NetworkImage(_employeePicLink) as ImageProvider // Cast to ImageProvider
+                        //     :
+                        backgroundImage:AssetImage("assets/images/avatar.png"), // Placeholder image
                     ),
                   ),
-                  Divider(
-                    color: AppTheme.kPrimaryColor,
-                  ),
-                  Container(
-                      child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                        leading: Icon(
-                          Icons.perm_identity,
-                          color: AppTheme.kPrimaryColor,
-                        ),
-                        title: Text(AppTranslations.of(context)
-                            .text(Const.LOCALE_KEY_EMPLOYEE_NUMBER)),
-                        subtitle: Text(
-                          _employeeNumber,
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.email_outlined,
-                          color: AppTheme.kPrimaryColor,
-                        ),
-                        title: Text(AppTranslations.of(context)
-                            .text(Const.LOCALE_KEY_EMAIL)),
-                        subtitle: Text(
-                          '_employeeEmail',
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.phone_outlined,
-                          color: AppTheme.kPrimaryColor,
-                        ),
-                        title: Text(AppTranslations.of(context).text(
-                          Const.LOCALE_KEY_TELEPHONE_NUMBER,
-                        )),
-                        subtitle: Text(
-                          _employeeTel,
-                          textDirection: TextDirection.ltr,
-                          textAlign:
-                              MyApp.isEN ? TextAlign.left : TextAlign.right,
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.account_circle_outlined,
-                          color: AppTheme.kPrimaryColor,
-                        ),
-                        title: Text(AppTranslations.of(context)
-                            .text(Const.LOCALE_KEY_REPORTING_MANAGER)),
-                        subtitle: Text(
-                          _reportingManager,
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ],
-                  ))
+                  Padding(padding: EdgeInsets.all(4)),
+                  // User information
+                  Text(_employeeName, style: TextStyle(color: ModernTheme.textColor, fontWeight: FontWeight.bold, fontSize: 22), textAlign: TextAlign.center),
+                  Text(_employeePosition, style: TextStyle(color: ModernTheme.textColor, fontSize: 18), textAlign: TextAlign.center),
+                  Text(_employeeDepartment, style: TextStyle(color: ModernTheme.textColor, fontSize: 18), textAlign: TextAlign.center),
+                  Divider(color: ModernTheme.accentColor, thickness: 1.5, ),
+                  UserInfoListTile(Icons.perm_identity, Const.LOCALE_KEY_EMPLOYEE_NUMBER, _employeeNumber),
+                  UserInfoListTile(Icons.email_outlined, Const.LOCALE_KEY_EMAIL, _employeeEmail),
+                  UserInfoListTile(Icons.phone_outlined, Const.LOCALE_KEY_TELEPHONE_NUMBER, _employeeTel),
+                  UserInfoListTile(Icons.account_circle_outlined, Const.LOCALE_KEY_REPORTING_MANAGER, _reportingManager),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
+  Widget UserInfoListTile(IconData icon, String localeKey, String info) {
+    return ListTile(
+      leading: Icon(icon, color: ModernTheme.accentColor),
+      title: Text(AppTranslations.of(context)!.text(localeKey), style: TextStyle(color: ModernTheme.textColor, fontWeight: FontWeight.w500)),
+      subtitle: Text(info, style: TextStyle(color: ModernTheme.textColor)),
+    );
+  }
+
 }

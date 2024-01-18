@@ -3,12 +3,12 @@ import 'package:sven_hr/components/text_field_container.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 
 class RoundedCheckBoxField extends StatelessWidget {
-  final String hintText;
-  final bool value;
-  final Function onChanged;
+  final String? hintText;
+  final bool? value;
+  final void Function(bool?)? onChanged;
 
   const RoundedCheckBoxField({
-    Key key,
+    Key? key,
     this.hintText,
     this.value,
     this.onChanged,
@@ -20,7 +20,7 @@ class RoundedCheckBoxField extends StatelessWidget {
       child: Row(
         children: [
           Icon(Icons.integration_instructions,color: AppTheme.kPrimaryColor,),
-          Text(hintText,style: TextStyle(color: AppTheme.grey),),
+          Text(hintText!,style: TextStyle(color: AppTheme.grey),),
           Checkbox(
             value: value,
             activeColor: AppTheme.kPrimaryColor,

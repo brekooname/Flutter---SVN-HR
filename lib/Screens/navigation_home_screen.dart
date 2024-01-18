@@ -1,4 +1,5 @@
 import 'package:sven_hr/Screens/Leaves/leaves_transaction_screen.dart';
+import 'package:sven_hr/Screens/Loans/LoanRequestScreen.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
 import 'package:sven_hr/Screens/app_settings/app_settings_screen.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_transaction_screen.dart';
@@ -19,14 +20,14 @@ import 'app_settings/server_connection_screen.dart';
 
 class NavigationHomeScreen extends StatefulWidget {
   static final String id = "NavigationHomeScreen";
-  Widget screenView;
-  DrawerIndex drawerIndex;
+  Widget? screenView;
+  DrawerIndex? drawerIndex;
 
-  NavigationHomeScreen({this.screenView, this.drawerIndex});
+  NavigationHomeScreen({this.screenView, this.drawerIndex, Key? key}) : super(key: key);
 
   @override
   _NavigationHomeScreenState createState() =>
-      _NavigationHomeScreenState(screenView, drawerIndex);
+      _NavigationHomeScreenState(screenView!, drawerIndex!);
 }
 
 class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
@@ -48,12 +49,12 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppTheme.nearlyWhite,
+      color: ModernTheme.accentColor, // Adjusted to use AppTheme background color
       child: SafeArea(
         top: false,
         bottom: false,
         child: Scaffold(
-          backgroundColor: AppTheme.nearlyWhite,
+          backgroundColor: ModernTheme.backgroundColor, // Adjusted to use AppTheme background color
           body: DrawerUserController(
             screenIndex: drawerIndex,
             drawerWidth: MediaQuery.of(context).size.width * 0.75,
@@ -74,13 +75,13 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       drawerIndex = drawerIndexdata;
       if (drawerIndex == DrawerIndex.HOME) {
         setState(() {
-          screenView = const MyHomePage();
+          screenView =  MyHomePage();
         });
       } else if (drawerIndex == DrawerIndex.LEAVES) {
         setState(() {
           screenView = LeavesTransaction();
         });
-      } else if (drawerIndex == DrawerIndex.VACATION) {
+      }  else if (drawerIndex == DrawerIndex.VACATION) {
         setState(() {
           screenView = VacationsTransaction();
         });

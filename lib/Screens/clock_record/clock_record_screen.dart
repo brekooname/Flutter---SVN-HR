@@ -1,15 +1,11 @@
-import 'dart:io';
 import 'package:android_intent/android_intent.dart';
 import 'package:connectivity/connectivity.dart'
     show Connectivity, ConnectivityResult;
 import 'package:connectivity/connectivity.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get_mac/get_mac.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:sven_hr/Screens/clock_record/clock_record_controller.dart';
 import 'package:sven_hr/components/flutter_toast_message.dart';
@@ -31,14 +27,14 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
   bool showSpinner = false;
   bool buttonClosedIsPressed = false;
   bool buttonSendIsPressed = false;
-  LastCheckResponse _lastCheck;
-  ClockRecordController _clockRecordController;
+  LastCheckResponse? _lastCheck;
+  ClockRecordController? _clockRecordController;
   String _connectionStatus = 'Unknown';
   final Connectivity _connectivity = Connectivity();
   // final WifiInfo _wifiInfo = WifiInfo();
   String wifiBSSID = "";
   String recType = '';
-  StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  StreamSubscription<ConnectivityResult>? _connectivitySubscription;
 
   @override
   void initState() {
@@ -52,7 +48,7 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
   }
 
   Future<void> initConnectivity() async {
-    ConnectivityResult result;
+    ConnectivityResult? result;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       result = await _connectivity.checkConnectivity();
@@ -67,7 +63,7 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
       return Future.value(null);
     }
 
-    return _updateConnectionStatus(result);
+    return _updateConnectionStatus(result!);
   }
 
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
@@ -97,15 +93,13 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
 
   void getLastCheck() async {
     _lastCheck = LastCheckResponse();
-    await _clockRecordController.getLastCheck().then((value) {
+    await _clockRecordController!.getLastCheck().then((value) {
       setState(() {
-        if (value != null) {
-          if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
-            _lastCheck = _clockRecordController.lastCheck;
-            getRecType();
-          }
+        if (value!.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
+          _lastCheck = _clockRecordController!.lastCheck;
+          getRecType();
         }
-      });
+            });
     });
   }
 
@@ -120,7 +114,7 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                 content:
                     const Text('Please make sure you enable GPS and try again'),
                 actions: <Widget>[
-                  FlatButton(
+                  ElevatedButton(
                       child: Text('Ok'),
                       onPressed: () {
                         final AndroidIntent intent = AndroidIntent(
@@ -150,17 +144,15 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
     buttonSendIsPressed = true;
     showSpinner = true;
 
-    await _clockRecordController
+    await _clockRecordController!
         .userVerification(networkBSSID: wifiBSSID, clockType: clockType)
         .then((value) {
-      if (value == null) {
-        ToastMessage.showErrorMsg(Const.REQUEST_FAILED);
-      } else if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
-        ToastMessage.showSuccessMsg(Const.SYSTEM_SUCCESS_MSG);
-        Navigator.pop(context);
-      } else {
-        ToastMessage.showErrorMsg(value);
-      }
+      if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
+      ToastMessage.showSuccessMsg(Const.SYSTEM_SUCCESS_MSG);
+      Navigator.pop(context);
+    } else {
+      ToastMessage.showErrorMsg(value);
+    }
       buttonSendIsPressed = false;
       showSpinner = false;
       setState(() {});
@@ -168,12 +160,10 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
   }
 
   Future<void> getRecType() async {
-    LovValue lovValue = LovValue();
-    lovValue = await lovValue.getLovsByRowId(_lastCheck.rec_type);
-    if (lovValue.row_id != null) {
-      recType = lovValue.display;
-    }
-    setState(() {});
+    LovValue? lovValue = LovValue();
+    lovValue = await lovValue.getLovsByRowId(_lastCheck!.rec_type);
+    recType = lovValue!.display;
+      setState(() {});
   }
 
   @override
@@ -211,7 +201,7 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                             width: 16,
                           ),
                           Text(
-                            AppTranslations.of(context)
+                            AppTranslations.of(context)!
                                 .text(Const.LOCALE_KEY_CLOCK_RECORD),
                             textAlign: TextAlign.left,
                             style: TextStyle(
@@ -247,7 +237,7 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  AppTranslations.of(context)
+                                  AppTranslations.of(context)!
                                       .text(Const.LOCALE_KEY_lAST_CHECK_IN_OUT),
                                   style: TextStyle(
                                       color: AppTheme.kPrimaryColor,
@@ -258,21 +248,21 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                                 Expanded(
                                   flex: 1,
                                   child: ListTile(
-                                    title: Text(AppTranslations.of(context)
+                                    title: Text(AppTranslations.of(context)!
                                         .text(Const.LOCALE_KEY_REC_DATE)),
-                                    subtitle: Text(_lastCheck.rec_date != null
-                                        ? _lastCheck.rec_date
+                                    subtitle: Text(_lastCheck!.rec_date != null
+                                        ? _lastCheck!.rec_date
                                         : "-"),
                                   ),
                                 ),
                                 Expanded(
                                   flex: 1,
                                   child: ListTile(
-                                    title: Text(AppTranslations.of(context)
+                                    title: Text(AppTranslations.of(context)!
                                         .text(Const.LOCALE_KEY_REC_TIME)),
-                                    subtitle: Text(_lastCheck.rec_time != null
+                                    subtitle: Text(_lastCheck!.rec_time != null
                                         ? ApplicationController.formatToHours(
-                                                _lastCheck.rec_time)
+                                                _lastCheck!.rec_time.toInt())
                                             .toString()
                                         : "-"),
                                   ),
@@ -280,7 +270,7 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                                 Expanded(
                                   flex: 1,
                                   child: ListTile(
-                                    title: Text(AppTranslations.of(context)
+                                    title: Text(AppTranslations.of(context)!
                                         .text(Const.LOCALE_KEY_TYPE)),
                                     subtitle: Text(recType),
                                   ),
@@ -327,7 +317,7 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                                     color: AppTheme.white,
                                   )),
                                   TextSpan(
-                                    text: AppTranslations.of(context)
+                                    text: AppTranslations.of(context)!
                                         .text(Const.LOCALE_KEY_CHECK_IN),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -376,7 +366,7 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
                                     color: AppTheme.white,
                                   )),
                                   TextSpan(
-                                    text: AppTranslations.of(context)
+                                    text: AppTranslations.of(context)!
                                         .text(Const.LOCALE_KEY_CHECK_OUT),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -397,4 +387,12 @@ class _ClockRecordScreenState extends State<ClockRecordScreen> {
       ),
     );
   }
+}
+
+class ClockRecordController {
+  LastCheckResponse? get lastCheck => null;
+
+  getLastCheck() {}
+
+  userVerification({required String networkBSSID, required String clockType}) {}
 }

@@ -23,7 +23,7 @@ class Application {
   Iterable<Locale> supportedLocales() =>
       supportedLanguagesCodes.map<Locale>((language) => Locale(language, ""));
   //function to be invoked when changing the language
-  LocaleChangeCallback onLocaleChanged;
+  LocaleChangeCallback? onLocaleChanged;
 }
 
 Application application = Application();

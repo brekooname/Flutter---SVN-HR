@@ -8,6 +8,7 @@
   "my_profile": "My Profile",
   "leaves": "Leave request",
   "vacations": "Vacation request",
+  "vacations2": "Vacations",
   "time_sheet": "Time Sheet",
   "salary_increment_request": "Salary Inc. Request",
   "extra_work_request": "Extra Work Request",
@@ -176,6 +177,7 @@
 
   "my_vacations": "My Vacations",
   "my_leaves": "My Leaves",
+  "my_loans": "Loan Request",
 
   "view_attachment": "View Attachments",
 

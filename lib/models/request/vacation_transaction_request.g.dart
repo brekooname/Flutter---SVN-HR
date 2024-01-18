@@ -18,5 +18,5 @@ Map<String, dynamic> _$VacationTransactionRequestToJson(
         VacationTransactionRequest instance) =>
     <String, dynamic>{
       'tokenID': instance.tokenID,
-      'vac': instance.vac.toJson(),
+      'vac': instance.vac!.toJson(),
     };

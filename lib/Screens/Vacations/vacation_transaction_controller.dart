@@ -1,3 +1,5 @@
+
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sven_hr/components/flutter_toast_message.dart';
@@ -16,41 +18,101 @@ import 'package:sven_hr/services/multi_part_file_upload.dart';
 import 'package:sven_hr/services/networking.dart';
 import 'package:sven_hr/utilities/api_connectons.dart';
 import 'package:sven_hr/utilities/constants.dart';
-import 'package:mime/mime.dart';
 
-import 'models/vacation_list_item.dart';
+import '../app_settings/server_connection_screen.dart';
+
 
 class VacationTransactionController {
-  List<VacationTransactionResponse> _vacationList;
-  List<EmployeeVacationResponse> _employeeVactions;
+  List<VacationTransactionResponse>? _vacationList;
+  List<EmployeeVacationResponse>? _employeeVactions;
   DateFormat format = DateFormat(Const.DATE_FORMAT);
 
   VacationTransactionController() {
-    _vacationList = List();
+    _vacationList = <VacationTransactionResponse>[]; // Specify the type explicitly
   }
 
-  Future<String> getDefualtSearch() async {
+  Future<String> getDefualtSearch(BuildContext context) async {
     DateTime now = new DateTime.now();
     String toDate = format.format(now);
-    DateTime lastMonthDate = new DateTime(now.year, now.month - 1, now.day);
+    DateTime lastMonthDate = new DateTime(now.year, now.month, now.day - 7);
     String fromDate = format.format(lastMonthDate);
-    List<String> statusList = [
-      // Const.VACATION_REQUEST_PENDING_STATUS,
-      // Const.VACATION_REQUEST_APPROVED_STATUS,
-      // Const.VACATION_REQUEST_DECLINED_STATUS,
-      // Const.VACATION_REQUEST_CANCELED_STATUS
-    ];
-    List<String> typeList = [
-      // Const.VACATION_REQUEST_LOCATION_INTERNAL,
-      // Const.VACATION_REQUEST_LOCATION_EXTERNAL
-    ];
+    List<String> statusList = [];
+    List<String> typeList = [];
 
-    String response =
-        await getSelfVacation(fromDate, toDate, statusList, typeList);
-    return response;
+    String? response = await getSelfVacation(fromDate, toDate, statusList, typeList, context);
+    print(' default search response ' + response!);
+    if (_vacationList!.isEmpty && response == 'SUCCESS') {
+      showNoDataDialog(context);
+    }
+    return response!;
   }
 
-  Future<List<LovValue>> loadVacationStatus() async {
+  void showNoDataDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          backgroundColor: ModernTheme.backgroundColor, // Use your preferred background color
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(
+                  Icons.info_outline,
+                  color: ModernTheme.accentColor, // Use your preferred accent color
+                  size: 50.0, // Icon size
+                ),
+                SizedBox(height: 20.0),
+                Text(
+                  'No Data Found',
+                  style: TextStyle(
+                    color: ModernTheme.textColor, // Use your preferred text color
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  'No results match your search criteria. Please try again.',
+                  style: TextStyle(
+                    color: ModernTheme.textColor, // Use your preferred text color
+                    fontSize: 16.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20.0),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: ModernTheme.accentColor, // Use your preferred accent color
+                    elevation: 5, // Button elevation
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'OK',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<List<LovValue>?> loadVacationStatus() async {
     LovValue lov = LovValue();
     try {
       return lov.getLovsByParentId(Const.VACATION_REQUEST_STATUS);
@@ -59,7 +121,7 @@ class VacationTransactionController {
     }
   }
 
-  Future<List<LovValue>> loadVacationLocation() async {
+  Future<List<LovValue>?> loadVacationLocation() async {
     LovValue lov = LovValue();
     try {
       return lov.getLovsByParentId(Const.VACATION_REQUEST_LOCATION);
@@ -70,11 +132,11 @@ class VacationTransactionController {
 
   Future<String> loadEmployeeVacationsBalance() async {
     final prefs = await SharedPreferences.getInstance();
-    String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    String? tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
+    String? host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
-    var url = host + ApiConnections.Employee_Vacations;
-    BaseRequest request = BaseRequest(tokenID: tokenId);
+    var url = host! + ApiConnections.Employee_Vacations;
+    BaseRequest request = BaseRequest(tokenID: tokenId!);
     NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
     var userData = await helper.getData();
     if (userData != null &&
@@ -85,37 +147,37 @@ class VacationTransactionController {
       EmployeeVacationBaseResponse reponse = EmployeeVacationBaseResponse();
       reponse = EmployeeVacationBaseResponse.fromJson(userData);
       print(reponse.employeeVacations.length);
-      if (reponse.employeeVacations != null) {
-        employeeVactions = reponse.employeeVacations;
+      employeeVactions = reponse.employeeVacations;
 
-        return Const.SYSTEM_SUCCESS_MSG;
-      }
-    } else {
+      return Const.SYSTEM_SUCCESS_MSG;
+        } else {
       print(userData[Const.SYSTEM_MSG_CODE]);
       return userData[Const.SYSTEM_MSG_CODE];
     }
   }
 
   Future<String> sendVacationRequest(
-      {String fromDate,
-      String toDate,
-      String vacationId,
-      String locationId,
-      String notes,
-      List<String> filePaths}) async {
+      {
+      String? fromDate,
+      String? toDate,
+      String? vacationId,
+      String? locationId,
+      String? notes,
+      List<String>? filePaths
+      }) async {
     final prefs = await SharedPreferences.getInstance();
-    String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    String? tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
+    String? host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
-    var url = host + ApiConnections.Add_New_Vacations;
+    var url = host! + ApiConnections.Add_New_Vacations;
     NewVacationRequest newVacationRequest = NewVacationRequest();
-    newVacationRequest.vacation_id = vacationId;
-    newVacationRequest.vacation_locaction = locationId;
-    newVacationRequest.notes = notes;
-    newVacationRequest.start_date = fromDate;
-    newVacationRequest.end_date = toDate;
+    newVacationRequest.vacation_id = vacationId!;
+    newVacationRequest.vacation_locaction = locationId!;
+    newVacationRequest.notes = notes!;
+    newVacationRequest.start_date = fromDate!;
+    newVacationRequest.end_date = toDate!;
     NewVacationBaseRequest request =
-        NewVacationBaseRequest(tokenID: tokenId, vac: newVacationRequest);
+        NewVacationBaseRequest(tokenID: tokenId!, vac: newVacationRequest);
     NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
     var userData = await helper.getData();
     if (userData != null &&
@@ -123,17 +185,15 @@ class VacationTransactionController {
         userData[Const.SYSTEM_RESPONSE_CODE]
                 .compareTo(Const.SYSTEM_SUCCESS_MSG) ==
             0) {
-      String approval_inbox_row_id = userData[Const.APPROVAL_INBOX_ROW_ID];
-      if (approval_inbox_row_id != null &&
-          !approval_inbox_row_id.isEmpty &&
-          filePaths != null &&
-          !filePaths.isEmpty) {
+      String approvalInboxRowId = userData[Const.APPROVAL_INBOX_ROW_ID];
+      if (approvalInboxRowId.isNotEmpty &&
+          filePaths!.isNotEmpty) {
         for (int i = 0; i < filePaths.length; i++) {
           String path = filePaths[i];
           String res = await uploadAttachment(
               filePath: path,
               tokenId: tokenId,
-              approval_inbox_row_id: approval_inbox_row_id);
+              approval_inbox_row_id: approvalInboxRowId);
           print(path);
         }
       }
@@ -145,15 +205,14 @@ class VacationTransactionController {
   }
 
   Future<String> uploadAttachment(
-      {String filePath, String tokenId, String approval_inbox_row_id}) async {
+      {String? filePath, String? tokenId, String? approval_inbox_row_id}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    String? host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
-    var url = host + ApiConnections.UPLOAD_FILE;
-    String fileNameWithExtenstion = filePath.split('/').last;
+    var url = host! + ApiConnections.UPLOAD_FILE;
+    String fileNameWithExtenstion = filePath!.split('/').last;
     String fileName = fileNameWithExtenstion.split('.').first;
-    ;
     String fileType = fileNameWithExtenstion.split('.').last;
     MultiPartFileUpload request = MultiPartFileUpload(
         url: url,
@@ -177,7 +236,7 @@ class VacationTransactionController {
     }
   }
 
-  Future<List<VacationType>> loadVacationTypes() async {
+  Future<List<VacationType>?> loadVacationTypes() async {
     VacationType vac = VacationType();
     try {
       return vac.getAllVacationsType();
@@ -187,7 +246,7 @@ class VacationTransactionController {
   }
 
   Future<String> advancedSearch(String fromDate, String toDate,
-      List<LovValue> statusList, List<VacationType> typeList) async {
+      List<LovValue> statusList, List<VacationType> typeList,BuildContext context) async {
     List<String> statusStringList = statusList
         .where((element) => element.isSelected)
         .map((e) => e.row_id)
@@ -196,14 +255,14 @@ class VacationTransactionController {
         .where((element) => element.isSelected)
         .map((e) => e.row_id)
         .toList();
-    String response = await getSelfVacation(
-        fromDate, toDate, statusStringList, typeStringList);
-    return response;
+    String? response = await getSelfVacation(
+        fromDate, toDate, statusStringList, typeStringList,context);
+    return response!;
   }
 
-  Future<String> getSelfVacation(String fromDate, String toDate,
-      List<String> statusList, List<String> typeList) async {
-    vacationList = List();
+  Future<String?> getSelfVacation(String fromDate, String toDate,
+      List<String> statusList, List<String> typeList,BuildContext context) async {
+    _vacationList = <VacationTransactionResponse>[];
     VacationTransactionRequest request = VacationTransactionRequest();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
@@ -215,58 +274,54 @@ class VacationTransactionController {
     requestWrapper.statusList = statusList;
     requestWrapper.typeList = typeList;
     request.vac = requestWrapper;
-    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    String? host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
-    if (request != null) {
-      var url = host + ApiConnections.vacation_transaction;
-      NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
-      var userData = await helper.getData();
-      if (userData != null &&
-          userData[Const.SYSTEM_MSG_CODE] != null &&
-          userData[Const.SYSTEM_MSG_CODE].compareTo(Const.SYSTEM_SUCCESS_MSG) ==
-              0) {
-        VacationTransactionBaseResponse baseResponse =
-            VacationTransactionBaseResponse.fromJson(userData);
-        // add returned vacation to vacation list item view
-        if (baseResponse.vacationTransactions != null) {
-          vacationList = baseResponse.vacationTransactions;
-          // for (VacationTransactionResponse vac
-          //     in baseResponse.vacationTransactions) {
-          //   LovValue statusLov = LovValue();
-          //   statusLov.row_id = vac.request_status;
-          //   statusLov.code = vac.request_status_code;
-          //   statusLov.display = vac.request_status_displayValue;
-          //
-          //   LovValue typeLov = LovValue();
-          //   typeLov.row_id = vac.vacation_location;
-          //   typeLov.code = vac.vacation_location_code;
-          //   typeLov.display = vac.vacation_location_displayValue;
-          //
-          //   VacationListItem vacItem = VacationListItem(
-          //       name: vac.vacation_Name,
-          //       status: statusLov,
-          //       type: typeLov,
-          //       fromDate: vac.start_date,
-          //       toDate: vac.end_date);
-          //
-          //   vacationList.add(vacItem);
-          // }
-        }
-        // print("Finshed");
-        return Const.SYSTEM_SUCCESS_MSG;
-      } else {
-        ToastMessage.showErrorMsg(userData[Const.SYSTEM_MSG_CODE]);
-      }
+    var url = host! + ApiConnections.vacation_transaction;
+    NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
+    var userData = await helper.getData();
+    if (userData != null &&
+        userData[Const.SYSTEM_MSG_CODE] != null &&
+        userData[Const.SYSTEM_MSG_CODE].compareTo(Const.SYSTEM_SUCCESS_MSG) ==
+            0) {
+      VacationTransactionBaseResponse baseResponse =
+          VacationTransactionBaseResponse.fromJson(userData);
+      // add returned vacation to vacation list item view
+      vacationList = baseResponse.vacationTransactions;
+      // for (VacationTransactionResponse vac
+      //     in baseResponse.vacationTransactions) {
+      //   LovValue statusLov = LovValue();
+      //   statusLov.row_id = vac.request_status;
+      //   statusLov.code = vac.request_status_code;
+      //   statusLov.display = vac.request_status_displayValue;
+      //
+      //   LovValue typeLov = LovValue();
+      //   typeLov.row_id = vac.vacation_location;
+      //   typeLov.code = vac.vacation_location_code;
+      //   typeLov.display = vac.vacation_location_displayValue;
+      //
+      //   VacationListItem vacItem = VacationListItem(
+      //       name: vac.vacation_Name,
+      //       status: statusLov,
+      //       type: typeLov,
+      //       fromDate: vac.start_date,
+      //       toDate: vac.end_date);
+      //
+      //   vacationList.add(vacItem);
+      // }
+          // print("Finshed");
+      return Const.SYSTEM_SUCCESS_MSG;
+    } else {
+      ToastMessage.showErrorMsg(userData[Const.SYSTEM_MSG_CODE]);
     }
-  }
+    }
 
-  List<VacationTransactionResponse> get vacationList => _vacationList;
+  List<VacationTransactionResponse> get vacationList => _vacationList!;
 
   set vacationList(List<VacationTransactionResponse> value) {
     _vacationList = value;
   }
 
-  List<EmployeeVacationResponse> get employeeVactions => _employeeVactions;
+  List<EmployeeVacationResponse> get employeeVactions => _employeeVactions!;
 
   set employeeVactions(List<EmployeeVacationResponse> value) {
     _employeeVactions = value;

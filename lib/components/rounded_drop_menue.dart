@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 
 class RoundedDropMenue extends StatefulWidget {
-  final String dropdownValue;
-  final Function onChanged;
-  final List<DropdownMenuItem<String>> dropdownMenuItems;
-  final String hedaerLabel;
+  final String? dropdownValue;
+  final void Function(String?)? onChanged;
+  final List<DropdownMenuItem<String>>? dropdownMenuItems;
+  final String? hedaerLabel;
 
   RoundedDropMenue(
       {this.dropdownValue, this.onChanged, this.dropdownMenuItems,this.hedaerLabel});

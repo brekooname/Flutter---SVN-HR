@@ -8,16 +8,16 @@ class VacationTransactionRequestWrapper{
   VacationTransactionRequestWrapper();
 
   @JsonKey(name: 'fromDate')
-  String fromDate;
+  String? fromDate;
 
   @JsonKey(name: 'toDate')
-  String toDate;
+  String? toDate;
 
   @JsonKey(name: 'statusList')
-  List<String> statusList;
+  List<String>? statusList;
 
   @JsonKey(name: 'typeList')
-  List<String> typeList;
+  List<String>? typeList;
 
   factory VacationTransactionRequestWrapper.fromJson(Map<String, dynamic> json) => _$VacationTransactionRequestWrapperFromJson(json);
 

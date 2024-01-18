@@ -1,7 +1,6 @@
 import 'dart:io';
 //import 'package:file_picker/file_picker.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,22 +17,23 @@ class PickerScreen extends StatefulWidget {
 
 class _PickerScreenState extends State<PickerScreen> {
   final ImagePicker _picker = ImagePicker();
-  File _imageFile;
-  String _retrieveDataError;
+  XFile? _imageFile;
+  String? _retrieveDataError='';
   dynamic _pickImageError;
   final TextEditingController maxWidthController = TextEditingController();
   final TextEditingController maxHeightController = TextEditingController();
   final TextEditingController qualityController = TextEditingController();
-  String _fileName;
-  List<File> _paths;
-  String _directoryPath;
-  String _extension;
+  String? _fileName;
+  List<File>? _paths;
+  String? _directoryPath;
+  String? _extension;
   bool _loadingPath = false;
   bool _multiPick = false;
   FileType _pickingType = FileType.any;
 
   Future<void> retrieveLostData() async {
-    LostDataResponse response = await ImagePicker.retrieveLostData();
+    final ImagePicker _picker = ImagePicker();
+    final LostDataResponse response = await _picker.retrieveLostData();
     if (response.isEmpty) {
       return;
     }
@@ -44,45 +44,30 @@ class _PickerScreenState extends State<PickerScreen> {
         });
       }
     } else {
-      _retrieveDataError = response.exception.code;
+      _retrieveDataError = response.exception?.code;
     }
   }
 
-  Text _getRetrieveErrorWidget() {
-    if (_retrieveDataError != null) {
-      final Text result = Text(_retrieveDataError);
-      _retrieveDataError = null;
-      return result;
-    }
-    return null;
+  Text? _getRetrieveErrorWidget() {
+    final Text? result = Text(_retrieveDataError!);
+    _retrieveDataError = null;
+    return result!;
+      // return null;
   }
 
   Widget _previewImage() {
-    final Text retrieveError = _getRetrieveErrorWidget();
-    if (retrieveError != null) {
-      return retrieveError;
-    }
-    if (_paths != null && _paths.length > 0) {
-      String mimeStr = lookupMimeType(_paths[0].path);
-      if (mimeStr.startsWith('image')) {
-        return Image.file(File(_paths[0].path));
-      } else {
-        Navigator.pop(context, _paths[0].path);
-        return Container();
-      }
-    } else if (_imageFile != null) {
-      return Image.file(File(_imageFile.path));
-    } else if (_pickImageError != null) {
-      return Text(
-        'Pick image error: $_pickImageError',
-        textAlign: TextAlign.center,
-      );
-    } else {
-      return const Text(
-        'You have not yet picked an image.',
-        textAlign: TextAlign.center,
-      );
-    }
+    final Text? retrieveError = _getRetrieveErrorWidget();
+    return retrieveError!;
+    //   if (_paths?.length > 0) {
+    //   String mimeStr = lookupMimeType(_paths[0].path);
+    //   if (mimeStr.startsWith('image')) {
+    //     return Image.file(File(_paths[0].path));
+    //   } else {
+    //     Navigator.pop(context, _paths[0].path);
+    //     return Container();
+    //   }
+    // } else    return Image.file(File(_imageFile.path));
+    //
   }
 
   Future<void> _displayPickImageDialog(
@@ -98,47 +83,47 @@ class _PickerScreenState extends State<PickerScreen> {
                   controller: maxWidthController,
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                   decoration: InputDecoration(
-                      hintText: AppTranslations.of(context)
+                      hintText: AppTranslations.of(context)!
                           .text(Const.LOCALE_KEY_ENTER_MAX_WIDTH)),
                 ),
                 TextField(
                   controller: maxHeightController,
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                   decoration: InputDecoration(
-                      hintText: AppTranslations.of(context)
+                      hintText: AppTranslations.of(context)!
                           .text(Const.LOCALE_KEY_ENTER_MAX_HEIGHT)),
                 ),
                 TextField(
                   controller: qualityController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                      hintText: AppTranslations.of(context)
+                      hintText: AppTranslations.of(context)!
                           .text(Const.LOCALE_KEY_ENTER_QUALITY)),
                 ),
               ],
             ),
             actions: <Widget>[
-              FlatButton(
+              ElevatedButton(
                 child: Text(
-                    AppTranslations.of(context).text(Const.LOCALE_KEY_CANCEL)),
+                    AppTranslations.of(context)!.text(Const.LOCALE_KEY_CANCEL)),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              FlatButton(
+              ElevatedButton(
                   child: Text(
-                      AppTranslations.of(context).text(Const.LOCALE_KEY_PICK)),
+                      AppTranslations.of(context)!.text(Const.LOCALE_KEY_PICK)),
                   onPressed: () {
-                    double width = maxWidthController.text.isNotEmpty
+                    double? width = maxWidthController.text.isNotEmpty
                         ? double.parse(maxWidthController.text)
                         : null;
-                    double height = maxHeightController.text.isNotEmpty
+                    double? height = maxHeightController.text.isNotEmpty
                         ? double.parse(maxHeightController.text)
                         : null;
-                    int quality = qualityController.text.isNotEmpty
+                    int? quality = qualityController.text.isNotEmpty
                         ? int.parse(qualityController.text)
                         : null;
-                    onPick(width, height, quality);
+                    onPick(width!, height!, quality!);
                     Navigator.of(context).pop();
                   }),
             ],
@@ -146,12 +131,11 @@ class _PickerScreenState extends State<PickerScreen> {
         });
   }
 
-  void _onImageButtonPressed(ImageSource source, {BuildContext context}) async {
-    _paths = null;
-    await _displayPickImageDialog(context,
-        (double maxWidth, double maxHeight, int quality) async {
+  void _onImageButtonPressed(ImageSource source, {BuildContext? context}) async {
+    await _displayPickImageDialog(context!,
+            (double maxWidth, double maxHeight, int quality) async {
       try {
-        final pickedFile = await ImagePicker.pickImage(
+        final pickedFile = await _picker.pickImage(
           source: source,
           maxWidth: maxWidth,
           maxHeight: maxHeight,
@@ -172,12 +156,22 @@ class _PickerScreenState extends State<PickerScreen> {
     try {
       _imageFile = null;
       _directoryPath = null;
-      _paths = (await FilePicker.getMultiFile(
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: _pickingType,
-        allowedExtensions: (_extension?.isNotEmpty ?? false)
-            ? _extension?.replaceAll(' ', '')?.split(',')
+        allowedExtensions: (_extension!.isNotEmpty ?? false)
+            ? _extension!.replaceAll(' ', '').split(',')
             : null,
-      ));
+      );
+
+      if (result != null && result.files.isNotEmpty) {
+        // Access the selected files through result.files
+        List<PlatformFile> files = result.files;
+        // Do something with the selected files
+        _fileName = files.map((e) => e.path).toString();
+      } else {
+        // User canceled the file picking
+        _fileName = '...';
+      }
     } on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());
     } catch (ex) {
@@ -186,7 +180,6 @@ class _PickerScreenState extends State<PickerScreen> {
     if (!mounted) return;
     setState(() {
       _loadingPath = false;
-      _fileName = _paths != null ? _paths.map((e) => e.path).toString() : '...';
     });
   }
 
@@ -198,10 +191,9 @@ class _PickerScreenState extends State<PickerScreen> {
         iconTheme: IconThemeData(
           color: AppTheme.nearlyWhite, //change your color here
         ),
-        textTheme: AppTheme.textTheme,
         backgroundColor: AppTheme.kPrimaryColor,
         title:
-            Text(AppTranslations.of(context).text(Const.LOCALE_KEY_ADD_DOCS)),
+            Text(AppTranslations.of(context)!.text(Const.LOCALE_KEY_ADD_DOCS)), toolbarTextStyle: AppTheme.textTheme.bodyMedium, titleTextStyle: AppTheme.textTheme.titleLarge,
       ),
       body: Center(
           child: FutureBuilder<void>(
@@ -211,7 +203,7 @@ class _PickerScreenState extends State<PickerScreen> {
             case ConnectionState.none:
             case ConnectionState.waiting:
               return Text(
-                AppTranslations.of(context).text(Const.LOCALE_KEY_ADD_DOCS),
+                AppTranslations.of(context)!.text(Const.LOCALE_KEY_ADD_DOCS),
                 textAlign: TextAlign.center,
               );
             case ConnectionState.done:
@@ -224,12 +216,13 @@ class _PickerScreenState extends State<PickerScreen> {
                 );
               } else {
                 return Text(
-                  AppTranslations.of(context).text(Const.LOCALE_KEY_ADD_DOCS),
+                  AppTranslations.of(context)!.text(Const.LOCALE_KEY_ADD_DOCS),
                   textAlign: TextAlign.center,
                 );
               }
           }
         },
+
       )),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -263,12 +256,8 @@ class _PickerScreenState extends State<PickerScreen> {
             child: FloatingActionButton(
               backgroundColor: AppTheme.kPrimaryColor,
               onPressed: () {
-                if (_imageFile != null) {
-                  Navigator.pop(context, _imageFile.path);
-                } else if (_paths != null && _paths.length > 0) {
-                  Navigator.pop(context, _paths[0].path);
-                }
-              },
+                Navigator.pop(context, _imageFile!.path);
+                            },
               heroTag: 'done',
               tooltip: 'submit',
               child: const Icon(Icons.done),

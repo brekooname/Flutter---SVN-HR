@@ -7,11 +7,11 @@ part 'attendance_summary_base_response.g.dart';
 @JsonSerializable(nullable: false)
 class AttendanceSummaryBaseResponse{
 
-  String _response;
+  String? _response;
 
-  String _err_MSG;
+  String? _err_MSG;
 
-  List<AttendanceSummaryResponse> _cloackRecordList;
+  List<AttendanceSummaryResponse>? _cloackRecordList;
 
 
   AttendanceSummaryBaseResponse();
@@ -22,19 +22,19 @@ class AttendanceSummaryBaseResponse{
   Map<String, dynamic> toJson() => _$AttendanceSummaryBaseResponseToJson(this);
 
 
-  List<AttendanceSummaryResponse> get cloackRecordList => _cloackRecordList;
+  List<AttendanceSummaryResponse> get cloackRecordList => _cloackRecordList!;
 
   set cloackRecordList(List<AttendanceSummaryResponse> value) {
     _cloackRecordList = value;
   }
 
-  String get err_MSG => _err_MSG;
+  String get err_MSG => _err_MSG!;
 
   set err_MSG(String value) {
     _err_MSG = value;
   }
 
-  String get response => _response;
+  String get response => _response!;
 
   set response(String value) {
     _response = value;

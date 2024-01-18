@@ -17,20 +17,20 @@ class ProjectListBaseResponse{
 
 
   @JsonKey(name: 'projectListTransactions')
-  List<ProjectListResponse> _projectListTransactions;
+  List<ProjectListResponse>? _projectListTransactions;
 
   @JsonKey(name: 'err_MSG')
-  String _err_MSG;
+  String? _err_MSG;
 
 
   List<ProjectListResponse> get projectListTransactions =>
-      _projectListTransactions;
+      _projectListTransactions!;
 
   set projectListTransactions(List<ProjectListResponse> value) {
     _projectListTransactions = value;
   }
 
-  String get err_MSG => _err_MSG;
+  String get err_MSG => _err_MSG!;
 
   set err_MSG(String value) {
     _err_MSG = value;

@@ -5,10 +5,10 @@ part 'new_password_request.g.dart';
 @JsonSerializable(nullable: false)
 class NewPasswordRequest{
 
-  String tokenID;
-  String oldPassword;
-  String newPassword;
-  String repatedPassword;
+  String? tokenID;
+  String? oldPassword;
+  String? newPassword;
+  String? repatedPassword;
 
   NewPasswordRequest({
       this.tokenID, this.oldPassword, this.newPassword, this.repatedPassword});

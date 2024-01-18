@@ -5,7 +5,7 @@ part 'base_request.g.dart';
 
 @JsonSerializable(nullable: false)
 class BaseRequest{
-  String tokenID;
+  String? tokenID;
 
 
   BaseRequest({this.tokenID});

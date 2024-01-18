@@ -9,10 +9,10 @@ part of 'project_list_base_response.dart';
 ProjectListBaseResponse _$ProjectListBaseResponseFromJson(
     Map<String, dynamic> json) {
   return ProjectListBaseResponse()
-    ..projectListTransactions = (json['projectListTransactions'] as List)
-        .map((e) => ProjectListResponse.fromJson(e as Map<String, dynamic>))
-        .toList()
-    ..err_MSG = json['err_MSG'] as String;
+    ..projectListTransactions = (json['projectListTransactions'] as List<dynamic>?)
+        ?.map((e) => ProjectListResponse.fromJson(e as Map<String, dynamic>))
+        .toList() ?? []
+    ..err_MSG = json['err_MSG'] as String? ?? 'default_err_msg';
 }
 
 Map<String, dynamic> _$ProjectListBaseResponseToJson(

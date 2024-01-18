@@ -9,53 +9,52 @@ part of 'vacation_transaction_response.dart';
 VacationTransactionResponse _$VacationTransactionResponseFromJson(
     Map<String, dynamic> json) {
   return VacationTransactionResponse()
-    ..vacation_location = json['vacation_location'] as String
-    ..createddate = json['createddate'] as String
-    ..row_id = json['row_id'] as String
-    ..actual_end = json['actual_end'] as String
-    ..approve_date = json['approve_date'] as String
-    ..remark = json['remark'] as String
-    ..request_date = json['request_date'] as String
-    ..holiday_days = json['holiday_days'] as num
-    ..updatedate = json['updatedate'] as String
-    ..vacation_id = json['vacation_id'] as String
-    ..vacation_Name = json['vacation_Name'] as String
-    ..trans_reason = json['trans_reason'] as String
-    ..trans_reason_code = json['trans_reason_code'] as String
-    ..trans_reason_displayValue = json['trans_reason_displayValue'] as String
-    ..actual_start = json['actual_start'] as String
-    ..employee_id = json['employee_id'] as String
-    ..paid_days = json['paid_days'] as num
-    ..unpaid_days = json['unpaid_days'] as num
-    ..linked_vacation_id = json['linked_vacation_id'] as String
-    ..trans_period = json['trans_period'] as num
-    ..planned_flg = json['planned_flg'] as String
-    ..request_status = json['request_status'] as String
-    ..request_status_code = json['request_status_code'] as String
-    ..request_status_displayValue =
-        json['request_status_displayValue'] as String
-    ..subsititude_emp = json['subsititude_emp'] as String
-    ..createdby = json['createdby'] as String
-    ..req_channel_displayValue = json['req_channel_displayValue'] as String
-    ..req_channel_code = json['req_channel_code'] as String
-    ..req_channel = json['req_channel'] as String
-    ..end_date = json['end_date'] as String
-    ..permission_method = json['permission_method'] as String
-    ..trans_status_displayValue = json['trans_status_displayValue'] as String
-    ..trans_status_code = json['trans_status_code'] as String
-    ..trans_status = json['trans_status'] as String
-    ..updatedby = json['updatedby'] as String
-    ..previous_balance = (json['previous_balance'] as num).toDouble()
-    ..new_balance = (json['new_balance'] as num).toDouble()
-    ..actual_period = json['actual_period'] as num
-    ..start_date = json['start_date'] as String
-    ..vacation_location_code = json['vacation_location_code'] as String
-    ..vacation_location_displayValue =
-        json['vacation_location_displayValue'] as String
-    ..approvalList = (json['approvalList'] as List)
-        .map((e) => ApprovalList.fromJson(e as Map<String, dynamic>))
-        .toList();
+    ..vacation_location = json['vacation_location'] as String? ?? 'default_vacation_location'
+    ..createddate = json['createddate'] as String? ?? 'default_createddate'
+    ..row_id = json['row_id'] as String? ?? 'default_row_id'
+    ..actual_end = json['actual_end'] as String? ?? 'default_actual_end'
+    ..approve_date = json['approve_date'] as String? ?? 'default_approve_date'
+    ..remark = json['remark'] as String? ?? 'default_remark'
+    ..request_date = json['request_date'] as String? ?? 'default_request_date'
+    ..holiday_days = (json['holiday_days'] as num?)?.toDouble() ?? 0.0
+    ..updatedate = json['updatedate'] as String? ?? 'default_updatedate'
+    ..vacation_id = json['vacation_id'] as String? ?? 'default_vacation_id'
+    ..vacation_Name = json['vacation_Name'] as String? ?? 'default_vacation_Name'
+    ..trans_reason = json['trans_reason'] as String? ?? 'default_trans_reason'
+    ..trans_reason_code = json['trans_reason_code'] as String? ?? 'default_trans_reason_code'
+    ..trans_reason_displayValue = json['trans_reason_displayValue'] as String? ?? 'default_trans_reason_displayValue'
+    ..actual_start = json['actual_start'] as String? ?? 'default_actual_start'
+    ..employee_id = json['employee_id'] as String? ?? 'default_employee_id'
+    ..paid_days = (json['paid_days'] as num?)?.toDouble() ?? 0.0
+    ..unpaid_days = (json['unpaid_days'] as num?)?.toDouble() ?? 0.0
+    ..linked_vacation_id = json['linked_vacation_id'] as String? ?? 'default_linked_vacation_id'
+    ..trans_period = (json['trans_period'] as num?)?.toDouble() ?? 0.0
+    ..planned_flg = json['planned_flg'] as String? ?? 'default_planned_flg'
+    ..request_status = json['request_status'] as String? ?? 'default_request_status'
+    ..request_status_code = json['request_status_code'] as String? ?? 'default_request_status_code'
+    ..request_status_displayValue = json['request_status_displayValue'] as String? ?? 'default_request_status_displayValue'
+    ..subsititude_emp = json['subsititude_emp'] as String? ?? 'default_subsititude_emp'
+    ..createdby = json['createdby'] as String? ?? 'default_createdby'
+    ..req_channel_displayValue = json['req_channel_displayValue'] as String? ?? 'default_req_channel_displayValue'
+    ..req_channel_code = json['req_channel_code'] as String? ?? 'default_req_channel_code'
+    ..req_channel = json['req_channel'] as String? ?? 'default_req_channel'
+    ..end_date = json['end_date'] as String? ?? 'default_end_date'
+    ..permission_method = json['permission_method'] as String? ?? 'default_permission_method'
+    ..trans_status_displayValue = json['trans_status_displayValue'] as String? ?? 'default_trans_status_displayValue'
+    ..trans_status_code = json['trans_status_code'] as String? ?? 'default_trans_status_code'
+    ..trans_status = json['trans_status'] as String? ?? 'default_trans_status'
+    ..updatedby = json['updatedby'] as String? ?? 'default_updatedby'
+    ..previous_balance = (json['previous_balance'] as num?)?.toDouble() ?? 0.0
+    ..new_balance = (json['new_balance'] as num?)?.toDouble() ?? 0.0
+    ..actual_period = (json['actual_period'] as num?)?.toDouble() ?? 0.0
+    ..start_date = json['start_date'] as String? ?? 'default_start_date'
+    ..vacation_location_code = json['vacation_location_code'] as String? ?? 'default_vacation_location_code'
+    ..vacation_location_displayValue = json['vacation_location_displayValue'] as String? ?? 'default_vacation_location_displayValue'
+    ..approvalList = (json['approvalList'] as List<dynamic>?)
+        ?.map((e) => ApprovalList.fromJson(e as Map<String, dynamic>))
+        .toList() ?? [];
 }
+
 
 Map<String, dynamic> _$VacationTransactionResponseToJson(
         VacationTransactionResponse instance) =>

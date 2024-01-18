@@ -5,8 +5,8 @@ part 'new_time_sheet_header_base_request.g.dart';
 
 @JsonSerializable(nullable: false)
 class NewTimeSheetHeaderBaseRequest{
-  String tokenID;
-  NewTimeSheetHeaderRequest timesheetHeader;
+  String? tokenID;
+  NewTimeSheetHeaderRequest? timesheetHeader;
 
 
   NewTimeSheetHeaderBaseRequest({this.tokenID, this.timesheetHeader});

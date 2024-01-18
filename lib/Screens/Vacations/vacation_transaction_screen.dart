@@ -1,9 +1,7 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:sven_hr/Screens/Vacations/models/vacation_list_item.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_controller.dart';
 import 'package:sven_hr/Screens/screen_loader.dart';
 import 'package:sven_hr/components/multi_selectionlist_vew.dart';
@@ -15,6 +13,8 @@ import 'package:sven_hr/models/response/vacation_transaction_response.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
+import '../app_settings/server_connection_screen.dart';
+
 class VacationsTransaction extends StatefulWidget {
   static final id = "VacationsTransaction";
   @override
@@ -23,17 +23,26 @@ class VacationsTransaction extends StatefulWidget {
 
 class _VacationsTransactionState extends State<VacationsTransaction>
     with TickerProviderStateMixin {
-  AnimationController animationController;
-  LovValue statusValue;
-  VacationType typeValue;
-  VacationTransactionController _vacationTransactionController;
-  List<LovValue> statusList;
-  List<VacationType> typeList;
-  String fromDate;
-  String toDate;
+  bool hasShownNoDataDialog = false; // Add this flag
+
+  AnimationController? animationController;
+  LovValue? statusValue;
+  VacationType? typeValue;
+  VacationTransactionController? _vacationTransactionController;
+  List<LovValue>? statusList;
+  List<VacationType>? typeList;
+  String? fromDate;
+  String? toDate;
   bool showSpinner = false;
   @override
   void initState() {
+    final DateFormat format = DateFormat("yyyy-MM-dd");
+    DateTime now = DateTime.now();
+    DateTime lastWeek = now.subtract(Duration(days: 7));
+
+    toDate = format.format(now); // Sets fromDate to today's date
+    fromDate = format.format(lastWeek); // Sets toDate to last week's date
+
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     _vacationTransactionController = VacationTransactionController();
@@ -47,7 +56,7 @@ class _VacationsTransactionState extends State<VacationsTransaction>
     // setState(() {
     //   showSpinner=true;
     // });
-    await _vacationTransactionController.getDefualtSearch().then((value) {
+    await _vacationTransactionController!.getDefualtSearch(context).then((value) {
       setState(() {
         showSpinner = false;
       });
@@ -55,10 +64,10 @@ class _VacationsTransactionState extends State<VacationsTransaction>
   }
 
   void reset() {
-    statusList.forEach((element) {
+    statusList!.forEach((element) {
       element.isSelected = false;
     });
-    typeList.forEach((element) {
+    typeList!.forEach((element) {
       element.isSelected = false;
     });
   }
@@ -66,10 +75,10 @@ class _VacationsTransactionState extends State<VacationsTransaction>
   void LoadVacationStatus() async {
     statusList = [];
 
-    await _vacationTransactionController.loadVacationStatus().then((value) {
+    await _vacationTransactionController!.loadVacationStatus().then((value) {
       setState(() {
-        statusList.addAll(value);
-        statusValue = statusList[0];
+        statusList!.addAll(value!);
+        statusValue = statusList![0];
       });
     });
   }
@@ -77,10 +86,10 @@ class _VacationsTransactionState extends State<VacationsTransaction>
   void LoadVacationType() async {
     typeList = [];
 
-    await _vacationTransactionController.loadVacationTypes().then((value) {
+    await _vacationTransactionController!.loadVacationTypes().then((value) {
       setState(() {
-        typeList.addAll(value);
-        typeValue = typeList[0];
+        typeList!.addAll(value!);
+        typeValue = typeList![0];
       });
     });
   }
@@ -93,14 +102,14 @@ class _VacationsTransactionState extends State<VacationsTransaction>
   @override
   Widget build(BuildContext context) {
     return ScreenLoader(
-      screenName: AppTranslations.of(context).text(Const.LOCALE_KEY_VACATION),
+      screenName: AppTranslations.of(context)!.text(Const.LOCALE_KEY_VACATION),
       screenWidget: VacationScreen(),
     );
   }
 
   @override
   dispose() {
-    animationController.dispose(); // you need this
+    animationController!.dispose(); // you need this
     super.dispose();
   }
 
@@ -113,9 +122,9 @@ class _VacationsTransactionState extends State<VacationsTransaction>
         children: [
           Container(
             margin: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                // color: AppTheme.kPrimaryLightColor.withOpacity(.6),
-                borderRadius: BorderRadius.circular(30)),
+
+
+
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 1),
               child: Column(
@@ -123,101 +132,35 @@ class _VacationsTransactionState extends State<VacationsTransaction>
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Text(
-                          AppTranslations.of(context)
-                              .text(Const.LOCALE_KEY_FILTER_BY),
-                          style: TextStyle(color: AppTheme.kPrimaryColor),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _isPressed = true;
-                              showDialog(
-                                  context: context,
-                                  builder: (ctx) {
-                                    return MultiSelectionLOVListView(
-                                      lovs: statusList,
-                                    );
-                                  });
-                            });
-                          },
-                          child: Container(
-                            width: 60,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: _isPressed
-                                  ? AppTheme.kPrimaryColor.withOpacity(0.2)
-                                  : AppTheme.nearlyWhite,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(8.0),
-                              ),
-                              border: Border.all(
-                                  color: AppTheme.grey.withOpacity(0.2)),
-                            ),
-                            child: Center(
-                                child: Text(
-                              AppTranslations.of(context)
-                                  .text(Const.LOCALE_KEY_STATUS),
-                              style: TextStyle(color: AppTheme.kPrimaryColor),
-                              textAlign: TextAlign.center,
-                            )),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _isPressed = true;
-                              showDialog(
-                                  context: context,
-                                  builder: (ctx) {
-                                    return MultiSelectionTypeListView(
-                                      types: typeList,
-                                    );
-                                  });
-                            });
-                          },
-                          child: Container(
-                            width: 60,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: _isPressed
-                                  ? AppTheme.kPrimaryColor.withOpacity(0.2)
-                                  : AppTheme.nearlyWhite,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(8.0),
-                              ),
-                              border: Border.all(
-                                  color: AppTheme.grey.withOpacity(0.2)),
-                            ),
-                            child: Center(
-                                child: Text(
-                              AppTranslations.of(context)
-                                  .text(Const.LOCALE_KEY_TYPE),
-                              style: TextStyle(color: AppTheme.kPrimaryColor),
-                              textAlign: TextAlign.center,
-                            )),
-                          ),
-                        ),
-                      ),
+                      _buildFilterButton(context, 'Status', () {
+                        setState(() {
+                          _isPressed = true;
+                          showDialog(
+                              context: context,
+                              builder: (ctx) {
+                                return MultiSelectionLOVListView(
+                                  lovs: statusList!,
+                                );
+                              });
+                        });
+                      }),
+                      _buildFilterButton(context, 'Type', () {
+                        setState(() {
+                          _isPressed = true;
+                          showDialog(
+                              context: context,
+                              builder: (ctx) {
+                                return MultiSelectionTypeListView(
+                                  types: typeList!,
+                                );
+                              });
+                        });
+                      }),
                       IconButton(
-                        icon: Icon(
-                          Icons.autorenew,
-                          color: AppTheme.kPrimaryColor,
-                        ),
+                        icon: Icon(Icons.refresh, color: Colors.white),
                         tooltip: 'Reset',
-                        hoverColor: AppTheme.kPrimaryColor,
-                        splashColor: AppTheme.kPrimaryColor,
                         onPressed: () {
                           setState(() {
                             reset();
@@ -227,137 +170,77 @@ class _VacationsTransactionState extends State<VacationsTransaction>
                     ],
                   ),
                   Row(
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                          flex: 0,
-                          child: Text(
-                              AppTranslations.of(context)
-                                  .text(Const.LOCALE_KEY_FROM),
-                              style: AppTheme.subtitle)),
-                      Expanded(
-                        child: DateTimeField(
-                          textAlign: TextAlign.center,
-                          style: AppTheme.subtitle,
-                          format: format,
-                          onChanged: (value) {
-                            setState(() {
-                              if (value != null)
-                                fromDate = format.format(value);
-                              else
-                                fromDate = "";
-                            });
-                          },
-                          onShowPicker: (context, currentValue) {
-                            return showDatePicker(
-                                context: context,
-                                firstDate: DateTime(1900),
-                                initialDate: currentValue ?? DateTime.now(),
-                                lastDate: DateTime(2100));
-                          },
+                        child: _buildDateField(
+                          context,
+                          'From',
+                              (value) => setState(() => fromDate = value),
                         ),
                       ),
+                      SizedBox(width: 10),
                       Expanded(
-                          flex: 0,
-                          child: Text(
-                              AppTranslations.of(context)
-                                  .text(Const.LOCALE_KEY_TO),
-                              style: AppTheme.subtitle)),
-                      Expanded(
-                        child: DateTimeField(
-                          textAlign: TextAlign.center,
-                          style: AppTheme.subtitle,
-                          format: format,
-                          onChanged: (value) {
-                            setState(() {
-                              if (value != null)
-                                toDate = format.format(value);
-                              else
-                                toDate = "";
-                            });
-                          },
-                          onShowPicker: (context, currentValue) {
-                            return showDatePicker(
-                                context: context,
-                                firstDate: DateTime(1900),
-                                initialDate: currentValue ?? DateTime.now(),
-                                lastDate: DateTime(2100));
-                          },
+                        child: _buildDateField(
+                          context,
+                          'To',
+                              (value) => setState(() => toDate = value),
                         ),
                       ),
                       IconButton(
-                        icon: Icon(
-                          Icons.search,
-                          color: AppTheme.kPrimaryColor,
-                        ),
-                        tooltip: 'search',
-                        hoverColor: AppTheme.kPrimaryColor,
-                        splashColor: AppTheme.kPrimaryColor,
+                        icon: Icon(Icons.search, color: Colors.white),
+                        tooltip: 'Search',
                         onPressed: () async {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          await _vacationTransactionController
-                              .advancedSearch(
-                                  fromDate, toDate, statusList, typeList)
-                              .then((value) {
-                            setState(() {
-                              print(value);
-                            });
-                          });
-                          setState(() {
-                            showSpinner = false;
-                          });
-                        },
+
+                          if (fromDate == null || toDate == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+    content: Text(
+    "Please select both 'from date' and 'to date' to search.",
+    style: TextStyle(color: ModernTheme.textColor),
+    ),
+    backgroundColor: ModernTheme.accentColor,
+    behavior: SnackBarBehavior.floating,
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(24),
+    ),
+    ),
+    );
+    return;
+                          }
+else{
+    setState(() {
+      hasShownNoDataDialog = false; // Reset the dialog flag on new search
+
+      showSpinner = true;
+    });
+    await _vacationTransactionController
+    !.advancedSearch(
+    fromDate!, toDate!, statusList!, typeList!,context)
+        .then((value) {
+      if (_vacationTransactionController!.vacationList.isEmpty) {
+        if (!hasShownNoDataDialog) {
+          showNoDataDialog(context);
+          hasShownNoDataDialog = true;
+        }
+        }
+    setState(() {
+    print(value);
+    });
+    });
+    setState(() {
+    showSpinner = false;
+    });
+    }}
+
+
+
+
+
                       ),
                     ],
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     IconButton(
-                  //       icon: Icon(
-                  //         Icons.search,
-                  //         color: AppTheme.kPrimaryColor,
-                  //       ),
-                  //       tooltip: 'search',
-                  //       hoverColor: AppTheme.kPrimaryColor,
-                  //       splashColor: AppTheme.kPrimaryColor,
-                  //       onPressed: () async {
-                  //
-                  //         setState(() {
-                  //           showSpinner = true;
-                  //         });
-                  //         await _vacationTransactionController
-                  //           .advancedSearch(
-                  //                   fromDate, toDate, statusList, typeList)
-                  //               .then((value) {
-                  //             setState(() {
-                  //               print(value);
-                  //             });
-                  //           });
-                  //         setState(() {
-                  //           showSpinner = false;
-                  //         });
-                  //       },
-                  //     ),
-                  //     IconButton(
-                  //       icon: Icon(
-                  //         Icons.autorenew,
-                  //         color: AppTheme.kPrimaryColor,
-                  //       ),
-                  //       tooltip: 'Reset',
-                  //       hoverColor: AppTheme.kPrimaryColor,
-                  //       splashColor: AppTheme.kPrimaryColor,
-                  //       onPressed: () {
-                  //         setState(() {
-                  //           reset();
-                  //         });
-                  //       },
-                  //     ),
-                  //   ],
-                  // ),
+
                 ],
               ),
             ),
@@ -365,36 +248,38 @@ class _VacationsTransactionState extends State<VacationsTransaction>
           FutureBuilder<bool>(
             future: getData(),
             builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-              if (!snapshot.hasData) {
+              if (_vacationTransactionController!.vacationList.length==0||!snapshot.hasData) {
+
                 return const SizedBox();
               } else {
+
                 return Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
                     padding: const EdgeInsets.only(
                         top: 0, bottom: 0, right: 16, left: 16),
                     itemCount:
-                        _vacationTransactionController.vacationList.length,
+                        _vacationTransactionController!.vacationList.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (BuildContext context, int index) {
                       final int count = _vacationTransactionController
-                                  .vacationList.length >
+                                  !.vacationList.length >
                               10
                           ? 10
-                          : _vacationTransactionController.vacationList.length;
+                          : _vacationTransactionController!.vacationList.length;
                       final Animation<double> animation =
                           Tween<double>(begin: 0.0, end: 1).animate(
                               CurvedAnimation(
-                                  parent: animationController,
+                                  parent: animationController!,
                                   curve: Interval((0.5 / count) * index, 0.5,
                                       curve: Curves.fastOutSlowIn)));
-                      animationController.forward();
+                      animationController!.forward();
 
                       return VacationView(
                         vacationListItem:
-                            _vacationTransactionController.vacationList[index],
+                            _vacationTransactionController!.vacationList[index],
                         animation: animation,
-                        animationController: animationController,
+                        animationController: animationController!,
                         callback: () {
                           // widget.callBack();
                         },
@@ -409,21 +294,148 @@ class _VacationsTransactionState extends State<VacationsTransaction>
       ),
     );
   }
+  void showNoDataDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          backgroundColor: ModernTheme.backgroundColor, // Use your preferred background color
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(
+                  Icons.info_outline,
+                  color: ModernTheme.accentColor, // Use your preferred accent color
+                  size: 50.0, // Icon size
+                ),
+                SizedBox(height: 20.0),
+                Text(
+                  'No Data Found',
+                  style: TextStyle(
+                    color: ModernTheme.textColor, // Use your preferred text color
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  'No results match your search criteria. Please try again.',
+                  style: TextStyle(
+                    color: ModernTheme.textColor, // Use your preferred text color
+                    fontSize: 16.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20.0),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: ModernTheme.accentColor, // Use your preferred accent color
+                    elevation: 5, // Button elevation
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'OK',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+  Widget _buildDateField(BuildContext context, String label, Function(String) onChanged,) {
+    final DateFormat format = DateFormat("yyyy-MM-dd");
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+            label, style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold)),
+        DateTimeField(
+          style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold
+        ),
+          format: format,
+          initialValue: label == "From" ? DateFormat("yyyy-MM-dd").parse(fromDate!) : DateFormat("yyyy-MM-dd").parse(toDate!),
+
+          onShowPicker: (context, currentValue) async {
+            var date = await showDatePicker(
+              context: context,
+              firstDate: DateTime(1900),
+              initialDate: currentValue ?? DateTime.now(),
+              lastDate: DateTime(2100),
+            );
+            if (date != null) onChanged(format.format(date));
+            return date;
+          },
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: ModernTheme.accentColor),
+            ),
+            filled: true,iconColor: Colors.white,
+            fillColor: ModernTheme.backgroundColor.withOpacity(0.24), // Dark Blue as the fill color
+           ),
+
+
+        ),
+      ],
+    );
+  }
+  Widget _buildFilterButton(BuildContext context, String label, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        decoration: BoxDecoration(
+          color: ModernTheme.backgroundColor, // Complementary lighter blue for the button
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: ModernTheme.gradientEnd), // Use gradientEnd color for the border
+        ),
+
+
+        child: Text(
+          label,
+          style: TextStyle(color:
+          ModernTheme.textColor,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class VacationView extends StatelessWidget {
   const VacationView(
-      {Key key,
+      {Key? key,
       this.vacationListItem,
       this.animationController,
       this.animation,
       this.callback})
       : super(key: key);
 
-  final VoidCallback callback;
-  final VacationTransactionResponse vacationListItem;
-  final AnimationController animationController;
-  final Animation<dynamic> animation;
+  final VoidCallback? callback;
+  final VacationTransactionResponse? vacationListItem;
+  final AnimationController? animationController;
+  final Animation<dynamic>? animation;
 
   Future _asyncConfirmDialog(BuildContext context) async {
     Size size = MediaQuery.of(context).size;
@@ -431,162 +443,209 @@ class VacationView extends StatelessWidget {
         context: context,
         builder: (ctx) {
           return AlertDialog(
-            actions: <Widget>[
-              TextButton(
-                  child: Text(
-                    AppTranslations.of(context)
-                        .text(Const.LOCALE_KEY_EMPLOYMENT_CLOSE),
-                    style: TextStyle(color: AppTheme.kPrimaryColor),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  })
-            ],
-            content: Container(
-              color: AppTheme.white,
-              height: size.height / 2,
-              width: size.width / 2,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          AppTranslations.of(context)
-                              .text(Const.LOCALE_KEY_VACATION_DETAILS),
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 22,
-                            letterSpacing: 0.27,
-                            color: AppTheme.kPrimaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: ListTile(
-                            title: Text(AppTranslations.of(context)
-                                .text(Const.LOCALE_KEY_TRANSACTION_STATUS)),
-                            subtitle: Text(vacationListItem.trans_status != null
-                                ? vacationListItem.trans_status_displayValue
-                                    .toString()
-                                : "-"),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: ListTile(
-                            title: Text(AppTranslations.of(context)
-                                .text(Const.LOCALE_KEY_REQUEST_DATE)),
-                            subtitle: Text(vacationListItem.request_date != null
-                                ? vacationListItem.request_date
-                                : "-"),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: ListTile(
-                            title: Text(AppTranslations.of(context)
-                                .text(Const.LOCALE_KEY_TYPE)),
-                            subtitle: Text(
-                                vacationListItem.vacation_location != null
-                                    ? vacationListItem
-                                        .vacation_location_displayValue
-                                    : "-"),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: ListTile(
-                            title: Text(AppTranslations.of(context)
-                                .text(Const.LOCALE_KEY_NOTES)),
-                            subtitle: Text(vacationListItem.remark != null
-                                ? vacationListItem.remark.toString()
-                                : "-"),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Text(AppTranslations.of(context)
-                                  .text(Const.LOCALE_KEY_APPROVAL_INBOX) +
-                              ": "),
-                        ),
-                      ],
-                    ),
-                    if (vacationListItem.approvalList != null)
-                      Row(
-                        children: [
-                          Expanded(
-                              child: SizedBox(
-                            height: 100,
-                            child: ListView.builder(
-                              itemBuilder: (ctx, index) {
-                                return Text(
-                                  vacationListItem.approvalList[index]
-                                              .employeeName !=
-                                          null
-                                      ? vacationListItem
-                                          .approvalList[index].employeeName
-                                      : "-",
-                                  style: TextStyle(
-                                    color: AppTheme.kPrimaryColor,
-                                  ),
-                                );
-                              },
-                              itemCount: vacationListItem.approvalList.length,
-                            ),
-                          ))
-                        ],
-                      )
-                  ],
-                ),
-              ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
             ),
-          );
-        });
-  }
+            backgroundColor: ModernTheme.accentColor,
+            actions: <Widget>[
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: ModernTheme.gradientStart,
+                  onPrimary: ModernTheme.gradientEnd,
+                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  shadowColor: ModernTheme.accentColor.withOpacity(0.5),
+                  elevation: 10,
+                ),
+                child: Ink(
+                  decoration: BoxDecoration(
 
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Container(
+                    constraints: BoxConstraints(minHeight: 50.0),
+                    alignment: Alignment.center,
+                    child: Text(
+                      AppTranslations.of(context)!.text(Const.LOCALE_KEY_EMPLOYMENT_CLOSE),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: ModernTheme.accentColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
+              content: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  gradient: ModernTheme.backgroundGradient,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                height: size.height / 2,
+                width: size.width / 2,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Center(
+                        child: Text(
+                          AppTranslations.of(context)!.text(Const.LOCALE_KEY_VACATION_DETAILS),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22,
+                            color: Colors.blueGrey,
+                          ),
+                        ),
+                      ),
+                      _buildDetailTile(
+                          context,
+                          Const.LOCALE_KEY_TRANSACTION_STATUS,
+                          vacationListItem!.trans_status != null
+                              ? vacationListItem!.trans_status_displayValue.toString()
+                              : "-"
+                      ),
+                      _buildDetailTile(
+                          context,
+                          Const.LOCALE_KEY_REQUEST_DATE,
+                          vacationListItem!.request_date ?? "-"
+                      ),
+                      _buildDetailTile(
+                          context,
+                          Const.LOCALE_KEY_TYPE,
+                          vacationListItem!.vacation_location != null
+                              ? vacationListItem!.vacation_location_displayValue
+                              : "-"
+                      ),
+                      _buildDetailTile(
+                          context,
+                          Const.LOCALE_KEY_NOTES,
+                          vacationListItem!.remark ?? "-"
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
+                          AppTranslations.of(context)!.text(Const.LOCALE_KEY_APPROVAL_INBOX) + ":",
+                          style: TextStyle(
+                            color: ModernTheme.textColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                     ],
+                  ),
+                ),
+              )
+
+
+
+
+          );
+        }
+    );
+  }
+  Widget _buildDetailTile(BuildContext context, String localeKey, String detail) {
+    return ListTile(
+      title: Text(
+        AppTranslations.of(context)!.text(localeKey),
+        style: TextStyle(color: ModernTheme.textColor, fontWeight: FontWeight.bold),
+      ),
+      subtitle: Text(
+        detail,
+        style: TextStyle(color: ModernTheme.textColor),
+      ),
+    );
+  }
+  Widget _buildRow(IconData icon, String label, String value) {
+    return Row(
+      children: <Widget>[
+        Icon(icon, color:  vacationListItem?.getRightColor(), size: 20),
+        SizedBox(width: 5),
+        Text(label, style: TextStyle(color:  vacationListItem?.getRightColor(), fontSize: 13, letterSpacing: .3)),
+        Text(value, style: TextStyle(color:  vacationListItem?.getRightColor(), fontSize: 13, letterSpacing: .3)),
+      ],
+    );
+  }
+  Widget _buildVacationInfo(BuildContext context, VacationTransactionResponse? vacationListItem) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          vacationListItem!.vacation_Name,
+          style: TextStyle(color: vacationListItem.getRightColor(), fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        SizedBox(height: 6),
+        _buildRow(Icons.adjust, AppTranslations.of(context)!.text(Const.LOCALE_KEY_STATUS),
+            vacationListItem.request_status_displayValue),
+        _buildRow(Icons.calendar_today, AppTranslations.of(context)!.text(Const.LOCALE_KEY_FROM),
+            vacationListItem.start_date),
+        _buildRow(Icons.calendar_today, AppTranslations.of(context)!.text(Const.LOCALE_KEY_TO),
+            vacationListItem.end_date),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              IconButton(
+                icon: Icon(Icons.more_horiz, color: ModernTheme.accentColor, size: 25),
+                tooltip: 'Details',
+                onPressed: () => _asyncConfirmDialog(context),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+  Widget _buildIcon(VacationTransactionResponse? vacationListItem) {
+    return Container(
+      width: 50,
+      height: 50,
+      margin: MyApp.isEN ? EdgeInsets.only(right: 15) : EdgeInsets.only(left: 15),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          width: 3,
+          color: vacationListItem!.getRightColor()!,
+        ),
+      ),
+      child: Center(
+        child: vacationListItem.getRightIcon(),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
+      animation: animationController!,
+      builder: (BuildContext? context, Widget? child) {
         return FadeTransition(
-          opacity: animation,
+          opacity: animation as Animation<double>,
           child: Transform(
-            transform: Matrix4.translationValues(
-                100 * (1.0 - animation.value), 0.0, 0.0),
+            transform: Matrix4.translationValues(100 * (1.0 - animation!.value), 0.0, 0.0),
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
-                callback();
+                callback!();
               },
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  color: AppTheme.kPrimaryLightColor.withOpacity(0.4),
+                  gradient: LinearGradient(
+                    colors: [
+                      ModernTheme.gradientStart,
+                      ModernTheme.textColor
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+
                 ),
                 width: double.infinity,
                 height: 130,
@@ -595,146 +654,8 @@ class VacationView extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      width: 50,
-                      height: 50,
-                      margin: MyApp.isEN
-                          ? EdgeInsets.only(right: 15)
-                          : EdgeInsets.only(left: 15),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(
-                          width: 3,
-                          color: vacationListItem.getRightColor(),
-                        ),
-                      ),
-                      child: vacationListItem.getRightIcon(),
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            vacationListItem.vacation_Name,
-                            style: TextStyle(
-                                color: vacationListItem.getRightColor(),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
-                          ),
-                          SizedBox(
-                            height: 6,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.adjust,
-                                color: vacationListItem.getRightColor(),
-                                size: 20,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                  AppTranslations.of(context)
-                                      .text(Const.LOCALE_KEY_STATUS),
-                                  style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                              Text(
-                                  vacationListItem.request_status != null
-                                      ? vacationListItem
-                                          .request_status_displayValue
-                                      : '',
-                                  style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.calendar_today,
-                                color: vacationListItem.getRightColor(),
-                                size: 20,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                  AppTranslations.of(context)
-                                          .text(Const.LOCALE_KEY_FROM) +
-                                      " :",
-                                  style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                              Text(
-                                  vacationListItem.start_date != null
-                                      ? vacationListItem.start_date
-                                      : '',
-                                  style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.calendar_today,
-                                color: vacationListItem.getRightColor(),
-                                size: 20,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                  AppTranslations.of(context)
-                                      .text(Const.LOCALE_KEY_TO),
-                                  style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                              Text(
-                                  vacationListItem.end_date != null
-                                      ? vacationListItem.end_date
-                                      : '',
-                                  style: TextStyle(
-                                      color: vacationListItem.getRightColor(),
-                                      fontSize: 13,
-                                      letterSpacing: .3)),
-                            ],
-                          ),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                    icon: Icon(
-                                      Icons.more_horiz,
-                                      color: vacationListItem.getRightColor(),
-                                      size: 25,
-                                    ),
-                                    tooltip: 'details',
-                                    hoverColor:
-                                        vacationListItem.getRightColor(),
-                                    splashColor:
-                                        vacationListItem.getRightColor(),
-                                    onPressed: () {
-                                      _asyncConfirmDialog(context);
-                                    }),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                        ],
-                      ),
-                    )
+                    _buildIcon(vacationListItem),
+                    Expanded(child: _buildVacationInfo(context!, vacationListItem)),
                   ],
                 ),
               ),

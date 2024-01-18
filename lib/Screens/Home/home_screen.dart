@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_vertical_marquee/flutter_vertical_marquee.dart';
+import 'package:marquee_vertical/marquee_vertical.dart';
 import 'package:sven_hr/Screens/Home/actions_list_view.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_transaction_controller.dart';
 import 'package:sven_hr/Screens/circular_charts/circular_default_pie.dart';
@@ -13,11 +13,12 @@ import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 import 'package:sven_hr/utilities/hex_color.dart';
 
+import '../app_settings/server_connection_screen.dart';
 import '../screen_loader.dart';
 import '../Vacations/vacation_request_screen.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
   static final String id = "MyHomePage";
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -25,7 +26,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 //  List<HomeList> homeList = HomeList.homeList;
-  AnimationController animationController;
+  AnimationController? animationController;
   bool multiple = true;
 
   @override
@@ -43,37 +44,37 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    animationController.dispose();
+    animationController!.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return ScreenLoader(
-      screenName: AppTranslations.of(context).text(Const.LOCALE_KEY_HOME),
+      screenName: AppTranslations.of(context)!.text(Const.LOCALE_KEY_HOME),
       screenWidget: homeScreen(),
     );
   }
 
   Widget homeScreen() {
     return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [ModernTheme.gradientStart, ModernTheme.gradientEnd],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
       height: MediaQuery.of(context).size.height,
       child: Column(
         children: <Widget>[
           // getSearchBarUI(),
-          _buildMarquee(),
           getVacationPieChart(),
-          getPopularCourseUI()
-          // CategoryListView(
-          //   callBack: () {
-          //     moveTo();
-          //   },
-          // ),
+          getPopularCourseUI(),
         ],
       ),
     );
   }
-
   Widget getSearchBarUI() {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
@@ -109,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           ),
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
-                            labelText: AppTranslations.of(context)
+                            labelText: AppTranslations.of(context)!
                                 .text(Const.LOCALE_KEY_SEARCH),
                             border: InputBorder.none,
                             helperStyle: TextStyle(
@@ -148,13 +149,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     VacationTransactionController _vacationTransactionController =
         VacationTransactionController();
 
-    employeeVactionsList = List();
+    employeeVactionsList =  <EmployeeVacationResponse>[];
 
     await _vacationTransactionController
         .loadEmployeeVacationsBalance()
         .then((value) {
       setState(() {
-        if (value != null && value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
+        if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
           employeeVactionsList =
               _vacationTransactionController.employeeVactions;
 
@@ -178,11 +179,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
-            color: AppTheme.kPrimaryLightColor.withOpacity(0.05),
+            color: ModernTheme.accentColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(29),
           ),
           child: CircularDefaultPie(
-            title: AppTranslations.of(context).text(Const.LOCALE_KEY_VACATION),
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_VACATION2),
             pieData: chartData,
           ),
         ),
@@ -190,17 +191,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     );
   }
 
-  List<TextSpan> _tipMarqueeList = List();
-  MessageBroadcasteController broadcasteController;
+  List<TextSpan> _tipMarqueeList = [];
+  MessageBroadcasteController? broadcasteController;
   _initMarquee() {
     _tipMarqueeList.clear();
     broadcasteController = MessageBroadcasteController();
     TextSpan txt;
-    broadcasteController.getMessageBroadcasteList().then((value) => {
-          if (value != null && value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0)
+    broadcasteController!.getMessageBroadcasteList().then((value) => {
+          if (value!.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0)
             {
               for (MessageBroadcasteResponse msg
-                  in broadcasteController.messageList)
+                  in broadcasteController!.messageList)
                 {
                   txt = TextSpan(
                     text: msg.message_title,
@@ -227,38 +228,37 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     // _tipMarqueeList.addAll({TextSpan(text: "testttt"), TextSpan(text: "yyyyyyyyy")});
   }
 
-  Widget _buildMarquee() {
-    _initMarquee();
-    var controller = MarqueeController();
-    return Container(
-      child: GestureDetector(
-        child: Container(
-          height: 40.0,
-          color: AppTheme.kPrimaryLightColor.withOpacity(0.4),
-          child: Marquee(
-            // textList: _tipMarqueeList, // List<Text>, textList and textSpanList can only have one of code.
-            textSpanList:
-                _tipMarqueeList, // List<TextSpan> text, textList and textSpanList can only have one of code.
-            fontSize: 14.0, // text size
-            scrollDuration: Duration(seconds: 1), // every scroll duration
-            stopDuration: Duration(seconds: 3), //every stop duration
-            tapToNext: false, // tap to next
-            textColor: Colors.black, // text color
-            controller: controller, // the controller can get the position
-          ),
-        ),
-        onTap: () {
-          print(controller.position);
-          if (broadcasteController.messageList != null &&
-              broadcasteController.messageList.isNotEmpty)
-            _asyncConfirmDialog(
-                context,
-                broadcasteController
-                    .messageList[controller.position]); // get the position
-        },
-      ),
-    );
-  }
+  // Widget _buildMarquee() {
+  //   _initMarquee();
+  //   var controller = MarqueeController();
+  //   return Container(
+  //     child: GestureDetector(
+  //       child: Container(
+  //         height: 40.0,
+  //         color: AppTheme.kPrimaryLightColor.withOpacity(0.4),
+  //         child: Marquee(
+  //           // textList: _tipMarqueeList, // List<Text>, textList and textSpanList can only have one of code.
+  //           textSpanList:
+  //               _tipMarqueeList, // List<TextSpan> text, textList and textSpanList can only have one of code.
+  //           fontSize: 14.0, // text size
+  //           scrollDuration: Duration(seconds: 1), // every scroll duration
+  //           stopDuration: Duration(seconds: 3), //every stop duration
+  //           tapToNext: false, // tap to next
+  //           textColor: Colors.black, // text color
+  //           controller: controller, // the controller can get the position
+  //         ),
+  //       ),
+  //       onTap: () {
+  //         print(controller.position);
+  //         if (broadcasteController!.messageList.isNotEmpty)
+  //           _asyncConfirmDialog(
+  //               context,
+  //               broadcasteController!
+  //                   .messageList[controller.position]); // get the position
+  //       },
+  //     ),
+  //   );
+  // }
 
   Future _asyncConfirmDialog(
       BuildContext context, MessageBroadcasteResponse messageListItem) async {
@@ -347,23 +347,23 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
 class HomeListView extends StatelessWidget {
   const HomeListView(
-      {Key key, this.callBack, this.animationController, this.animation})
+      {Key? key, this.callBack, this.animationController, this.animation})
       : super(key: key);
 
-  final VoidCallback callBack;
-  final AnimationController animationController;
-  final Animation<dynamic> animation;
+  final VoidCallback? callBack;
+  final AnimationController? animationController;
+  final Animation<dynamic>? animation;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
+      animation: animationController!,
+      builder: (BuildContext? context, Widget? child) {
         return FadeTransition(
-          opacity: animation,
+          opacity: animation as Animation<double>,
           child: Transform(
             transform: Matrix4.translationValues(
-                0.0, 50 * (1.0 - animation.value), 0.0),
+                0.0, 50 * (1.0 - animation!.value), 0.0),
             child: AspectRatio(
               aspectRatio: 1.5,
               child: ClipRRect(
@@ -378,7 +378,7 @@ class HomeListView extends StatelessWidget {
                         borderRadius:
                             const BorderRadius.all(Radius.circular(4.0)),
                         onTap: () {
-                          callBack();
+                          callBack!();
                         },
                       ),
                     ),

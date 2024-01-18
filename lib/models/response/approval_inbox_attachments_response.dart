@@ -14,18 +14,18 @@ class ApprovalInboxAttachmentsResponse {
       _$ApprovalInboxAttachmentsResponseToJson(this);
 
   @JsonKey(name: 'attachment_rowId')
-  String _attachment_rowId;
+  String? _attachment_rowId;
 
   @JsonKey(name: 'attachment_name')
-  String _attachment_name;
+  String? _attachment_name;
 
-  String get attachment_rowId => _attachment_rowId;
+  String get attachment_rowId => _attachment_rowId!;
 
   set attachment_rowId(String value) {
     _attachment_rowId = value;
   }
 
-  String get attachment_name => _attachment_name;
+  String get attachment_name => _attachment_name!;
 
   set attachment_name(String value) {
     _attachment_name = value;

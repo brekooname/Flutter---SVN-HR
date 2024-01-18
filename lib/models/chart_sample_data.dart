@@ -22,41 +22,41 @@ class ChartSampleData {
   final dynamic x;
 
   /// Holds y value of the datapoint
-  final num y;
+  final num? y;
 
   /// Holds x value of the datapoint
-  final dynamic xValue;
+  final dynamic? xValue;
 
   /// Holds y value of the datapoint
-  final num yValue;
+  final num? yValue;
 
   /// Holds y value of the datapoint(for 2nd series)
-  final num secondSeriesYValue;
+  final num? secondSeriesYValue;
 
   /// Holds y value of the datapoint(for 3nd series)
-  final num thirdSeriesYValue;
+  final num? thirdSeriesYValue;
 
   /// Holds point color of the datapoint
-  final Color pointColor;
+  final Color? pointColor;
 
   /// Holds size of the datapoint
-  final num size;
+  final num? size;
 
   /// Holds datalabel/text value mapper of the datapoint
-  final String text;
+  final String? text;
 
   /// Holds open value of the datapoint
-  final num open;
+  final num? open;
 
   /// Holds close value of the datapoint
-  final num close;
+  final num? close;
 
   /// Holds low value of the datapoint
-  final num low;
+  final num? low;
 
   /// Holds high value of the datapoint
-  final num high;
+  final num? high;
 
   /// Holds open value of the datapoint
-  final num volume;
+  final num? volume;
 }

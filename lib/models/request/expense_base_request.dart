@@ -6,8 +6,8 @@ part 'expense_base_request.g.dart';
 @JsonSerializable(nullable: false)
 class ExpenseBaseRequest{
 
-  String tokenID;
-  ExpenseRequest expenseTrans;
+  String? tokenID;
+  ExpenseRequest? expenseTrans;
 
   ExpenseBaseRequest({this.tokenID, this.expenseTrans});
 

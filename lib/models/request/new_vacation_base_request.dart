@@ -5,8 +5,8 @@ part 'new_vacation_base_request.g.dart';
 
 @JsonSerializable(nullable: false)
 class NewVacationBaseRequest{
-  String tokenID;
-  NewVacationRequest vac;
+  String? tokenID;
+  NewVacationRequest? vac;
 
   NewVacationBaseRequest({this.tokenID, this.vac});
 

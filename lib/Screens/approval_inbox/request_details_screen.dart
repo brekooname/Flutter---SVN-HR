@@ -1,10 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:sven_hr/Screens/Vacations/vacation_transaction_screen.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:sven_hr/Screens/approval_inbox/approval_inbox_controller.dart';
-import 'package:sven_hr/Screens/custom_drawer/menue_top_bar.dart';
-import 'package:sven_hr/Screens/custom_drawer/notification_controller.dart';
 import 'package:sven_hr/components/flutter_toast_message.dart';
 import 'package:sven_hr/components/multi_selectionlist_vew.dart';
 import 'package:sven_hr/components/text_field_container.dart';
@@ -12,17 +8,18 @@ import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/models/response/approval_inbox_attachments_response.dart';
 import 'package:sven_hr/models/response/approval_inbox_list_response.dart';
 import 'package:sven_hr/models/response/approval_object_response.dart';
-import 'package:sven_hr/models/response/notification_list_response.dart';
 import 'package:sven_hr/utilities/app_controller.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
+import '../app_settings/server_connection_screen.dart';
+
 class RequestDetailsScreen extends StatefulWidget {
   static String id = "RequestDetails";
-  final ApprovalInboxListResponse approvalInboxItenm;
+  final ApprovalInboxListResponse? approvalInboxItenm;
 
   RequestDetailsScreen({this.approvalInboxItenm}) {
-    print(approvalInboxItenm);
+    // print(approvalInboxItenm);
   }
 
   @override
@@ -30,14 +27,14 @@ class RequestDetailsScreen extends StatefulWidget {
 }
 
 class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
-  ApprovalObjectResponse _requestDetails;
-  ApprovalInboxController _approvalInboxController;
-  List<ApprovalInboxAttachmentsResponse> attachmentsList;
+  ApprovalObjectResponse? _requestDetails;
+  ApprovalInboxController? _approvalInboxController;
+  List<ApprovalInboxAttachmentsResponse>? attachmentsList;
 
   bool showSpinner = false;
   bool buttonClosedIsPressed = false;
   bool buttonSendIsPressed = false;
-  num approvedAmount;
+  num? approvedAmount;
   @override
   void initState() {
     _requestDetails = ApprovalObjectResponse();
@@ -48,21 +45,21 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
   }
 
   void getApprovalInboxObject() async {
-    await _approvalInboxController
-        .getApprovalInboxObject(this.widget.approvalInboxItenm.row_id)
+    await _approvalInboxController!
+        .getApprovalInboxObject(this.widget.approvalInboxItenm!.row_id)
         .then((value) {
       setState(() {
         print(value);
-        _requestDetails = _approvalInboxController.requestDetails;
+        _requestDetails = _approvalInboxController!.requestDetails;
       });
     });
   }
 
   void getApprovalInboxAttachments() async {
-    await _approvalInboxController
-        .getApprovalInboxAttachments(this.widget.approvalInboxItenm.row_id)
+    await _approvalInboxController!
+        .getApprovalInboxAttachments(this.widget.approvalInboxItenm!.row_id)
         .then((value) {
-      attachmentsList = _approvalInboxController.attachmentsList;
+      attachmentsList = _approvalInboxController!.attachmentsList;
       setState(() {
         print(value);
       });
@@ -73,37 +70,34 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
     buttonSendIsPressed = true;
 
     if (action.compareTo(Const.APPROVAL_INBOX_ACCTION_ACCEPT) == 0 &&
-        _requestDetails.approvalInboxType != null &&
-        _requestDetails.approvalInboxType
+        _requestDetails!.approvalInboxType
                 .compareTo(Const.APPROVAL_INBOX_EXPENSE_TYPE) ==
             0 &&
-        _requestDetails.expenseApprovedAmount == null) {
-      ToastMessage.showWarningMsg(AppTranslations.of(context).text(
+        _requestDetails!.expenseApprovedAmount == null) {
+      ToastMessage.showWarningMsg(AppTranslations.of(context)!.text(
           Const.LOCALE_KEY_EXPENSE_APPROVED_AMOUNT +
               " " +
               Const.LOCALE_KEY_REQUIRED));
       return;
     }
     showSpinner = true;
-    await _approvalInboxController
+    await _approvalInboxController!
         .approvalInboxAction(
         requestInput: _requestDetails,
         action: action,)
         .then((value) {
-      if (value == null) {
-        ToastMessage.showErrorMsg(Const.REQUEST_FAILED);
-      } else if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
-        if (action.compareTo(Const.APPROVAL_INBOX_ACCTION_ACCEPT) == 0) {
-          ToastMessage.showSuccessMsg(
-              AppTranslations.of(context).text(Const.LOCALE_KEY_APRROVED_MSG));
-        } else {
-          ToastMessage.showSuccessMsg(
-              AppTranslations.of(context).text(Const.LOCALE_KEY_REJECTED_MSG));
-        }
-        Navigator.pop(context, value);
+      if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
+      if (action.compareTo(Const.APPROVAL_INBOX_ACCTION_ACCEPT) == 0) {
+        ToastMessage.showSuccessMsg(
+            AppTranslations.of(context)!.text(Const.LOCALE_KEY_APRROVED_MSG));
       } else {
-        ToastMessage.showErrorMsg(value);
+        ToastMessage.showSuccessMsg(
+            AppTranslations.of(context)!.text(Const.LOCALE_KEY_REJECTED_MSG));
       }
+      Navigator.pop(context, value);
+    } else {
+      ToastMessage.showErrorMsg(value);
+    }
       buttonSendIsPressed = false;
       showSpinner = false;
       setState(() {});
@@ -114,1466 +108,346 @@ class _RequestDetailsScreenState extends State<RequestDetailsScreen> {
   Widget build(BuildContext context) {
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
-      child: Container(
-        child: Scaffold(
-            body: SingleChildScrollView(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: Center(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              Icons.arrow_back,
-                              color: AppTheme.kPrimaryColor,
-                            ),
-                            tooltip: 'back',
-                            hoverColor: AppTheme.kPrimaryColor,
-                            splashColor: AppTheme.kPrimaryColor,
-                            onPressed: () async {
-                              Navigator.pop(context);
-                            },
-                          ),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                          Text(
-                            AppTranslations.of(context)
-                                .text(Const.LOCALE_KEY_REQUEST_DETAILS),
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 22,
-                              letterSpacing: 0.27,
-                              color: AppTheme.kPrimaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Card(
-                        color: AppTheme.kPrimaryLightColor,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color:
-                                  AppTheme.kPrimaryLightColor.withOpacity(0.2),
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(30),
-                                  bottomRight: Radius.circular(30),
-                                  topLeft: Radius.circular(30),
-                                  topRight: Radius.circular(30))),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                this.widget.approvalInboxItenm.title_name !=
-                                        null
-                                    ? this.widget.approvalInboxItenm.title_name
-                                    : "-",
-                                style: TextStyle(
-                                    color: AppTheme.kPrimaryColor,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 20),
-                                textAlign: TextAlign.center,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: ListTile(
-                                      title: Text(AppTranslations.of(context)
-                                          .text(
-                                              Const.LOCALE_KEY_EMPLOYEE_NAME)),
-                                      subtitle: Text(
-                                          _requestDetails.employeeName != null
-                                              ? _requestDetails.employeeName
-                                              : "-"),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: ListTile(
-                                      title: Text(AppTranslations.of(context)
-                                          .text(Const.LOCALE_KEY_REQUEST_DATE)),
-                                      subtitle: Text(this
-                                                  .widget
-                                                  .approvalInboxItenm
-                                                  .approval_request_date !=
-                                              null
-                                          ? this
-                                              .widget
-                                              .approvalInboxItenm
-                                              .approval_request_date
-                                          : "-"),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    ////-----------------------
-                    if (_requestDetails.approvalInboxType != null &&
-                        _requestDetails.approvalInboxType.compareTo(
-                                Const.APPROVAL_INBOX_VACATION_TYPE) ==
-                            0)
-                      Expanded(
-                        flex: 7,
-                        child: Card(
-                          color: AppTheme.kPrimaryLightColor,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: AppTheme.kPrimaryLightColor
-                                    .withOpacity(0.2),
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(30),
-                                    bottomRight: Radius.circular(30),
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30))),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const.LOCALE_KEY_FROM)),
-                                        subtitle: Text(
-                                            _requestDetails.startDate != null
-                                                ? _requestDetails.startDate
-                                                : "Date .."),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const.LOCALE_KEY_TO)),
-                                        subtitle: Text(
-                                            _requestDetails.endDate != null
-                                                ? _requestDetails.endDate
-                                                : "Date .."),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const.LOCALE_KEY_VACATION)),
-                                        subtitle: Text(
-                                            _requestDetails.vacationName != null
-                                                ? _requestDetails.vacationName
-                                                : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const.LOCALE_KEY_LOCATION)),
-                                        subtitle: Text(_requestDetails
-                                                    .vacationLocation !=
-                                                null
-                                            ? _requestDetails.vacationLocation
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(
-                                                Const.LOCALE_KEY_UNPAID_DAYS)),
-                                        subtitle: Text(_requestDetails
-                                                    .vacationUnPaidDays !=
-                                                null
-                                            ? _requestDetails.vacationUnPaidDays
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const.LOCALE_KEY_PAID_DAYS)),
-                                        subtitle: Text(_requestDetails
-                                                    .vacationPaidDays !=
-                                                null
-                                            ? _requestDetails.vacationPaidDays
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(
-                                                Const.LOCALE_KEY_NEW_BALANCE)),
-                                        subtitle: Text(_requestDetails
-                                                    .vacationNewBalance !=
-                                                null
-                                            ? _requestDetails.vacationNewBalance
-                                            : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_PREVIOUS_BALANCE)),
-                                        subtitle: Text(_requestDetails
-                                                    .vacationPreviousBalance !=
-                                                null
-                                            ? _requestDetails
-                                                .vacationPreviousBalance
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
-                                        leading:  IconButton(
-                                          hoverColor: AppTheme.kPrimaryColor,
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (ctx) {
-                                                  return ApprovalInboxAttachmentsListView(
-                                                    attachmentsList: attachmentsList,
-                                                  );
-                                                });
-                                          },
-                                          icon: Icon(
-                                            Icons.remove_red_eye_outlined,
-                                            color: AppTheme.kPrimaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.grey.withOpacity(0.22),
+          title: Text(
+            AppTranslations.of(context)!.text(Const.LOCALE_KEY_REQUEST_DETAILS),
+            style: TextStyle(color: ModernTheme.textColor),
+          ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: ModernTheme.textColor),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ),
+        backgroundColor: ModernTheme.gradientStart.withOpacity(0.85), // Light grey background
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 44, horizontal: 10),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
 
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                    if (_requestDetails.approvalInboxType != null &&
-                        _requestDetails.approvalInboxType
-                                .compareTo(Const.APPROVAL_INBOX_LEAVE_TYPE) ==
-                            0)
-                      Expanded(
-                        flex: 7,
-                        child: Card(
-                          color: AppTheme.kPrimaryLightColor,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: AppTheme.kPrimaryLightColor
-                                    .withOpacity(0.2),
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(30),
-                                    bottomRight: Radius.circular(30),
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30))),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const.LOCALE_KEY_FROM)),
-                                        subtitle: Text(
-                                            _requestDetails.startDate != null
-                                                ? _requestDetails.startDate
-                                                : "Date .."),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const.LOCALE_KEY_TO)),
-                                        subtitle: Text(
-                                            _requestDetails.endDate != null
-                                                ? _requestDetails.endDate
-                                                : "Date .."),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const.LOCALE_KEY_LEAVES)),
-                                        subtitle: Text(
-                                            _requestDetails.leaveId != null
-                                                ? _requestDetails.leaveId
-                                                : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const.LOCALE_KEY_STATUS)),
-                                        subtitle: Text(_requestDetails
-                                                    .leaveRequestStatus !=
-                                                null
-                                            ? _requestDetails.leaveRequestStatus
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_LEAVE_START_TIME)),
-                                        subtitle: Text(
-                                            _requestDetails.leaveStartTime !=
-                                                    null
-                                                ? ApplicationController
-                                                        .formatToHours(
-                                                            _requestDetails
-                                                                .leaveStartTime)
-                                                    .toString()
-                                                : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_LEAVE_END_TIME)),
-                                        subtitle: Text(
-                                            _requestDetails.leaveEndTime != null
-                                                ? ApplicationController
-                                                        .formatToHours(
-                                                            _requestDetails
-                                                                .leaveEndTime)
-                                                    .toString()
-                                                : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
-                                        leading:  IconButton(
-                                          hoverColor: AppTheme.kPrimaryColor,
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (ctx) {
-                                                  return ApprovalInboxAttachmentsListView(
-                                                    attachmentsList: attachmentsList,
-                                                  );
-                                                });
-                                          },
-                                          icon: Icon(
-                                            Icons.remove_red_eye_outlined,
-                                            color: AppTheme.kPrimaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                    if (_requestDetails.approvalInboxType != null &&
-                        _requestDetails.approvalInboxType
-                                .compareTo(Const.APPROVAL_INBOX_LOAN_TYPE) ==
-                            0)
-                      Expanded(
-                        flex: 7,
-                        child: Card(
-                          color: AppTheme.kPrimaryLightColor,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: AppTheme.kPrimaryLightColor
-                                    .withOpacity(0.2),
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(30),
-                                    bottomRight: Radius.circular(30),
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30))),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(
-                                                Const.LOCALE_KEY_LOAN_AMOUNT)),
-                                        subtitle: Text(
-                                            _requestDetails.loanAmount != null
-                                                ? _requestDetails.loanAmount
-                                                    .toString()
-                                                : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_LOAN_CURRENCY)),
-                                        subtitle: Text(
-                                            _requestDetails.loanCurrancy != null
-                                                ? _requestDetails.loanCurrancy
-                                                : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_LOAN_PAYMENT_METHOD)),
-                                        subtitle: Text(_requestDetails
-                                                    .loanPaymentMethod !=
-                                                null
-                                            ? _requestDetails.loanPaymentMethod
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_LOAN_PAYMENT_DUEDATE)),
-                                        subtitle: Text(_requestDetails
-                                                    .loanPaymentDueDate !=
-                                                null
-                                            ? _requestDetails.loanPaymentDueDate
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const.LOCALE_KEY_LOAN_TYPES)),
-                                        subtitle: Text(
-                                            _requestDetails.loanTypes != null
-                                                ? _requestDetails.loanTypes
-                                                    .toString()
-                                                : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_LOAN_APPROVED_AMOUNT)),
-                                        subtitle: Text(_requestDetails
-                                                    .loanApprovedAmount !=
-                                                null
-                                            ? _requestDetails.loanApprovedAmount
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
-                                        leading:  IconButton(
-                                          hoverColor: AppTheme.kPrimaryColor,
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (ctx) {
-                                                  return ApprovalInboxAttachmentsListView(
-                                                    attachmentsList: attachmentsList,
-                                                  );
-                                                });
-                                          },
-                                          icon: Icon(
-                                            Icons.remove_red_eye_outlined,
-                                            color: AppTheme.kPrimaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                    if (_requestDetails.approvalInboxType != null &&
-                        _requestDetails.approvalInboxType.compareTo(
-                                Const.APPROVAL_INBOX_EXTRA_WORK_TYPE) ==
-                            0)
-                      Expanded(
-                        flex: 7,
-                        child: Card(
-                          color: AppTheme.kPrimaryLightColor,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: AppTheme.kPrimaryLightColor
-                                    .withOpacity(0.2),
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(30),
-                                    bottomRight: Radius.circular(30),
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30))),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_EXTRA_WORK_UNIT)),
-                                        subtitle: Text(
-                                            _requestDetails.extraWorkUnit !=
-                                                    null
-                                                ? _requestDetails.extraWorkUnit
-                                                : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_EXTRA_WORK_UNIT_QUANTITY)),
-                                        subtitle: Text(_requestDetails
-                                                    .extraWorkUnitQuantity !=
-                                                null
-                                            ? _requestDetails
-                                                .extraWorkUnitQuantity
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_EXTRA_WORK_DAY_TYPE)),
-                                        subtitle: Text(_requestDetails
-                                                    .extraWorkDayType !=
-                                                null
-                                            ? _requestDetails.extraWorkDayType
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_EXTRA_WORK_REASON)),
-                                        subtitle: Text(_requestDetails
-                                                    .extraWorkReason !=
-                                                null
-                                            ? _requestDetails.extraWorkReason
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_EXTRA_WORK_PAYROLL_CYCLE)),
-                                        subtitle: Text(_requestDetails
-                                                    .extraWorkPayrollCycleId !=
-                                                null
-                                            ? _requestDetails
-                                                .extraWorkPayrollCycleDisplay
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_EXTRA_WORK_REQUEST_DATE)),
-                                        subtitle: Text(_requestDetails
-                                                    .extraWorkRequestDate !=
-                                                null
-                                            ? _requestDetails
-                                                .extraWorkRequestDate
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
-                                        leading:  IconButton(
-                                          hoverColor: AppTheme.kPrimaryColor,
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (ctx) {
-                                                  return ApprovalInboxAttachmentsListView(
-                                                    attachmentsList: attachmentsList,
-                                                  );
-                                                });
-                                          },
-                                          icon: Icon(
-                                            Icons.remove_red_eye_outlined,
-                                            color: AppTheme.kPrimaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                    if (_requestDetails.approvalInboxType != null &&
-                        _requestDetails.approvalInboxType
-                                .compareTo(Const.APPROVAL_INBOX_EXPENSE_TYPE) ==
-                            0)
-                      Expanded(
-                        flex: 7,
-                        child: Card(
-                          color: AppTheme.kPrimaryLightColor,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: AppTheme.kPrimaryLightColor
-                                    .withOpacity(0.2),
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(30),
-                                    bottomRight: Radius.circular(30),
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30))),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_EXPENSE_AMOUNT)),
-                                        subtitle: Text(
-                                            _requestDetails.expenseAmount !=
-                                                    null
-                                                ? _requestDetails.expenseAmount
-                                                    .toString()
-                                                : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_EXPENSE_CURRANCY)),
-                                        subtitle: Text(_requestDetails
-                                                    .expenseCurrancy !=
-                                                null
-                                            ? _requestDetails.expenseCurrancy
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(
-                                                Const.LOCALE_KEY_EXPENSE_DATE)),
-                                        subtitle: Text(
-                                            _requestDetails.expenseDate != null
-                                                ? _requestDetails.expenseDate
-                                                    .toString()
-                                                : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_EXPENSE_REQUEST_DATE)),
-                                        subtitle: Text(_requestDetails
-                                                    .expenseRequestDate !=
-                                                null
-                                            ? _requestDetails.expenseRequestDate
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: TextFieldContainer(
-                                        child: TextFormField(
-                                          validator: (value) =>
-                                              approvedAmount == null
-                                                  ? AppTranslations.of(context)
-                                                      .text(Const
-                                                          .LOCALE_KEY_REQUIRED)
-                                                  : null,
-                                          keyboardType: TextInputType.number,
-                                          cursorColor: AppTheme.kPrimaryColor,
-                                          decoration: InputDecoration(
-                                            hintText: AppTranslations.of(
-                                                    context)
-                                                .text(Const
-                                                    .LOCALE_KEY_EXPENSE_APPROVED_AMOUNT),
-                                            border: InputBorder.none,
-                                            suffixIcon: IconButton(
-                                              onPressed: () {},
-                                              icon: Icon(
-                                                Icons.format_list_numbered,
-                                                color: AppTheme.kPrimaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                          onChanged: (value) {
-                                            setState(() {
-                                              _requestDetails
-                                                      .expenseApprovedAmount =
-                                                  num.tryParse(value);
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
-                                        leading:  IconButton(
-                                          hoverColor: AppTheme.kPrimaryColor,
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (ctx) {
-                                                  return ApprovalInboxAttachmentsListView(
-                                                    attachmentsList: attachmentsList,
-                                                  );
-                                                });
-                                          },
-                                          icon: Icon(
-                                            Icons.remove_red_eye_outlined,
-                                            color: AppTheme.kPrimaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                    if (_requestDetails.approvalInboxType != null &&
-                        _requestDetails.approvalInboxType.compareTo(
-                                Const.APPROVAL_INBOX_DOCUEMNT_TYPE) ==
-                            0)
-                      Expanded(
-                        flex: 7,
-                        child: Card(
-                          color: AppTheme.kPrimaryLightColor,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: AppTheme.kPrimaryLightColor
-                                    .withOpacity(0.2),
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(30),
-                                    bottomRight: Radius.circular(30),
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30))),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_DOCUMENT_TYPE)),
-                                        subtitle: Text(_requestDetails
-                                                    .documentDocumentType !=
-                                                null
-                                            ? _requestDetails
-                                                .documentDocumentType
-                                            : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_DOCUMENT_REQUEST_DATE)),
-                                        subtitle: Text(_requestDetails
-                                                    .documentRequestdate !=
-                                                null
-                                            ? _requestDetails
-                                                .documentRequestdate
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
-                                        leading:  IconButton(
-                                          hoverColor: AppTheme.kPrimaryColor,
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (ctx) {
-                                                  return ApprovalInboxAttachmentsListView(
-                                                    attachmentsList: attachmentsList,
-                                                  );
-                                                });
-                                          },
-                                          icon: Icon(
-                                            Icons.remove_red_eye_outlined,
-                                            color: AppTheme.kPrimaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                    if (_requestDetails.approvalInboxType != null &&
-                        _requestDetails.approvalInboxType
-                                .compareTo(Const.APPROVAL_INBOX_BENEFIT_TYPE) ==
-                            0)
-                      Expanded(
-                        flex: 7,
-                        child: Card(
-                          color: AppTheme.kPrimaryLightColor,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: AppTheme.kPrimaryLightColor
-                                    .withOpacity(0.2),
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(30),
-                                    bottomRight: Radius.circular(30),
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30))),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_EMP_BENEFIT_REQUEST_AMT)),
-                                        subtitle: Text(_requestDetails
-                                                    .empBenefitRequestAmt !=
-                                                null
-                                            ? _requestDetails
-                                                .empBenefitRequestAmt
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_EMP_BENEFIT_UNIT_PRICE)),
-                                        subtitle: Text(_requestDetails
-                                                    .empBenefitUnitPrice !=
-                                                null
-                                            ? _requestDetails
-                                                .empBenefitUnitPrice
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_EMP_BENEFIT_REQUEST_DATE)),
-                                        subtitle: Text(_requestDetails
-                                                    .empBenefitRequestDate !=
-                                                null
-                                            ? _requestDetails
-                                                .empBenefitRequestDate
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_EMP_BENEFIT_TRANS_STATUS)),
-                                        subtitle: Text(_requestDetails
-                                                    .empBenefitTransStatus !=
-                                                null
-                                            ? _requestDetails
-                                                .empBenefitTransStatus
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
-                                        leading:  IconButton(
-                                          hoverColor: AppTheme.kPrimaryColor,
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (ctx) {
-                                                  return ApprovalInboxAttachmentsListView(
-                                                    attachmentsList: attachmentsList,
-                                                  );
-                                                });
-                                          },
-                                          icon: Icon(
-                                            Icons.remove_red_eye_outlined,
-                                            color: AppTheme.kPrimaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                    if (_requestDetails.approvalInboxType != null &&
-                        _requestDetails.approvalInboxType.compareTo(
-                                Const.APPROVAL_INBOX_LEAVE_ENCASHMENT_TYPE) ==
-                            0)
-                      Expanded(
-                        flex: 7,
-                        child: Card(
-                          color: AppTheme.kPrimaryLightColor,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: AppTheme.kPrimaryLightColor
-                                    .withOpacity(0.2),
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(30),
-                                    bottomRight: Radius.circular(30),
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30))),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_LEAVE_ENCASHMENT_FROM_DATE)),
-                                        subtitle: Text(_requestDetails
-                                                    .leaveEncashmentFromDate !=
-                                                null
-                                            ? _requestDetails
-                                                .leaveEncashmentFromDate
-                                            : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_LEAVE_ENCASHMENT_TO_DATE)),
-                                        subtitle: Text(_requestDetails
-                                                    .leaveEncashmentToDate !=
-                                                null
-                                            ? _requestDetails
-                                                .leaveEncashmentToDate
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_LEAVE_ENCASHMENT_AMOUNT)),
-                                        subtitle: Text(_requestDetails
-                                                    .leaveEncashmentAmount !=
-                                                null
-                                            ? _requestDetails
-                                                .leaveEncashmentAmount
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
-                                        leading:  IconButton(
-                                          hoverColor: AppTheme.kPrimaryColor,
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (ctx) {
-                                                  return ApprovalInboxAttachmentsListView(
-                                                    attachmentsList: attachmentsList,
-                                                  );
-                                                });
-                                          },
-                                          icon: Icon(
-                                            Icons.remove_red_eye_outlined,
-                                            color: AppTheme.kPrimaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                    if (_requestDetails.approvalInboxType != null &&
-                        _requestDetails.approvalInboxType.compareTo(
-                                Const.APPROVAL_INBOX_SALARY_INC_TYPE) ==
-                            0)
-                      Expanded(
-                        flex: 7,
-                        child: Card(
-                          color: AppTheme.kPrimaryLightColor,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: AppTheme.kPrimaryLightColor
-                                    .withOpacity(0.2),
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(30),
-                                    bottomRight: Radius.circular(30),
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30))),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_SALARY_INC_REQUEST_AMOUNT)),
-                                        subtitle: Text(_requestDetails
-                                                    .salaryIncRequestAmount !=
-                                                null
-                                            ? _requestDetails
-                                                .salaryIncRequestAmount
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_SALARY_INC_CURRENCY)),
-                                        subtitle: Text(_requestDetails
-                                                    .salaryIncCurrency !=
-                                                null
-                                            ? _requestDetails.salaryIncCurrency
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_SALARY_INC_CURRENT_SALARY)),
-                                        subtitle: Text(_requestDetails
-                                                    .salaryIncCurrentSalary !=
-                                                null
-                                            ? _requestDetails
-                                                .salaryIncCurrentSalary
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_SALARY_INCR_TYPE)),
-                                        subtitle: Text(_requestDetails
-                                                    .salaryIncIncrType !=
-                                                null
-                                            ? _requestDetails.salaryIncIncrType
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_SALARY_INC_APPROVED_AMOUNT)),
-                                        subtitle: Text(_requestDetails
-                                                    .salaryIncApprovedAmount !=
-                                                null
-                                            ? _requestDetails
-                                                .salaryIncApprovedAmount
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                                .LOCALE_KEY_SALARY_INC_REQUEST_DATE)),
-                                        subtitle: Text(_requestDetails
-                                                    .salaryIncRequestDate !=
-                                                null
-                                            ? _requestDetails
-                                                .salaryIncRequestDate
-                                                .toString()
-                                            : "-"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListTile(
-                                        title: Text(AppTranslations.of(context)
-                                            .text(Const
-                                            .LOCALE_KEY_VIEW_ATTACHMENT)),
-                                        leading:  IconButton(
-                                          hoverColor: AppTheme.kPrimaryColor,
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (ctx) {
-                                                  return ApprovalInboxAttachmentsListView(
-                                                    attachmentsList: attachmentsList,
-                                                  );
-                                                });
-                                          },
-                                          icon: Icon(
-                                            Icons.remove_red_eye_outlined,
-                                            color: AppTheme.kPrimaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                    ///////----------------------
-                    Expanded(
-                      flex: 1,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Expanded(
-                            flex: 1,
-                            child: GestureDetector(
-                              onTap: () {
-                                sendRequest(
-                                    Const.APPROVAL_INBOX_ACCTION_ACCEPT);
-                              },
-                              child: Container(
-                                height: 48,
-                                decoration: BoxDecoration(
-                                  color: buttonSendIsPressed
-                                      ? AppTheme.nearlyWhite.withOpacity(0.1)
-                                      : AppTheme.nearlyBlue,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(16.0),
-                                  ),
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(
-                                        color: AppTheme.nearlyBlue
-                                            .withOpacity(0.5),
-                                        offset: const Offset(1.1, 1.1),
-                                        blurRadius: 10.0),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_APPROVE),
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
-                                      letterSpacing: 0.0,
-                                      color: AppTheme.nearlyWhite,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: GestureDetector(
-                              onTap: () {
-                                sendRequest(Const.APPROVAL_INBOX_ACTION_REJECT);
-                              },
-                              child: Container(
-                                height: 48,
-                                decoration: BoxDecoration(
-                                  color: buttonSendIsPressed
-                                      ? AppTheme.nearlyWhite.withOpacity(0.1)
-                                      : AppTheme.nearlyBlue,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(16.0),
-                                  ),
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(
-                                        color: AppTheme.nearlyBlue
-                                            .withOpacity(0.5),
-                                        offset: const Offset(1.1, 1.1),
-                                        blurRadius: 10.0),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_REJECT),
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
-                                      letterSpacing: 0.0,
-                                      color: AppTheme.nearlyWhite,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                _buildRequestDetailsCard(),
+                if (_requestDetails!.approvalInboxType!.compareTo(Const.APPROVAL_INBOX_VACATION_TYPE) == 0)
+                  _buildVacationDetailsCard(),
+                if (_requestDetails!.approvalInboxType!.compareTo(Const.APPROVAL_INBOX_LEAVE_TYPE) == 0)
+                  _buildLeaveDetailsCard(),
+                _buildAttachmentSection(context),
+                _buildApprovalButtons()
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildAttachmentSection(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [ModernTheme.gradientStart, ModernTheme.gradientEnd],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: ModernTheme.gradientEnd.withOpacity(0.5),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              AppTranslations.of(context)!.text(Const.LOCALE_KEY_VIEW_ATTACHMENT),
+              style: TextStyle(
+                color: ModernTheme.textColor,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
-        )),
+          IconButton(
+            icon: Icon(Icons.remove_red_eye_outlined, color: ModernTheme.textColor),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (ctx) => ApprovalInboxAttachmentsListView(attachmentsList: attachmentsList),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _buildRequestDetailsCard() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [ModernTheme.gradientStart, ModernTheme.gradientEnd],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: ModernTheme.accentColor.withOpacity(0.5),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          _buildDetailRow(
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_EMPLOYEE_NAME),
+            value: _requestDetails?.employeeName ?? "N/A",
+          ),
+          Divider(color: ModernTheme.textColor.withOpacity(0.3)),
+          _buildDetailRow(
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_REQUEST_DATE),
+            value: this.widget.approvalInboxItenm!.approval_request_date ?? "-",
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDetailRow({required String title, required String value}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            color: ModernTheme.textColor.withOpacity(0.7),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            color: ModernTheme.textColor,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+      ],
+    );
+  }
+  Widget _buildLeaveDetailsCard() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [ModernTheme.gradientStart, ModernTheme.gradientEnd],
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: ModernTheme.gradientEnd.withOpacity(0.5),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          _buildDetailRow2(
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_FROM),
+            value: _requestDetails!.startDate,
+          ),
+          Divider(color: ModernTheme.textColor.withOpacity(0.3)),
+          _buildDetailRow2(
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_TO),
+            value: _requestDetails!.endDate,
+          ),
+           Divider(color: ModernTheme.textColor.withOpacity(0.3)),
+
+          _buildDetailRow2(
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_LEAVES),
+            value: _requestDetails!.leaveId,
+          ),
+
+
+
+          Divider(color: ModernTheme.textColor.withOpacity(0.3)),
+
+          _buildDetailRow2(
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_STATUS),
+            value: _requestDetails!.leaveRequestStatus,
+          ),
+
+          Divider(color: ModernTheme.textColor.withOpacity(0.3)),
+
+          _buildDetailRow2(
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_LEAVE_START_TIME),
+            value: _requestDetails!.leaveStartTime.toString(),
+          ),
+         ],
+      ),
+    );
+  }
+
+  Widget _buildVacationDetailsCard() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [ModernTheme.gradientStart, ModernTheme.gradientEnd],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: ModernTheme.gradientEnd.withOpacity(0.5),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          _buildDetailRow2(
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_FROM),
+            value: _requestDetails!.startDate ?? "Date ..",
+          ),
+          Divider(color: ModernTheme.textColor.withOpacity(0.3)),
+          _buildDetailRow2(
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_TO),
+            value: _requestDetails!.endDate ?? "Date ..",
+          ),
+          // Repeat the pattern for other vacation details
+          Divider(color: ModernTheme.textColor.withOpacity(0.3)),
+          _buildDetailRow2(
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_VACATION),
+            value: _requestDetails!.vacationName,
+          ),
+          Divider(color: ModernTheme.textColor.withOpacity(0.3)),
+          _buildDetailRow2(
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_LOCATION),
+            value: _requestDetails!.vacationLocation,
+          ),
+          Divider(color: ModernTheme.textColor.withOpacity(0.3)),
+          _buildDetailRow(
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_UNPAID_DAYS),
+            value: _requestDetails!.vacationUnPaidDays.toString(),
+          ),
+          Divider(color: ModernTheme.textColor.withOpacity(0.3)),
+          _buildDetailRow(
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_NEW_BALANCE),
+            value: _requestDetails!.vacationNewBalance.toString(),
+          ),
+          Divider(color: ModernTheme.textColor.withOpacity(0.3)),
+          _buildDetailRow(
+            title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_PREVIOUS_BALANCE),
+            value: _requestDetails!.vacationPreviousBalance.toString(),
+          ),
+         ],
+      ),
+    );
+  }
+
+  Widget _buildDetailRow2({required String title, required String value}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            color: ModernTheme.textColor, // Updated to match the notification card style
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        Flexible(
+          child: Text(
+            value,
+            textAlign: TextAlign.end,
+            style: TextStyle(
+              color: ModernTheme.textColor, // Updated color
+              fontWeight: FontWeight.normal,
+              fontSize: 16,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildApprovalButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        _buildActionButton(
+          context: context,
+          label: Const.LOCALE_KEY_APPROVE,
+          onTap: () => sendRequest(Const.APPROVAL_INBOX_ACCTION_ACCEPT),
+          color: ModernTheme.accentColor,
+        ),
+        const SizedBox(width: 16),
+        _buildActionButton(
+          context: context,
+          label: Const.LOCALE_KEY_REJECT,
+          onTap: () => sendRequest(Const.APPROVAL_INBOX_ACTION_REJECT),
+          color: Colors.red,
+        ),
+      ],
+    );
+  }
+  Widget _buildActionButton({
+    required BuildContext context,
+    required String label,
+    required VoidCallback onTap,
+    required Color color,
+  }) {
+    return Expanded(
+      flex: 1,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 48,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [color.withOpacity(0.8), color], // Gradient effect
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(16.0),
+            boxShadow: [
+              BoxShadow(
+                color: color.withOpacity(0.5),
+                offset: Offset(1.1, 1.1),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              AppTranslations.of(context)!.text(label),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.white, // White text for better contrast
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

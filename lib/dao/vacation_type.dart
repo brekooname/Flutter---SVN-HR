@@ -38,107 +38,107 @@ final List<String> columns = [
 
 class VacationType {
 
-  String _name;
-  String _approval_flg;
-  String _createddate;
-  String _balance_sign;
-  String _balance_sign_displayValue;
-  String _balance_sign_code;
-  String _active_flg;
-  String _updatedby;
-  String _row_id;
-  String _permission_method;
-  String _description;
-  String _createdby;
-  String _updatedate;
-  num _default_balance;
+  String? _name;
+  String? _approval_flg;
+  String? _createddate;
+  String? _balance_sign;
+  String? _balance_sign_displayValue;
+  String? _balance_sign_code;
+  String? _active_flg;
+  String? _updatedby;
+  String? _row_id;
+  String? _permission_method;
+  String? _description;
+  String? _createdby;
+  String? _updatedate;
+  num? _default_balance;
   // not database columns
   bool isSelected=false;
-  DatabaseHelper helper;
+  DatabaseHelper? helper;
 
   VacationType(){
     helper = DatabaseHelper.instance;
   }
 
-  num get default_balance => _default_balance;
+  num get default_balance => _default_balance!;
 
   set default_balance(num value) {
     _default_balance = value;
   }
 
-  String get updatedate => _updatedate;
+  String get updatedate => _updatedate!;
 
   set updatedate(String value) {
     _updatedate = value;
   }
 
-  String get createdby => _createdby;
+  String get createdby => _createdby!;
 
   set createdby(String value) {
     _createdby = value;
   }
 
-  String get description => _description;
+  String get description => _description!;
 
   set description(String value) {
     _description = value;
   }
 
-  String get permission_method => _permission_method;
+  String get permission_method => _permission_method!;
 
   set permission_method(String value) {
     _permission_method = value;
   }
 
-  String get row_id => _row_id;
+  String get row_id => _row_id!;
 
   set row_id(String value) {
     _row_id = value;
   }
 
-  String get updatedby => _updatedby;
+  String get updatedby => _updatedby!;
 
   set updatedby(String value) {
     _updatedby = value;
   }
 
-  String get active_flg => _active_flg;
+  String get active_flg => _active_flg!;
 
   set active_flg(String value) {
     _active_flg = value;
   }
 
-  String get balance_sign_code => _balance_sign_code;
+  String get balance_sign_code => _balance_sign_code!;
 
   set balance_sign_code(String value) {
     _balance_sign_code = value;
   }
 
-  String get balance_sign_displayValue => _balance_sign_displayValue;
+  String get balance_sign_displayValue => _balance_sign_displayValue!;
 
   set balance_sign_displayValue(String value) {
     _balance_sign_displayValue = value;
   }
 
-  String get balance_sign => _balance_sign;
+  String get balance_sign => _balance_sign!;
 
   set balance_sign(String value) {
     _balance_sign = value;
   }
 
-  String get createddate => _createddate;
+  String get createddate => _createddate!;
 
   set createddate(String value) {
     _createddate = value;
   }
 
-  String get approval_flg => _approval_flg;
+  String get approval_flg => _approval_flg!;
 
   set approval_flg(String value) {
     _approval_flg = value;
   }
 
-  String get name => _name;
+  String get name => _name!;
 
   set name(String value) {
     _name = value;
@@ -187,42 +187,70 @@ class VacationType {
 
   }
 
-  List<VacationType> fromLListMap(List<Map> map) {
-    List<VacationType> list = List();
-    for (Map item in map) {
-      VacationType value = VacationType.fromMap(item);
+  List<VacationType> fromLListMap(List<Map>? map) {
+    List<VacationType> list = [];
+    for (Map item in map!) {
+      // Cast each map item to Map<String, dynamic>
+      VacationType value = VacationType.fromMap(item.cast<String, dynamic>());
       list.add(value);
     }
     return list;
   }
 
+
   Future<int> delete() async {
-    int id = await helper.delete(tableName);
+    int id = await helper!.delete(tableName);
     return id;
   }
 
   Future<void> insert(VacationType value) async {
-    await helper.insert(tableName, value.toMap());
-    // return id;
+    if (value == null) {
+      print('Error: Attempted to insert a null VacationType');
+      return;
+    }
+
+    // Check if helper is null
+    if (helper == null) {
+      print('Error: Database helper is null');
+      return;
+    }
+
+    try {
+      var map = value.toMap();
+      if (map.isEmpty) {
+        print('Error: Map is empty during insertion of VacationType');
+        return;
+      }
+
+      // Log the map data for debugging
+      print('Inserting VacationType with map: $map');
+      await helper!.insert(tableName, map);
+      print('Successfully inserted VacationType');
+    } catch (e) {
+      print('Error inserting VacationType: $e');
+    }
   }
 
-  Future<List<VacationType>> getAllVacationsType() async {
-    List<Map> maps =
-    await helper.queryAllList(tableName, columns);
-    if (maps != null && maps.length > 0) {
+
+  Future<List<VacationType>?> getAllVacationsType() async {
+    List<Map>? maps =
+    await helper!.queryAllList(tableName, columns);
+    if (maps!.length > 0) {
       return fromLListMap(maps);
     }
     return null;
   }
 
-  Future<VacationType> getLovsByRowId(String id) async {
+  Future<VacationType?> getLovsByRowId(String id) async {
     String where = col_row_id + "=?";
     List<String> whereArgs = [id];
     List<Map> maps =
-    await helper.queryWord(tableName, columns, where, whereArgs);
-    if (maps != null && maps.length > 0) {
-      return VacationType.fromMap(maps.first);
+    await helper!.queryWord(tableName, columns, where, whereArgs);
+    if (maps.isNotEmpty) {
+      // Cast the first map item to Map<String, dynamic>
+      return VacationType.fromMap(maps.first.cast<String, dynamic>());
     }
     return null;
   }
+
 }

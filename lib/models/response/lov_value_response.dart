@@ -9,13 +9,13 @@ class LovValuesResponse{
 
 
   @JsonKey(name: 'response')
-  String response;
+  String? response;
 
   @JsonKey(name: 'lovs')
-  List<LovValues> lovs;
+  List<LovValues>? lovs;
 
   @JsonKey(name: 'err_MSG')
-  String err_MSG;
+  String? err_MSG;
 
   factory LovValuesResponse.fromJson(Map<String, dynamic> json) => _$LovValuesResponseFromJson(json);
 

@@ -15,27 +15,27 @@ class VacationTypeBaseResponse{
   Map<String, dynamic> toJson() => _$VacationTypeBaseResponseToJson(this);
 
   @JsonKey(name: 'response')
-  String _response;
+  String? _response;
 
   @JsonKey(name: 'vacations')
-  List<VacationTypeResponse> _vacations;
+  List<VacationTypeResponse>? _vacations;
 
   @JsonKey(name: 'err_MSG')
-  String _err_MSG;
+  String? _err_MSG;
 
-  String get response => _response;
+  String get response => _response!;
 
   set response(String value) {
     _response = value;
   }
 
-  List<VacationTypeResponse> get vacations => _vacations;
+  List<VacationTypeResponse> get vacations => _vacations!;
 
   set vacations(List<VacationTypeResponse> value) {
     _vacations = value;
   }
 
-  String get err_MSG => _err_MSG;
+  String get err_MSG => _err_MSG!;
 
   set err_MSG(String value) {
     _err_MSG = value;

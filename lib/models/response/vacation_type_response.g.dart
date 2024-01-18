@@ -8,20 +8,20 @@ part of 'vacation_type_response.dart';
 
 VacationTypeResponse _$VacationTypeResponseFromJson(Map<String, dynamic> json) {
   return VacationTypeResponse()
-    ..name = json['name'] as String
-    ..approval_flg = json['approval_flg'] as String
-    ..default_balance = json['default_balance'] as num
-    ..updatedate = json['updatedate'] as String
-    ..createdby = json['createdby'] as String
-    ..description = json['description'] as String
-    ..permission_method = json['permission_method'] as String
-    ..row_id = json['row_id'] as String
-    ..updatedby = json['updatedby'] as String
-    ..active_flg = json['active_flg'] as String
-    ..balance_sign_code = json['balance_sign_code'] as String
-    ..balance_sign_displayValue = json['balance_sign_displayValue'] as String
-    ..balance_sign = json['balance_sign'] as String
-    ..createddate = json['createddate'] as String;
+    ..name = json['name'] as String? ?? 'default_name'
+    ..approval_flg = json['approval_flg'] as String? ?? 'default_approval_flg'
+    ..default_balance = json['default_balance'] as num? ?? 0
+    ..updatedate = json['updatedate'] as String? ?? 'default_updatedate'
+    ..createdby = json['createdby'] as String? ?? 'default_createdby'
+    ..description = json['description'] as String? ?? 'default_description'
+    ..permission_method = json['permission_method'] as String? ?? 'default_permission_method'
+    ..row_id = json['row_id'] as String? ?? 'default_row_id'
+    ..updatedby = json['updatedby'] as String? ?? 'default_updatedby'
+    ..active_flg = json['active_flg'] as String? ?? 'default_active_flg'
+    ..balance_sign_code = json['balance_sign_code'] as String? ?? 'default_balance_sign_code'
+    ..balance_sign_displayValue = json['balance_sign_displayValue'] as String? ?? 'default_balance_sign_displayValue'
+    ..balance_sign = json['balance_sign'] as String? ?? 'default_balance_sign'
+    ..createddate = json['createddate'] as String? ?? 'default_createddate';
 }
 
 Map<String, dynamic> _$VacationTypeResponseToJson(

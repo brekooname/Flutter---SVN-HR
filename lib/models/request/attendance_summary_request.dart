@@ -6,11 +6,11 @@ part 'attendance_summary_request.g.dart';
 @JsonSerializable(nullable: false)
 class AttendanceSummaryRequest{
 
-  String tokenId;
+  String? tokenId;
 
-  String fromDate;
+  String? fromDate;
 
-  String toDate;
+  String? toDate;
 
   AttendanceSummaryRequest({this.tokenId, this.fromDate, this.toDate});
 

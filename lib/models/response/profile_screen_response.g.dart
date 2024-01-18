@@ -6,12 +6,12 @@ part of 'profile_screen_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ProfileScreenResponse _$ProfileScreenResponseFromJson(
-    Map<String, dynamic> json) {
+ProfileScreenResponse _$ProfileScreenResponseFromJson(Map<String, dynamic> json) {
   return ProfileScreenResponse()
-    ..displayFlag = json['displayFlag'] as bool
-    ..screenName = json['screenName'] as String;
+    ..displayFlag = json['displayFlag'] as bool? ?? false
+    ..screenName = json['screenName'] as String? ?? 'default_screenName';
 }
+
 
 Map<String, dynamic> _$ProfileScreenResponseToJson(
         ProfileScreenResponse instance) =>

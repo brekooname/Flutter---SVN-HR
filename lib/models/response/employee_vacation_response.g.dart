@@ -9,26 +9,27 @@ part of 'employee_vacation_response.dart';
 EmployeeVacationResponse _$EmployeeVacationResponseFromJson(
     Map<String, dynamic> json) {
   return EmployeeVacationResponse()
-    ..due_balance = (json['due_balance'] as num).toDouble()
-    ..effective_date = json['effective_date'] as String
-    ..last_vacation_date = json['last_vacation_date'] as String
-    ..rec_attachment = json['rec_attachment'] as String
-    ..annual_balance = (json['annual_balance'] as num).toDouble()
-    ..createddate = json['createddate'] as String
-    ..updatedby = json['updatedby'] as String
-    ..vacation_type = json['vacation_type'] as String
-    ..vacation_type_name = json['vacation_type_name'] as String
-    ..updatedate = json['updatedate'] as String
-    ..permission_method = json['permission_method'] as String
-    ..row_id = json['row_id'] as String
-    ..consumed_balance = (json['consumed_balance'] as num).toDouble()
-    ..vacation_detail_id = json['vacation_detail_id'] as String
-    ..active_flg = json['active_flg'] as String
-    ..createdby = json['createdby'] as String
-    ..previous_balance = (json['previous_balance'] as num).toDouble()
-    ..par_row_id = json['par_row_id'] as String
-    ..remaining_balance = (json['remaining_balance'] as num).toDouble();
+    ..due_balance = (json['due_balance'] as num?)?.toDouble() ?? 0.0
+    ..effective_date = json['effective_date'] as String? ?? 'default_effective_date'
+    ..last_vacation_date = json['last_vacation_date'] as String? ?? 'default_last_vacation_date'
+    ..rec_attachment = json['rec_attachment'] as String? ?? 'default_rec_attachment'
+    ..annual_balance = (json['annual_balance'] as num?)?.toDouble() ?? 0.0
+    ..createddate = json['createddate'] as String? ?? 'default_createddate'
+    ..updatedby = json['updatedby'] as String? ?? 'default_updatedby'
+    ..vacation_type = json['vacation_type'] as String? ?? 'default_vacation_type'
+    ..vacation_type_name = json['vacation_type_name'] as String? ?? 'default_vacation_type_name'
+    ..updatedate = json['updatedate'] as String? ?? 'default_updatedate'
+    ..permission_method = json['permission_method'] as String? ?? 'default_permission_method'
+    ..row_id = json['row_id'] as String? ?? 'default_row_id'
+    ..consumed_balance = (json['consumed_balance'] as num?)?.toDouble() ?? 0.0
+    ..vacation_detail_id = json['vacation_detail_id'] as String? ?? 'default_vacation_detail_id'
+    ..active_flg = json['active_flg'] as String? ?? 'default_active_flg'
+    ..createdby = json['createdby'] as String? ?? 'default_createdby'
+    ..previous_balance = (json['previous_balance'] as num?)?.toDouble() ?? 0.0
+    ..par_row_id = json['par_row_id'] as String? ?? 'default_par_row_id'
+    ..remaining_balance = (json['remaining_balance'] as num?)?.toDouble() ?? 0.0;
 }
+
 
 Map<String, dynamic> _$EmployeeVacationResponseToJson(
         EmployeeVacationResponse instance) =>

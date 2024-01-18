@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sven_hr/components/flutter_toast_message.dart';
@@ -12,21 +14,23 @@ import 'package:sven_hr/services/networking.dart';
 import 'package:sven_hr/utilities/api_connectons.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
+import '../app_settings/server_connection_screen.dart';
+
 class ExtraWorkController {
   DateFormat format = DateFormat(Const.DATE_FORMAT);
 
-  List<ExtraWorkTransactionResponse> _extraWorkList;
+  List<ExtraWorkTransactionResponse>? _extraWorkList;
 
-  Future<List<LovValue>> loadDayType() async {
+  Future<List<LovValue?>?> loadDayType() async {
     LovValue lov = LovValue();
     try {
-      return lov.getLovsByParentId(Const.DAY_TYPE);
+      return lov.getLovsByParentId(Const.DAY_TYPE)!;
     } catch (e) {
       print(e);
     }
   }
 
-  Future<List<LovValue>> loadUnit() async {
+  Future<List<LovValue>?> loadUnit() async {
     LovValue lov = LovValue();
     try {
       return lov.getLovsByParentId(Const.EMPLOYEE_EXTRA_WORK_UNIT);
@@ -36,17 +40,17 @@ class ExtraWorkController {
   }
 
   Future<String> sendExtraWorkRequest(
-      {String dayType,
-      String unit,
-      num unitQuantity,
-      String notes,
-      List<String> filePaths,
-      String extra_work_date}) async {
+      {String? dayType,
+      String? unit,
+      num? unitQuantity,
+      String? notes,
+      List<String>? filePaths,
+      String? extra_work_date}) async {
     final prefs = await SharedPreferences.getInstance();
-    String tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
-    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    String? tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID);
+    String? host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
-    var url = host + ApiConnections.ADD_EXTRA_WORK;
+    var url = host! + ApiConnections.ADD_EXTRA_WORK;
 
     ExtraWorkRequest extraWorkRequest = ExtraWorkRequest();
     extraWorkRequest.employee_id =
@@ -67,17 +71,15 @@ class ExtraWorkController {
         userData[Const.SYSTEM_RESPONSE_CODE]
                 .compareTo(Const.SYSTEM_SUCCESS_MSG) ==
             0) {
-      String approval_inbox_row_id = userData[Const.APPROVAL_INBOX_ROW_ID];
-      if (approval_inbox_row_id != null &&
-          !approval_inbox_row_id.isEmpty &&
-          filePaths != null &&
-          !filePaths.isEmpty) {
-        for (int i = 0; i < filePaths.length; i++) {
-          String path = filePaths[i];
+      String approvalInboxRowId = userData[Const.APPROVAL_INBOX_ROW_ID];
+      if (approvalInboxRowId.isNotEmpty &&
+          filePaths!.isNotEmpty) {
+        for (int i = 0; i < filePaths!.length; i++) {
+          String path = filePaths![i];
           String res = await uploadAttachment(
               filePath: path,
-              tokenId: tokenId,
-              approval_inbox_row_id: approval_inbox_row_id);
+              tokenId: tokenId!,
+              approval_inbox_row_id: approvalInboxRowId);
           print(path);
         }
       }
@@ -89,15 +91,14 @@ class ExtraWorkController {
   }
 
   Future<String> uploadAttachment(
-      {String filePath, String tokenId, String approval_inbox_row_id}) async {
+      {String? filePath, String? tokenId, String? approval_inbox_row_id}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    String? host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
-    var url = host + ApiConnections.UPLOAD_FILE;
-    String fileNameWithExtenstion = filePath.split('/').last;
+    var url = host! + ApiConnections.UPLOAD_FILE;
+    String fileNameWithExtenstion = filePath!.split('/').last;
     String fileName = fileNameWithExtenstion.split('.').first;
-    ;
     String fileType = fileNameWithExtenstion.split('.').last;
     MultiPartFileUpload request = MultiPartFileUpload(
         url: url,
@@ -121,50 +122,112 @@ class ExtraWorkController {
     }
   }
 
-  Future<String> getDefualtSearch() async {
+  Future<String> getDefualtSearch(BuildContext context) async {
     DateTime now = new DateTime.now();
     String toDate = format.format(now);
-    DateTime lastMonthDate = new DateTime(now.year, now.month, now.day - 1);
+    DateTime lastMonthDate = new DateTime(now.year, now.month, now.day - 7);
     String fromDate = format.format(lastMonthDate);
 
-    String response = await getExtraWorkTransaction(fromDate, toDate);
-    return response;
+    String? response = await getExtraWorkTransaction(fromDate, toDate);
+    if (extraWorkList!.isEmpty && response == 'SUCCESS') {
+      showNoDataDialog(context);
+    }
+    return response!;
+  }
+  void showNoDataDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          backgroundColor: ModernTheme.backgroundColor, // Use your preferred background color
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(
+                  Icons.info_outline,
+                  color: ModernTheme.accentColor, // Use your preferred accent color
+                  size: 50.0, // Icon size
+                ),
+                SizedBox(height: 20.0),
+                Text(
+                  'No Data Found',
+                  style: TextStyle(
+                    color: ModernTheme.textColor, // Use your preferred text color
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  'No results match your search criteria. Please try again.',
+                  style: TextStyle(
+                    color: ModernTheme.textColor, // Use your preferred text color
+                    fontSize: 16.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20.0),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: ModernTheme.accentColor, // Use your preferred accent color
+                    elevation: 5, // Button elevation
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'OK',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
-  Future<String> getExtraWorkTransaction(
+  Future<String?> getExtraWorkTransaction(
     String fromDate,
     String toDate,
   ) async {
-    extraWorkList = List();
+    extraWorkList = <ExtraWorkTransactionResponse>[];
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenId = prefs.getString(Const.SHARED_KEY_TOKEN_ID) ?? "";
-    String host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    String? host = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
     ExpenseTransactionRequest request = ExpenseTransactionRequest(
         tokenId: tokenId, fromDate: fromDate, toDate: toDate);
-    if (request != null) {
-      var url = host + ApiConnections.GET_EXTRA_WORK_TRANSACTION;
-      NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
-      var userData = await helper.getData();
-      if (userData != null &&
-          userData[Const.SYSTEM_MSG_CODE] != null &&
-          userData[Const.SYSTEM_MSG_CODE].compareTo(Const.SYSTEM_SUCCESS_MSG) ==
-              0) {
-        ExtraWorkTransactionBaseResponse baseResponse =
-            ExtraWorkTransactionBaseResponse.fromJson(userData);
+    var url = host! + ApiConnections.GET_EXTRA_WORK_TRANSACTION;
+    NetworkHelper helper = NetworkHelper(url: url, map: request.toJson());
+    var userData = await helper.getData();
+    if (userData != null &&
+        userData[Const.SYSTEM_MSG_CODE] != null &&
+        userData[Const.SYSTEM_MSG_CODE].compareTo(Const.SYSTEM_SUCCESS_MSG) ==
+            0) {
+      ExtraWorkTransactionBaseResponse baseResponse =
+          ExtraWorkTransactionBaseResponse.fromJson(userData);
 
-        if (baseResponse.extraWorkList != null) {
-          extraWorkList = baseResponse.extraWorkList;
-        }
-        return Const.SYSTEM_SUCCESS_MSG;
-      } else {
-        ToastMessage.showErrorMsg(userData[Const.SYSTEM_MSG_CODE]);
-      }
+      extraWorkList = baseResponse.extraWorkList;
+          return Const.SYSTEM_SUCCESS_MSG;
+    } else {
+     }
     }
-  }
 
-  List<ExtraWorkTransactionResponse> get extraWorkList => _extraWorkList;
+  List<ExtraWorkTransactionResponse> get extraWorkList => _extraWorkList!;
 
   set extraWorkList(List<ExtraWorkTransactionResponse> value) {
     _extraWorkList = value;

@@ -110,6 +110,7 @@ class Const {
   static final LOCALE_KEY_PROFILE = "my_profile";
   static final LOCALE_KEY_LEAVES = "leaves";
   static final LOCALE_KEY_VACATION = "vacations";
+  static final String LOCALE_KEY_VACATION2 = "vacations2";
   static final LOCALE_KEY_TIME_SHEET = "time_sheet";
   static final LOCALE_KEY_SALARY_INCREMENT_REQUEST = "salary_increment_request";
   static final LOCALE_KEY_EXTRA_WORK_REQUEST = "extra_work_request";
@@ -286,6 +287,7 @@ class Const {
 
   static final LOCALE_KEY_MY_VACTIONS = "my_vacations";
   static final LOCALE_KEY_MY_LEAVES = "my_leaves";
+  static final LOCALE_KEY_MY_LOANS = "my_loans";
 
   static final LOCALE_KEY_VIEW_ATTACHMENT = "view_attachment";
 

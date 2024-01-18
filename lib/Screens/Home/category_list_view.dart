@@ -1,5 +1,5 @@
 import 'package:sven_hr/Screens/Leaves/leave_request_screen.dart';
-import 'package:sven_hr/Screens/Leaves/leaves_transaction_screen.dart';
+import 'package:sven_hr/Screens/Loans/LoanRequestScreen.dart';
 import 'package:sven_hr/Screens/Login/login_controller.dart';
 import 'package:sven_hr/Screens/Vacations/vacation_request_screen.dart';
 import 'package:sven_hr/Screens/clock_record/clock_record_screen.dart';
@@ -9,22 +9,21 @@ import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/models/response/profile_screen_response.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/Screens/Home/models/category.dart';
-import 'package:sven_hr/main.dart';
 import 'package:flutter/material.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
 class CategoryListView extends StatefulWidget {
-  const CategoryListView({Key key, this.callBack}) : super(key: key);
+  const CategoryListView({Key? key, this.callBack}) : super(key: key);
 
-  final Function callBack;
+  final Function? callBack;
   @override
   _CategoryListViewState createState() => _CategoryListViewState();
 }
 
 class _CategoryListViewState extends State<CategoryListView>
     with TickerProviderStateMixin {
-  AnimationController animationController;
-  List<Category> categoryList;
+  AnimationController? animationController;
+  List<Category>? categoryList;
 
   @override
   void initState() {
@@ -48,87 +47,87 @@ class _CategoryListViewState extends State<CategoryListView>
       //   ),
       // ),
     ];
-    if (LoginController.listOfProfileScreens != null) {
-      for (ProfileScreenResponse screen
-          in LoginController.listOfProfileScreens) {
-        if (screen.screenName.compareTo(VacationRequestScreen.id) == 0) {
-          Category screen = Category(
-            imagePath: 'assets/design_course/vacation.png',
-            index: Const.LOCALE_KEY_VACATION,
-            title: AppTranslations.of(context).text(Const.LOCALE_KEY_VACATION),
-            lessonCount: 24,
-            money: 25,
-            rating: 4.3,
-            icon: Icon(
-              Icons.add,
-              color: AppTheme.nearlyWhite,
-            ),
-          );
-          categoryList.add(screen);
-        }
-        else if (screen.screenName.compareTo(LeaveRequestScreen.id) == 0) {
-          Category screen = Category(
-            imagePath: 'assets/design_course/leave.png',
-            index: Const.LOCALE_KEY_LEAVES,
-            title: AppTranslations.of(context).text(Const.LOCALE_KEY_LEAVES),
-            lessonCount: 22,
-            money: 18,
-            rating: 4.6,
-            icon: Icon(
-              Icons.add,
-              color: AppTheme.nearlyWhite,
-            ),
-          );
-          categoryList.add(screen);
-        } else if (screen.screenName.compareTo(ClockRecordScreen.id) == 0) {
-          Category screen = Category(
-            imagePath: 'assets/design_course/clock_record.png',
-            index: Const.LOCALE_KEY_CLOCK_RECORD,
-            title:
-                AppTranslations.of(context).text(Const.LOCALE_KEY_CLOCK_RECORD),
-            lessonCount: 24,
-            money: 25,
-            rating: 4.3,
-            icon: Icon(
-              Icons.alarm_add,
-              color: AppTheme.nearlyWhite,
-            ),
-          );
-          categoryList.add(screen);
-        }else if (screen.screenName.compareTo(ExpenseRequestScreen.id) == 0) {
-          Category screen = Category(
-            imagePath: 'assets/design_course/expense.png',
-            index: Const.LOCALE_KEY_EXPENSE_REQUEST,
-            title:
-            AppTranslations.of(context).text(Const.LOCALE_KEY_EXPENSE_REQUEST),
-            lessonCount: 24,
-            money: 25,
-            rating: 4.3,
-            icon: Icon(
-              Icons.add,
-              color: AppTheme.nearlyWhite,
-            ),
-          );
-          categoryList.add(screen);
-        }else if (screen.screenName.compareTo(ExtraWorkScreen.id) == 0) {
-          Category screen = Category(
-            imagePath: 'assets/design_course/extra_work.png',
-            index: Const.LOCALE_KEY_EXTRA_WORK_REQUEST,
-            title:
-            AppTranslations.of(context).text(Const.LOCALE_KEY_EXTRA_WORK_REQUEST),
-            lessonCount: 24,
-            money: 25,
-            rating: 4.3,
-            icon: Icon(
-              Icons.add,
-              color: AppTheme.nearlyWhite,
-            ),
-          );
-          categoryList.add(screen);
-        }
+    for (ProfileScreenResponse screen in LoginController.listOfProfileScreens ?? []) {
+
+      if (screen!.screenName.compareTo(VacationRequestScreen.id) == 0) {
+        Category screen = Category(
+          imagePath: 'assets/design_course/vacation.png',
+          index: Const.LOCALE_KEY_VACATION,
+          title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_VACATION),
+          lessonCount: 24,
+          money: 25,
+          rating: 4.3,
+          icon: Icon(
+            Icons.add,
+            color: AppTheme.nearlyWhite,
+          ),
+        );
+        categoryList!.add(screen);
+      }
+      else if (screen.screenName.compareTo(LeaveRequestScreen.id) == 0) {
+        Category screen = Category(
+          imagePath: 'assets/design_course/leave.png',
+          index: Const.LOCALE_KEY_LEAVES,
+          title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_LEAVES),
+          lessonCount: 22,
+          money: 18,
+          rating: 4.6,
+          icon: Icon(
+            Icons.add,
+            color: AppTheme.nearlyWhite,
+          ),
+        );
+        categoryList!.add(screen);
+      }
+      else if (screen.screenName.compareTo(ClockRecordScreen.id) == 0) {
+        Category screen = Category(
+          imagePath: 'assets/design_course/Loan Request Icon.png',
+          index: Const.LOCALE_KEY_MY_LOANS,
+          title:
+              AppTranslations.of(context)!.text(Const.LOCALE_KEY_MY_LOANS),
+          lessonCount: 24,
+          money: 25,
+          rating: 4.3,
+          icon: Icon(
+            Icons.alarm_add,
+            color: AppTheme.nearlyWhite,
+          ),
+        );
+        categoryList!.add(screen);
+      }
+      else if (screen.screenName.compareTo(ExpenseRequestScreen.id) == 0) {
+        Category screen = Category(
+          imagePath: 'assets/design_course/expense.png',
+          index: Const.LOCALE_KEY_EXPENSE_REQUEST,
+          title:
+          AppTranslations.of(context)!.text(Const.LOCALE_KEY_EXPENSE_REQUEST),
+          lessonCount: 24,
+          money: 25,
+          rating: 4.3,
+          icon: Icon(
+            Icons.add,
+            color: AppTheme.nearlyWhite,
+          ),
+        );
+        categoryList!.add(screen);
+      }else if (screen.screenName.compareTo(ExtraWorkScreen.id) == 0) {
+        Category screen = Category(
+          imagePath: 'assets/design_course/extra_work.png',
+          index: Const.LOCALE_KEY_EXTRA_WORK_REQUEST,
+          title:
+          AppTranslations.of(context)!.text(Const.LOCALE_KEY_EXTRA_WORK_REQUEST),
+          lessonCount: 24,
+          money: 25,
+          rating: 4.3,
+          icon: Icon(
+            Icons.add,
+            color: AppTheme.nearlyWhite,
+          ),
+        );
+        categoryList!.add(screen);
       }
     }
-  }
+    }
 
   Future<bool> getData() async {
     await Future.delayed(Duration.zero, () {
@@ -137,18 +136,18 @@ class _CategoryListViewState extends State<CategoryListView>
     return true;
   }
 
-  String moveTo(Category item) {
-    if (item == null) return '';
-
-    if (item.index.compareTo(Const.LOCALE_KEY_VACATION) == 0) {
+  String? moveTo(Category item) {
+    if (item.index!.compareTo(Const.LOCALE_KEY_VACATION) == 0) {
       return VacationRequestScreen.id;
-    } else if (item.index.compareTo(Const.LOCALE_KEY_LEAVES) == 0) {
+    } else if (item.index!.compareTo(Const.LOCALE_KEY_LEAVES) == 0) {
       return LeaveRequestScreen.id;
-    }else if (item.index.compareTo(Const.LOCALE_KEY_CLOCK_RECORD) == 0) {
-      return ClockRecordScreen.id;
-    }else if (item.index.compareTo(Const.LOCALE_KEY_EXPENSE_REQUEST) == 0) {
+    }
+    else if (item.index!.compareTo(Const.LOCALE_KEY_MY_LOANS) == 0) {
+      return LoanRequestScreen.id;
+    }
+    else if (item.index!.compareTo(Const.LOCALE_KEY_EXPENSE_REQUEST) == 0) {
       return ExpenseRequestScreen.id;
-    }else if (item.index.compareTo(Const.LOCALE_KEY_EXTRA_WORK_REQUEST) == 0) {
+    }else if (item.index!.compareTo(Const.LOCALE_KEY_EXTRA_WORK_REQUEST) == 0) {
       return ExtraWorkScreen.id;
     }
   }
@@ -169,26 +168,26 @@ class _CategoryListViewState extends State<CategoryListView>
               return ListView.builder(
                 padding: const EdgeInsets.only(
                     top: 0, bottom: 0, right: 16, left: 16),
-                itemCount: categoryList.length,
+                itemCount: categoryList!.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
                   final int count =
-                      categoryList.length > 10 ? 10 : categoryList.length;
+                      categoryList!.length > 10 ? 10 : categoryList!.length;
                   final Animation<double> animation =
                       Tween<double>(begin: 0.0, end: 1.0).animate(
                           CurvedAnimation(
-                              parent: animationController,
+                              parent: animationController!,
                               curve: Interval((1 / count) * index, 1.0,
                                   curve: Curves.fastOutSlowIn)));
-                  animationController.forward();
+                  animationController!.forward();
 
                   return CategoryView(
-                    category: categoryList[index],
+                    category: categoryList![index],
                     animation: animation,
-                    animationController: animationController,
+                    animationController: animationController!,
                     callback: () {
                       // widget.callBack();
-                      Navigator.pushNamed(context, moveTo(categoryList[index]));
+                      Navigator.pushNamed(context, moveTo(categoryList![index])!);
                     },
                   );
                 },
@@ -203,32 +202,31 @@ class _CategoryListViewState extends State<CategoryListView>
 
 class CategoryView extends StatelessWidget {
   const CategoryView(
-      {Key key,
+      {Key? key,
       this.category,
       this.animationController,
       this.animation,
       this.callback})
       : super(key: key);
 
-  final VoidCallback callback;
-  final Category category;
-  final AnimationController animationController;
-  final Animation<dynamic> animation;
+  final VoidCallback? callback;
+  final Category? category;
+  final AnimationController? animationController;
+  final Animation<dynamic>? animation;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
+      animation: animationController!,
+      builder: (BuildContext? context, Widget? child) {
         return FadeTransition(
-          opacity: animation,
-          child: Transform(
+          opacity: animation as Animation<double>,          child: Transform(
             transform: Matrix4.translationValues(
-                100 * (1.0 - animation.value), 0.0, 0.0),
+                100 * (1.0 - animation!.value), 0.0, 0.0),
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
-                callback();
+                callback!();
               },
               child: SizedBox(
                 width: 200,
@@ -260,7 +258,7 @@ class CategoryView extends StatelessWidget {
                                             padding:
                                                 const EdgeInsets.only(top: 16),
                                             child: Text(
-                                              category.title,
+                                              category!.title,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -273,22 +271,7 @@ class CategoryView extends StatelessWidget {
                                           const Expanded(
                                             child: SizedBox(),
                                           ),
-                                          // Padding(
-                                          //   padding: const EdgeInsets.only(
-                                          //       bottom: 16, right: 16),
-                                          //   child: Container(
-                                          //     decoration: BoxDecoration(
-                                          //       color: AppTheme.nearlyBlue,
-                                          //       borderRadius:
-                                          //           const BorderRadius.all(
-                                          //               Radius.circular(8.0)),
-                                          //     ),
-                                          //     child: Padding(
-                                          //         padding:
-                                          //             const EdgeInsets.all(4.0),
-                                          //         child: category.icon),
-                                          //   ),
-                                          // ),
+
                                         ],
                                       ),
                                     ),
@@ -311,7 +294,7 @@ class CategoryView extends StatelessWidget {
                                   const BorderRadius.all(Radius.circular(16.0)),
                               child: AspectRatio(
                                   aspectRatio: 1.0,
-                                  child: Image.asset(category.imagePath)),
+                                  child: Image.asset(category!.imagePath)),
                             )
                           ],
                         ),

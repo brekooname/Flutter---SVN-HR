@@ -5,13 +5,13 @@ part 'new_leave_request.g.dart';
 @JsonSerializable(nullable: false)
 class NewLeaveRequest {
 
-  String leave_id;
+  String? leave_id;
 
-  String start_date;
+  String? start_date;
 
-  String end_date;
+  String? end_date;
 
-  String notes;
+  String? notes;
 
   NewLeaveRequest();
 

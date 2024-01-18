@@ -7,8 +7,8 @@ part 'approval_inbox_input_base_request.g.dart';
 @JsonSerializable(nullable: false)
 class ApprovalInboxInputBaseRequest{
 
-  String tokenId ;
-  ApprovalInboxInputRequest approvalObject;
+  String? tokenId ;
+  ApprovalInboxInputRequest? approvalObject;
 
 
    ApprovalInboxInputBaseRequest({this.tokenId, this.approvalObject});

@@ -5,13 +5,13 @@ part 'new_time_sheet_details_request.g.dart';
 @JsonSerializable(nullable: false)
 class NewTimeSheetDetailsRequest {
 
-  num start_time;
-  String status;
-  num end_time;
-  String description;
-  String employee_timesheet_id;
-  String project_id;
-  String row_id;
+  num? start_time;
+  String? status;
+  num? end_time;
+  String? description;
+  String? employee_timesheet_id;
+  String? project_id;
+  String? row_id;
 
   NewTimeSheetDetailsRequest({
       this.start_time,

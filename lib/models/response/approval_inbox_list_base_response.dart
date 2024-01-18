@@ -16,27 +16,27 @@ class ApprovalInboxListBaseResponse {
   Map<String, dynamic> toJson() => _$ApprovalInboxListBaseResponseToJson(this);
 
   @JsonKey(name: 'response')
-  String _response;
+  String? _response;
 
   @JsonKey(name: 'listOfApprovals')
-  List<ApprovalInboxListResponse> _listOfApprovals;
+  List<ApprovalInboxListResponse>? _listOfApprovals;
 
   @JsonKey(name: 'err_MSG')
-  String _err_MSG;
+  String? _err_MSG;
 
-  String get response => _response;
+  String get response => _response!;
 
   set response(String value) {
     _response = value;
   }
 
-  List<ApprovalInboxListResponse> get listOfApprovals => _listOfApprovals;
+  List<ApprovalInboxListResponse> get listOfApprovals => _listOfApprovals!;
 
   set listOfApprovals(List<ApprovalInboxListResponse> value) {
     _listOfApprovals = value;
   }
 
-  String get err_MSG => _err_MSG;
+  String get err_MSG => _err_MSG!;
 
   set err_MSG(String value) {
     _err_MSG = value;

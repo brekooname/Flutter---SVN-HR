@@ -7,9 +7,9 @@ part 'new_leave_base_request.g.dart';
 @JsonSerializable(nullable: false)
 class NewLeaveBaseRequest{
 
-  String  tokenID;
+  String?  tokenID;
 
-  NewLeaveRequest leaveTrans;
+  NewLeaveRequest? leaveTrans;
 
   factory NewLeaveBaseRequest.fromJson(Map<String, dynamic> json) => _$NewLeaveBaseRequestFromJson(json);
 

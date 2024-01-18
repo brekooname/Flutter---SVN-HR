@@ -4,11 +4,11 @@ part 'new_clock_check_request.g.dart';
 
 @JsonSerializable(nullable: false)
 class NewClockCheckRequest{
-  String tokenID;
+  String? tokenID;
 
-  num clockTime;
+  num? clockTime;
 
-  String clockType;
+  String? clockType;
 
 
   NewClockCheckRequest({this.tokenID, this.clockTime, this.clockType});

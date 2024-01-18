@@ -6,41 +6,40 @@ part of 'leave_transaction_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-LeaveTransactionResponse _$LeaveTransactionResponseFromJson(
-    Map<String, dynamic> json) {
+LeaveTransactionResponse _$LeaveTransactionResponseFromJson(Map<String, dynamic> json) {
   return LeaveTransactionResponse()
-    ..request_status = json['request_status'] as String
-    ..end_time = json['end_time'] as int
-    ..approver_id = json['approver_id'] as String
-    ..approve_date = json['approve_date'] as String
-    ..leave_displayValue = json['leave_displayValue'] as String
-    ..leave_code = json['leave_code'] as String
-    ..leave_id = json['leave_id'] as String
-    ..updatedate = json['updatedate'] as String
-    ..createdby = json['createdby'] as String
-    ..remark = json['remark'] as String
-    ..request_status_code = json['request_status_code'] as String
-    ..request_status_displayValue =
-        json['request_status_displayValue'] as String
-    ..row_id = json['row_id'] as String
-    ..start_time = json['start_time'] as int
-    ..request_date = json['request_date'] as String
-    ..approver_note = json['approver_note'] as String
-    ..end_date = json['end_date'] as String
-    ..start_date = json['start_date'] as String
-    ..employee_id = json['employee_id'] as String
-    ..trans_type = json['trans_type'] as String
-    ..trans_status_code = json['trans_status_code'] as String
-    ..trans_status_displayValue = json['trans_status_displayValue'] as String
-    ..trans_status = json['trans_status'] as String
-    ..createddate = json['createddate'] as String
-    ..permission_method = json['permission_method'] as String
-    ..end_time_String = json['end_time_String'] as String
-    ..start_time_String = json['start_time_String'] as String
-    ..approvalList = (json['approvalList'] as List)
-        .map((e) => ApprovalList.fromJson(e as Map<String, dynamic>))
-        .toList();
+    ..request_status = json['request_status'] as String? ?? ""
+    ..end_time = json['end_time'] as int? ?? 0
+    ..approver_id = json['approver_id'] as String? ?? ""
+    ..approve_date = json['approve_date'] as String? ?? ""
+    ..leave_displayValue = json['leave_displayValue'] as String? ?? ""
+    ..leave_code = json['leave_code'] as String? ?? ""
+    ..leave_id = json['leave_id'] as String? ?? ""
+    ..updatedate = json['updatedate'] as String? ?? ""
+    ..createdby = json['createdby'] as String? ?? ""
+    ..remark = json['remark'] as String? ?? ""
+    ..request_status_code = json['request_status_code'] as String? ?? ""
+    ..request_status_displayValue = json['request_status_displayValue'] as String? ?? ""
+    ..row_id = json['row_id'] as String? ?? ""
+    ..start_time = json['start_time'] as int? ?? 0
+    ..request_date = json['request_date'] as String? ?? ""
+    ..approver_note = json['approver_note'] as String? ?? ""
+    ..end_date = json['end_date'] as String? ?? ""
+    ..start_date = json['start_date'] as String? ?? ""
+    ..employee_id = json['employee_id'] as String? ?? ""
+    ..trans_type = json['trans_type'] as String? ?? ""
+    ..trans_status_code = json['trans_status_code'] as String? ?? ""
+    ..trans_status_displayValue = json['trans_status_displayValue'] as String? ?? ""
+    ..trans_status = json['trans_status'] as String? ?? ""
+    ..createddate = json['createddate'] as String? ?? ""
+    ..permission_method = json['permission_method'] as String? ?? ""
+    ..end_time_String = json['end_time_String'] as String? ?? ""
+    ..start_time_String = json['start_time_String'] as String? ?? ""
+    ..approvalList = (json['approvalList'] as List<dynamic>?)
+        ?.map((e) => ApprovalList.fromJson(e as Map<String, dynamic>))
+        .toList() ?? [];
 }
+
 
 Map<String, dynamic> _$LeaveTransactionResponseToJson(
         LeaveTransactionResponse instance) =>

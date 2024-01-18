@@ -9,22 +9,23 @@ part of 'notifications_object_response.dart';
 NotificationObjectResponse _$NotificationObjectResponseFromJson(
     Map<String, dynamic> json) {
   return NotificationObjectResponse()
-    ..message = json['message'] as String
-    ..notification_date = json['notification_date'] as String
-    ..object_type = json['object_type'] as String
-    ..row_id = json['row_id'] as String
-    ..action_user_id = json['action_user_id'] as String
-    ..action_user_name = json['action_user_name'] as String
-    ..target_user_id = json['target_user_id'] as String
-    ..issue_date = json['issue_date'] as String
-    ..reason = json['reason'] as String
-    ..closed_flg = json['closed_flg'] as String
-    ..type = json['type'] as String
-    ..requestStatus = json['requestStatus'] as String
-    ..employeeName = json['employeeName'] as String
-    ..employmentClass = json['employmentClass'] as String
-    ..employeeNumber = json['employeeNumber'] as String;
+    ..message = json['message'] as String? ?? 'Default Message'
+    ..notification_date = json['notification_date'] as String? ?? 'Default Date'
+    ..object_type = json['object_type'] as String? ?? 'Default Object Type'
+    ..row_id = json['row_id'] as String? ?? 'Default Row ID'
+    ..action_user_id = json['action_user_id'] as String? ?? 'Default Action User ID'
+    ..action_user_name = json['action_user_name'] as String? ?? 'Default Action User Name'
+    ..target_user_id = json['target_user_id'] as String? ?? 'Default Target User ID'
+    ..issue_date = json['issue_date'] as String? ?? 'Default Issue Date'
+    ..reason = json['reason'] as String? ?? 'Default Reason'
+    ..closed_flg = json['closed_flg'] as String? ?? 'Default Closed Flag'
+    ..type = json['type'] as String? ?? 'Default Type'
+    ..requestStatus = json['requestStatus'] as String? ?? 'Default Request Status'
+    ..employeeName = json['employeeName'] as String? ?? 'Default Employee Name'
+    ..employmentClass = json['employmentClass'] as String? ?? 'Default Employment Class'
+    ..employeeNumber = json['employeeNumber'] as String? ?? 'Default Employee Number';
 }
+
 
 Map<String, dynamic> _$NotificationObjectResponseToJson(
         NotificationObjectResponse instance) =>

@@ -1,13 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sven_hr/Screens/app_settings/server_connection_screen.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 
 class TimeSheetDetailsListItem {
-  num startTime;
-  num endTime;
-  String status;
-  String projectName;
-  num workingHour;
+  num? startTime;
+  num? endTime;
+  String? status;
+  String? projectName;
+  num? workingHour;
 
 
   TimeSheetDetailsListItem({this.startTime, this.endTime, this.status,
@@ -21,7 +21,7 @@ class TimeSheetDetailsListItem {
   }
 
   Color getRightColor() {
-    return AppTheme.kPrimaryColor;
+    return ModernTheme.textColor;
   }
 
 }

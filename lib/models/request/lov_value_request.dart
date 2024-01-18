@@ -4,8 +4,8 @@ part 'lov_value_request.g.dart';
 
 @JsonSerializable(nullable: false)
 class LovValuesRequest{
- final String tokenID;
-  String lovID;
+ final String? tokenID;
+  String? lovID;
 
  LovValuesRequest({this.tokenID});
 

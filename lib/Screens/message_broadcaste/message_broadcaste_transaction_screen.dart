@@ -1,14 +1,11 @@
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:sven_hr/Screens/message_broadcaste/message_broadcaste_controller.dart';
 import 'package:sven_hr/Screens/screen_loader.dart';
 import 'package:sven_hr/components/text_field_container.dart';
 import 'package:sven_hr/localization/app_translations.dart';
 import 'package:sven_hr/main.dart';
-import 'package:sven_hr/models/response/extra_work_transaction_response.dart';
 import 'package:sven_hr/models/response/message_broadcaste_response.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
@@ -24,10 +21,10 @@ class MessageBroadcasteScreen extends StatefulWidget {
 
 class _MessageBroadcasteScreenState extends State<MessageBroadcasteScreen>
     with TickerProviderStateMixin {
-  AnimationController animationController;
-  MessageBroadcasteController _broadcasteController;
-  String fromDate;
-  String toDate;
+  AnimationController? animationController;
+  MessageBroadcasteController? _broadcasteController;
+  String? fromDate;
+  String? toDate;
   bool showSpinner = false;
   @override
   void initState() {
@@ -39,7 +36,7 @@ class _MessageBroadcasteScreenState extends State<MessageBroadcasteScreen>
   }
 
   void getMessageBroadcasteList() async {
-    await _broadcasteController.getMessageBroadcasteList().then((value) {
+    await _broadcasteController!.getMessageBroadcasteList().then((value) {
       setState(() {
         print(value);
       });
@@ -55,7 +52,7 @@ class _MessageBroadcasteScreenState extends State<MessageBroadcasteScreen>
   Widget build(BuildContext context) {
     return ScreenLoader(
       screenName:
-          AppTranslations.of(context).text(Const.LOCALE_KEY_MY_ANNOUNCEMENTS),
+          AppTranslations.of(context)!.text(Const.LOCALE_KEY_MY_ANNOUNCEMENTS),
       screenWidget: MessageScreen(),
     );
   }
@@ -77,24 +74,24 @@ class _MessageBroadcasteScreenState extends State<MessageBroadcasteScreen>
                     shrinkWrap: true,
                     padding: const EdgeInsets.only(
                         top: 0, bottom: 0, right: 16, left: 16),
-                    itemCount: _broadcasteController.messageList.length,
+                    itemCount: _broadcasteController!.messageList.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (BuildContext context, int index) {
                       final int count =
-                          _broadcasteController.messageList.length > 10
+                          _broadcasteController!.messageList.length > 10
                               ? 10
-                              : _broadcasteController.messageList.length;
+                              : _broadcasteController!.messageList.length;
                       final Animation<double> animation =
                           Tween<double>(begin: 0.0, end: 1.0).animate(
                               CurvedAnimation(
-                                  parent: animationController,
+                                  parent: animationController!,
                                   curve: Interval((1 / count) * index, 1.0,
                                       curve: Curves.fastOutSlowIn)));
-                      animationController.forward();
+                      animationController!.forward();
 
                       return MessageItemView(
                         messageListItem:
-                            _broadcasteController.messageList[index],
+                            _broadcasteController!.messageList![index],
                         animation: animation,
                         animationController: animationController,
                         callback: () {
@@ -115,17 +112,17 @@ class _MessageBroadcasteScreenState extends State<MessageBroadcasteScreen>
 
 class MessageItemView extends StatelessWidget {
   const MessageItemView(
-      {Key key,
+      {Key? key,
       this.messageListItem,
       this.animationController,
       this.animation,
       this.callback})
       : super(key: key);
 
-  final VoidCallback callback;
-  final MessageBroadcasteResponse messageListItem;
-  final AnimationController animationController;
-  final Animation<dynamic> animation;
+  final VoidCallback? callback;
+  final MessageBroadcasteResponse? messageListItem;
+  final AnimationController? animationController;
+  final Animation<dynamic>? animation;
 
   Future _asyncConfirmDialog(BuildContext context) async {
     return await showDialog(
@@ -157,8 +154,8 @@ class MessageItemView extends StatelessWidget {
                     child: TextFieldContainer(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(messageListItem.message_text,style: TextStyle(color: Color(HexColor.getColorFromHex(
-                              messageListItem.message_color))),),
+                          child: Text(messageListItem!.message_text,style: TextStyle(color: Color(HexColor.getColorFromHex(
+                              messageListItem!.message_color))),),
                         )),
                   ),
                 ],
@@ -171,17 +168,17 @@ class MessageItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
+      animation: animationController!,
+      builder: (BuildContext? context, Widget? child) {
         return FadeTransition(
-          opacity: animation,
+          opacity: animation as Animation<double>,
           child: Transform(
             transform: Matrix4.translationValues(
-                100 * (1.0 - animation.value), 0.0, 0.0),
+                100 * (1.0 - animation!.value), 0.0, 0.0),
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
-                callback();
+                callback!();
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -206,9 +203,9 @@ class MessageItemView extends StatelessWidget {
                         border: Border.all(
                             width: 3,
                             color: Color(HexColor.getColorFromHex(
-                                messageListItem.message_color)).withOpacity(0.2)),
+                                messageListItem!.message_color)).withOpacity(0.2)),
                       ),
-                      child: messageListItem.getRightIcon(),
+                      child: messageListItem!.getRightIcon(),
                     ),
                     Expanded(
                       child: Column(
@@ -222,7 +219,7 @@ class MessageItemView extends StatelessWidget {
                               Icon(
                                 Icons.dynamic_feed,
                                 color:Color(HexColor.getColorFromHex(
-                                    messageListItem.message_color)),
+                                    messageListItem!.message_color)),
                                 size: 20,
                               ),
                               SizedBox(
@@ -230,12 +227,12 @@ class MessageItemView extends StatelessWidget {
                               ),
 
                               Text(
-                                  messageListItem.message_title != null
-                                      ? messageListItem.message_title
+                                  messageListItem!.message_title != null
+                                      ? messageListItem!.message_title
                                       : '',
                                   style: TextStyle(
                                       color:Color(HexColor.getColorFromHex(
-                                          messageListItem.message_color)),
+                                          messageListItem!.message_color)),
                                       fontSize: 13,
                                       letterSpacing: .3)),
                             ],
@@ -253,12 +250,12 @@ class MessageItemView extends StatelessWidget {
                                     icon: Icon(
                                       Icons.more_horiz,
                                       color: Color(HexColor.getColorFromHex(
-                                          messageListItem.message_color)),
+                                          messageListItem!.message_color)),
                                       size: 25,
                                     ),
                                     tooltip: 'search',
                                     onPressed: () {
-                                      _asyncConfirmDialog(context);
+                                      _asyncConfirmDialog(context!);
                                     }),
                               ],
                             ),

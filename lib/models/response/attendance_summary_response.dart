@@ -5,11 +5,11 @@ part 'attendance_summary_response.g.dart';
 
 @JsonSerializable(nullable: false)
 class AttendanceSummaryResponse {
-  String _rec_date;
+  String? _rec_date;
 
-  String _check_in;
+  String? _check_in;
 
-  String _check_out;
+  String? _check_out;
 
 
   AttendanceSummaryResponse();
@@ -20,19 +20,19 @@ class AttendanceSummaryResponse {
   Map<String, dynamic> toJson() => _$AttendanceSummaryResponseToJson(this);
 
 
-  String get check_out => _check_out;
+  String get check_out => _check_out!;
 
   set check_out(String value) {
     _check_out = value;
   }
 
-  String get check_in => _check_in;
+  String get check_in => _check_in!;
 
   set check_in(String value) {
     _check_in = value;
   }
 
-  String get rec_date => _rec_date;
+  String get rec_date => _rec_date!;
 
   set rec_date(String value) {
     _rec_date = value;

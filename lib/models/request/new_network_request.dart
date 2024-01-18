@@ -4,13 +4,13 @@ part 'new_network_request.g.dart';
 
 @JsonSerializable(nullable: false)
 class NewNetworkRequest {
-  String tokenId;
+  String? tokenId;
 
-  String connectionName;
+  String? connectionName;
 
-  String connectionIP;
+  String? connectionIP;
 
-  String connectionBSSID;
+  String? connectionBSSID;
 
   NewNetworkRequest(
       {this.tokenId,

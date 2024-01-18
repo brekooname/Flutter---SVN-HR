@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sven_hr/Screens/Login/login_screen.dart';
-import 'package:sven_hr/Screens/approval_inbox/models/approval_inbox_item_list.dart';
 import 'package:sven_hr/Screens/approval_inbox/request_details_screen.dart';
 import 'package:sven_hr/Screens/custom_drawer/notification_controller.dart';
 import 'package:sven_hr/Screens/custom_drawer/notifications_details.dart';
@@ -19,10 +17,11 @@ import 'package:sven_hr/models/response/notification_list_response.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 import 'package:sven_hr/utilities/constants.dart';
 
-import 'drawer_user_controller.dart';
+import '../app_settings/server_connection_screen.dart';
+
 
 class MenueTopBar extends StatefulWidget {
-  final String screenName;
+  final String? screenName;
 
   MenueTopBar({@required this.screenName});
 
@@ -32,15 +31,15 @@ class MenueTopBar extends StatefulWidget {
 
 class _MenueTopBarState extends State<MenueTopBar> {
   int counter = 0;
-  List<NotificationListResponse> notificationList;
+  List<NotificationListResponse>? notificationList;
   NotificationController _notificationController = NotificationController();
-  SharedPreferences prefs = null;
+  SharedPreferences? prefs = null;
   var newPasswordTextController;
   var oldPasswordTextController;
   var confirmedPasswordTextController;
   bool showSpinner = false;
   final _formKey = GlobalKey<FormState>();
-  EmployeeProfileController _employeeProfileController;
+  EmployeeProfileController? _employeeProfileController;
 
   @override
   void initState() {
@@ -51,10 +50,10 @@ class _MenueTopBarState extends State<MenueTopBar> {
   void getLastNotifications() async {
     await _notificationController.getLastNotifications().then((value) {
       setState(() {
-        if (value != null && value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
+        if (value!.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
           notificationList = _notificationController.notificationList;
-          if (notificationList != null && notificationList.length > 0) {
-            counter = notificationList.length;
+          if (notificationList!.length > 0) {
+            counter = notificationList!.length;
           } else {
             counter = 0;
           }
@@ -65,166 +64,156 @@ class _MenueTopBarState extends State<MenueTopBar> {
 
   void clearPref() async {
     prefs = await SharedPreferences.getInstance();
-    String _serverIP = prefs.getString(Const.SHARED_KEY_SERVER_IP);
-    String _port = prefs.getString(Const.SHARED_KEY_SERVER_PORT);
-    String _fullUrl = prefs.getString(Const.SHARED_KEY_FULL_HOST_URL);
+    String? _serverIP = prefs!.getString(Const.SHARED_KEY_SERVER_IP);
+    String? _port = prefs!.getString(Const.SHARED_KEY_SERVER_PORT);
+    String? _fullUrl = prefs!.getString(Const.SHARED_KEY_FULL_HOST_URL);
 
-    prefs.clear();
+    prefs!.clear();
 
-    prefs.setString(Const.SHARED_KEY_SERVER_IP, _serverIP);
-    prefs.setString(Const.SHARED_KEY_SERVER_PORT, _port);
-    prefs.setString(Const.SHARED_KEY_FULL_HOST_URL, _fullUrl);
+    prefs!.setString(Const.SHARED_KEY_SERVER_IP, _serverIP!);
+    prefs!.setString(Const.SHARED_KEY_SERVER_PORT, _port!);
+    prefs!.setString(Const.SHARED_KEY_FULL_HOST_URL, _fullUrl!);
   }
 
   void onItemSelected(String selected) async {
     prefs = await SharedPreferences.getInstance();
     if (selected.compareTo(Const.LOCALE_KEY_LOGOUT) == 0) {
-      Navigator.pop(context);
-      Navigator.pushNamed(context, LoginScreen.id);
-      clearPref();
+      bool confirmLogout = await _showLogoutConfirmationDialog(context);
+      if (confirmLogout) {
+        Navigator.pop(context);
+        Navigator.pushNamed(context, LoginScreen.id);
+
+        // clearPref();
+      }
     } else if (selected.compareTo(Const.LOCALE_KEY_CHANGE_PASSWORD) == 0) {
       await _changePasswordDialog(context);
     }
   }
 
   Future _changePasswordDialog(BuildContext context) async {
-    newPasswordTextController = new TextEditingController();
-    oldPasswordTextController = new TextEditingController();
-    confirmedPasswordTextController = new TextEditingController();
+    newPasswordTextController = TextEditingController();
+    oldPasswordTextController = TextEditingController();
+    confirmedPasswordTextController = TextEditingController();
+
     return await showDialog(
-        context: context,
-        builder: (ctx) {
-          return AlertDialog(
-            content: Container(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          content: Container(
+            decoration: BoxDecoration(
               color: AppTheme.white,
-              height: MediaQuery.of(context).size.height / 2,
-              width: MediaQuery.of(context).size.width,
-              child: ModalProgressHUD(
-                inAsyncCall: showSpinner,
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: Form(
-                    key: _formKey,
-                    autovalidateMode: AutovalidateMode.disabled,
-                    child: Column(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(
-                                  Icons.close,
-                                  color: AppTheme.kPrimaryColor,
-                                ),
-                                tooltip: 'back',
-                                hoverColor: AppTheme.kPrimaryColor,
-                                splashColor: AppTheme.kPrimaryColor,
-                                onPressed: () async {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              const SizedBox(
-                                width: 6,
-                              ),
-                              Text(
-                                AppTranslations.of(context)
-                                    .text(Const.LOCALE_KEY_CHANGE_PASSWORD),
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                  letterSpacing: 0.27,
-                                  color: AppTheme.kPrimaryColor,
-                                ),
-                              ),
-                            ],
+              borderRadius: BorderRadius.circular(15),
+            ),
+            // Adjust the height as needed or remove the height constraint
+            // height: MediaQuery.of(context).size.height / 2,
+            width: MediaQuery.of(context).size.width,
+            child: ModalProgressHUD(
+              inAsyncCall: showSpinner,
+              child: SingleChildScrollView( // Added SingleChildScrollView
+                child: Form(
+                  key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min, // Adjust size based on content
+                    children: [
+                      // Title and Close Button
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          icon: Icon(Icons.close, color: ModernTheme.accentColor),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Text(
+                          AppTranslations.of(context)!.text(Const.LOCALE_KEY_CHANGE_PASSWORD),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: ModernTheme.accentColor,
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Flexible(
-                          flex: 1,
-                          child: TextFieldContainer(
-                            child: RoundedPasswordField(
-                              textController: oldPasswordTextController,
-                              text: AppTranslations.of(context)
-                                  .text(Const.LOCALE_KEY_OLD_PASSWORD),
+                      ),
+                      // Password Fields
+                      _buildPasswordField(
+                        controller: oldPasswordTextController,
+                        hint: AppTranslations.of(context)!.text(Const.LOCALE_KEY_OLD_PASSWORD),
+                      ),
+                      _buildPasswordField(
+                        controller: newPasswordTextController,
+                        hint: AppTranslations.of(context)!.text(Const.LOCALE_KEY_NEW_PASSWORD),
+                      ),
+                      _buildPasswordField(
+                        controller: confirmedPasswordTextController,
+                        hint: AppTranslations.of(context)!.text(Const.LOCALE_KEY_CONFRIMED_PASSWORD),
+                      ),
+                      // Change Password Button
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: ModernTheme.accentColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
+                              changePassword();
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            child: Text(
+                              AppTranslations.of(context)!.text(Const.LOCALE_KEY_CHANGE_PASSWORD),
+                              style: TextStyle(fontSize: 16, color: Colors.white),
                             ),
                           ),
                         ),
-                        Flexible(
-                          flex: 1,
-                          child: TextFieldContainer(
-                            child: RoundedPasswordField(
-                              textController: newPasswordTextController,
-                              text: AppTranslations.of(context)
-                                  .text(Const.LOCALE_KEY_NEW_PASSWORD),
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 1,
-                          child: TextFieldContainer(
-                            child: RoundedPasswordField(
-                              textController: confirmedPasswordTextController,
-                              text: AppTranslations.of(context)
-                                  .text(Const.LOCALE_KEY_CONFRIMED_PASSWORD),
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          child: GestureDetector(
-                            onTap: () {
-                              if (_formKey.currentState.validate()) {
-                                _formKey.currentState.save();
-                                changePassword();
-                              }
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 25, vertical: 10),
-                              child: Container(
-                                height: 48,
-                                decoration: BoxDecoration(
-                                  color: AppTheme.nearlyBlue,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(16.0),
-                                  ),
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(
-                                        color: AppTheme.nearlyBlue
-                                            .withOpacity(0.5),
-                                        offset: const Offset(1.1, 1.1),
-                                        blurRadius: 10.0),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    AppTranslations.of(context)
-                                        .text(Const.LOCALE_KEY_CHANGE_PASSWORD),
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
-                                      letterSpacing: 0.0,
-                                      color: AppTheme.nearlyWhite,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildPasswordField({TextEditingController? controller, String? hint}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: TextFormField(
+        controller: controller,
+        obscureText: true,
+        decoration: InputDecoration(
+          hintText: hint,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: ModernTheme.accentColor),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: ModernTheme.accentColor.withOpacity(0.7)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: ModernTheme.accentColor),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value!.isEmpty) {
+            return 'Please enter your password';
+          }
+          return null;
+        },
+      ),
+    );
   }
 
   void changePassword() async {
@@ -234,20 +223,18 @@ class _MenueTopBarState extends State<MenueTopBar> {
     // oldPasswordTextController = new TextEditingController();
     // confirmedPasswordTextController = new TextEditingController();
 
-    await _employeeProfileController
+    await _employeeProfileController!
         .changePasswordRequest(
             oldPassword: oldPasswordTextController.text,
             newPassword: newPasswordTextController.text,
             confirmedPassword: confirmedPasswordTextController.text)
         .then((value) {
-      if (value == null) {
-        ToastMessage.showErrorMsg(Const.REQUEST_FAILED);
-      } else if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
-        ToastMessage.showSuccessMsg(Const.CHANGE_PASSWORD_SUCCESSFULLY);
-        Navigator.pop(context);
-      } else {
-        ToastMessage.showErrorMsg(value);
-      }
+      if (value.compareTo(Const.SYSTEM_SUCCESS_MSG) == 0) {
+      ToastMessage.showSuccessMsg(Const.CHANGE_PASSWORD_SUCCESSFULLY);
+      Navigator.pop(context);
+    } else {
+      ToastMessage.showErrorMsg(value);
+    }
       showSpinner = false;
       setState(() {});
     });
@@ -255,237 +242,237 @@ class _MenueTopBarState extends State<MenueTopBar> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      // height: AppBar().preferredSize.height,
-      child: Container(
-        height: AppBar().preferredSize.height,
-        width: double.infinity,
-        decoration: BoxDecoration(
-            color: AppTheme.kPrimaryColor.withOpacity(0.7),
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(0),
-                bottomRight: Radius.circular(0))),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 1),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 8, left: 8),
-                child: Container(
-                  width: AppBar().preferredSize.height - 8,
-                  height: AppBar().preferredSize.height - 8,
-                ),
-              ),
-              Expanded(
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Text(
-                      this.widget.screenName,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: AppTheme.nearlyWhite,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 8,
-                ),
-                child: Container(
-                  width: AppBar().preferredSize.height - 8,
-                  height: AppBar().preferredSize.height - 8,
-                  child: Stack(
-                    children: [
-                      PopupMenuButton<NotificationListResponse>(
-                        // overflow menu
+    return Container(
+      height: AppBar().preferredSize.height,
+      width: double.infinity,
+       color: Colors.grey.withOpacity(0.22),
+     child: Padding(
+       padding: const EdgeInsets.symmetric(horizontal: 1),
+       child: Row(
+         mainAxisAlignment: MainAxisAlignment.center,
+         crossAxisAlignment: CrossAxisAlignment.center,
+         children: <Widget>[
+           Padding(
+             padding: const EdgeInsets.only(top: 8, left: 8),
+             child: Container(
+               width: AppBar().preferredSize.height - 8,
+               height: AppBar().preferredSize.height - 8,
+             ),
+           ),
+           Expanded(
+             child: Center(
+               child: Padding(
+                 padding: const EdgeInsets.only(top: 4),
+                 child:
+                 Text(
+                   this.widget.screenName!,
+                   style: TextStyle(
+                     fontSize: 20,
+                     color: ModernTheme.textColor, // Updated to ModernTheme textColor
+                     fontWeight: FontWeight.w700,
+                   ),
+                 ),
+               ),
+             ),
+           ),
+           Padding(
+             padding: const EdgeInsets.only(top: 8),
+             child: Container(
+               width: AppBar().preferredSize.height,
+               height: AppBar().preferredSize.height,
+               child: Stack(
+                 children: [
+                   PopupMenuButton<NotificationListResponse>(
+                     onSelected: (choice) {
+                       setState(() {
+                         if (choice.type.compareTo(Const.NOTIFICATION_TYPE) == 0) {
+                           moveToNotificationDetailsScreen(choice);
+                         } else {
+                           moveToApprovalDetailsScreen(choice);
+                         }
+                       });
+                     },
+                     icon: Icon(Icons.notifications, color: ModernTheme.textColor, size: 28),
+                     itemBuilder: (BuildContext context) {
+                       return notificationList!.map((NotificationListResponse choice) {
+                         return PopupMenuItem<NotificationListResponse>(
+                           value: choice,
+                           child: Padding(
+                             padding: const EdgeInsets.all(4.0),
+                             child: Container(
+                               decoration: BoxDecoration(
+                                 color: ModernTheme.backgroundColor.withOpacity(0.9),
+                                 borderRadius: BorderRadius.circular(8),
+                                 border: Border.all(color: ModernTheme.accentColor, width: 1),
+                               ),
+                               child: ListTile(
+                                 leading: Icon(Icons.sd_card_alert_outlined, color: ModernTheme.textColor),
+                                 title: Text(
+                                   choice.name,
+                                   style: TextStyle(
+                                     color: ModernTheme.textColor,
+                                     fontWeight: FontWeight.bold,
+                                   ),
+                                 ),
+                                 subtitle: Text(
+                                   choice.requestedDate,
+                                   style: TextStyle(
+                                     color: ModernTheme.textColor.withOpacity(0.7),
+                                   ),
+                                 ),
+                               ),
+                             ),
+                           ),
+                         );
+                       }).toList();
+                     },
+                   ),
+                   counter != 0
+                       ? Positioned(
+                     right: 10,
+                     top: 10,
+                     child: Container(
+                       padding: EdgeInsets.all(2),
+                       decoration: BoxDecoration(
+                         color: Colors.red,
+                         borderRadius: BorderRadius.circular(6),
+                       ),
+                       constraints: BoxConstraints(
+                         minWidth: 18,
+                         minHeight: 18,
+                       ),
+                       child: Text(
+                         '$counter',
+                         style: TextStyle(
+                           color: Colors.white,
+                           fontSize: 10,
+                         ),
+                         textAlign: TextAlign.center,
+                       ),
+                     ),
+                   )
+                       : Container(),
+                 ],
+               ),
+             ),
+           ),
 
-                        onSelected: (choice) {
-                          setState(() {
-                            if (choice.type != null) {
-                              if (choice.type
-                                      .compareTo(Const.NOTIFICATION_TYPE) ==
-                                  0) {
-                                moveToNotificationDetailsScreen(choice);
-                              } else {
-                                moveToApprovalDetailsScreen(choice);
-                              }
-                            }
-                          });
-                        },
-                        icon:
-                            new Icon(Icons.notifications, color: Colors.white),
-                        itemBuilder: (BuildContext context) {
-                          return notificationList
-                              .map<PopupMenuItem<NotificationListResponse>>(
-                                  (NotificationListResponse choice) {
-                            return PopupMenuItem<NotificationListResponse>(
-                              value: choice,
-                              child: Container(
-                                child: ListTile(
-                                  leading: Icon(
-                                    Icons.sd_card_alert_outlined,
-                                    color: AppTheme.kPrimaryColor,
-                                  ),
-                                  title: Text(
-                                    choice.name,
-                                    style: TextStyle(
-                                        color: AppTheme.kPrimaryColor),
-                                  ),
-                                  subtitle: Text(choice.requestedDate),
-                                ),
-                              ),
-                            );
-                          }).toList();
-                        },
-                      ),
-                      counter != 0
-                          ? new Positioned(
-                              left: 25,
-                              top: 8,
-                              child: new Container(
-                                padding: EdgeInsets.all(2),
-                                decoration: new BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                constraints: BoxConstraints(
-                                  minWidth: 15,
-                                  minHeight: 15,
-                                ),
-                                child: Text(
-                                  '$counter',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 9,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            )
-                          : new Container()
-                    ],
-                  ),
-                ),
-              ),
-              // Padding(
-              //   padding: const EdgeInsets.only(top: 8, right: 8),
-              //   child: Container(
-              //     width: AppBar().preferredSize.height - 8,
-              //     height: AppBar().preferredSize.height - 8,
-              //     child: PopupMenuButton<String>(
-              //       // overflow menu
-              //
-              //       onSelected: (language) {
-              //         print(language);
-              //         newLocaleDelegate = AppTranslationsDelegate(
-              //             newLocale: Locale(languagesMap[language]));
-              //         MyApp.setLocale(context, Locale(languagesMap[language]));
-              //         setState(() {});
-              //       },
-              //       icon: new Icon(Icons.language, color: Colors.white),
-              //       itemBuilder: (BuildContext context) {
-              //         return languagesList
-              //             .map<PopupMenuItem<String>>((String choice) {
-              //           return PopupMenuItem<String>(
-              //             value: choice,
-              //             child: Text(choice),
-              //           );
-              //         }).toList();
-              //       },
-              //     ),
-              //   ),
-              // ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8, right: 8),
-                child: Container(
-                  width: AppBar().preferredSize.height - 8,
-                  height: AppBar().preferredSize.height - 8,
-                  child: PopupMenuButton<String>(
-                    // overflow menu
 
-                    onSelected: (value) {
-                      onItemSelected(value);
-                    },
-                    icon: new Icon(Icons.settings, color: Colors.white),
-                    itemBuilder: (BuildContext context) {
-                      return <PopupMenuEntry<String>>[
-                        PopupMenuItem<String>(
-                          value: Const.LOCALE_KEY_CHANGE_PASSWORD,
-                          child: RichText(
-                            text: TextSpan(children: [
-                              WidgetSpan(
-                                child: Icon(
-                                  Icons.lock_open,
-                                  size: 14,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              TextSpan(
-                                text: AppTranslations.of(context)
-                                    .text(Const.LOCALE_KEY_CHANGE_PASSWORD),
-                                style: TextStyle(color: Colors.blueGrey),
-                                // recognizer: TapGestureRecognizer()
-                                //   ..onTap = () async {
-                                //     await _changePasswordDialog(context);
-                                //   }
-                              ),
-                            ]),
-                          ),
-                        ),
-                        PopupSubMenuItem<String>(
-                          title: AppTranslations.of(context)
-                              .text(Const.LOCALE_KEY_LANGUAGE),
-                          items: languagesList,
-                          onSelected: (language) {
-                            print(language);
-                            newLocaleDelegate = AppTranslationsDelegate(
-                                newLocale: Locale(languagesMap[language]));
-                            MyApp.setLocale(
-                                context, Locale(languagesMap[language]));
-                            setState(() {});
-                          },
-                        ),
-                        PopupMenuItem<String>(
-                          value: Const.LOCALE_KEY_LOGOUT,
-                          child: RichText(
-                            text: TextSpan(children: [
-                              WidgetSpan(
-                                child: Icon(
-                                  Icons.logout,
-                                  size: 14,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              TextSpan(
-                                text: AppTranslations.of(context)
-                                    .text(Const.LOCALE_KEY_LOGOUT),
-                                style: TextStyle(color: Colors.blueGrey),
-                                // recognizer: TapGestureRecognizer()
-                                //   ..onTap = () async {
-                                //     await _changePasswordDialog(context);
-                                //   }
-                              ),
-                            ]),
-                          ),
-                        ),
-                      ];
-                    },
-                  ),
+           Padding(
+             padding: const EdgeInsets.only(top: 8, right: 8),
+             child: Container(
+               width: AppBar().preferredSize.height - 8,
+               height: AppBar().preferredSize.height - 8,
+               child: PopupMenuButton<String>(
+                 // overflow menu
+
+                 onSelected: (value) {
+                   onItemSelected(value);
+                 },
+                 icon: Icon(Icons.settings, color: ModernTheme.textColor),
+                 itemBuilder: (BuildContext context) {
+                   return <PopupMenuEntry<String>>[
+                     _buildModernPopupMenu(
+                       context: context,
+                       value: Const.LOCALE_KEY_CHANGE_PASSWORD,
+                       iconData: Icons.lock_open,
+                       textKey: Const.LOCALE_KEY_CHANGE_PASSWORD,
+                     ),
+                     PopupSubMenuItem<String>(
+                       title: AppTranslations.of(context)!.text(Const.LOCALE_KEY_LANGUAGE),
+                       items: languagesList,
+                       onSelected: (language) {
+    print(language);
+    newLocaleDelegate = AppTranslationsDelegate(
+    newLocale: Locale(languagesMap[language]));
+    MyApp.setLocale(
+    context, Locale(languagesMap[language]));
+    setState(() {});
+    },
+
+                     ),
+                     _buildModernPopupMenu(
+                       context: context,
+                       value: Const.LOCALE_KEY_LOGOUT,
+                       iconData: Icons.logout,
+                       textKey: Const.LOCALE_KEY_LOGOUT,
+                     ),
+                   ];
+                 },               ),
+             ),
+           ),
+         ],
+       ),
+     ),
+      );
+  }
+  Future<bool> _showLogoutConfirmationDialog(BuildContext context) async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: Text(
+            'Confirm Logout',
+            style: TextStyle(
+              color: Colors.blueGrey,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to log out?',
+            style: TextStyle(color: Color(0xfffd0d00)),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: ModernTheme.accentColor),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: ModernTheme.accentColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
-            ],
+              child: Text(
+                'Logout',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    ) ?? false; // Return false if dialog is dismissed without any action
+  }
+  _buildModernPopupMenu({
+    required BuildContext context,
+    required String value,
+    required IconData iconData,
+    required String textKey,
+  }) {
+    return PopupMenuItem<String>(
+      value: value,
+      child: ListTile(
+        leading: Icon(iconData, color: ModernTheme.accentColor),
+        title: Text(
+          AppTranslations.of(context)!.text(textKey),
+          style: TextStyle(
+              color:  Colors.blueGrey
           ),
         ),
       ),
     );
   }
-
   void moveToApprovalDetailsScreen(NotificationListResponse choice) {
     ApprovalInboxListResponse item = ApprovalInboxListResponse();
     item.title_name = choice.name;
@@ -539,16 +526,16 @@ class PopupSubMenuItem<T> extends PopupMenuEntry<T> {
     this.onSelected,
   });
 
-  final String title;
-  final List<T> items;
-  final Function(T) onSelected;
+  final String? title;
+  final List<T>? items;
+  final Function(T)? onSelected;
 
   @override
   double get height =>
       kMinInteractiveDimension; //Does not actually affect anything
 
   @override
-  bool represents(T value) =>
+  bool represents(T? value) =>
       false; //Our submenu does not represent any specific value for the parent menu
 
   @override
@@ -562,38 +549,35 @@ class _PopupSubMenuState<T> extends State<PopupSubMenuItem<T>> {
     return PopupMenuButton<T>(
       tooltip: widget.title,
       child: Padding(
-        padding: const EdgeInsets.only(
-            left: 16.0, right: 8.0, top: 12.0, bottom: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
+
             Expanded(
               child: RichText(
-                text: TextSpan(children: [
-                  WidgetSpan(
-                    child: Icon(
-                      Icons.language,
-                      size: 14,
-                      color: Colors.black,
+                text: TextSpan(
+                  children: [
+                    WidgetSpan(
+                      child: Icon(
+                        Icons.language, // Globe icon
+                        color: ModernTheme.accentColor,
+                        size: 20,
+                      ),
                     ),
-                  ),
-                  TextSpan(
-                    text: widget.title,
-                    style: TextStyle(color: Colors.blueGrey),
-                    // recognizer: TapGestureRecognizer()
-                    //   ..onTap = () async {
-                    //     await _changePasswordDialog(context);
-                    //   }
-                  ),
-                ]),
+                    TextSpan(
+                      text: " ${widget.title}",
+                      style: TextStyle(
+                        color: Colors.blueGrey,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            Icon(
-              Icons.arrow_right,
-              size: 24.0,
-              color: Theme.of(context).iconTheme.color,
-            ),
+            Icon(Icons.arrow_forward_ios, color: ModernTheme.accentColor, size: 20),
           ],
         ),
       ),
@@ -608,19 +592,14 @@ class _PopupSubMenuState<T> extends State<PopupSubMenuItem<T>> {
         }
         widget.onSelected?.call(value);
       },
-      offset: Offset
-          .zero, //TODO This is the most complex part - to calculate the correct position of the submenu being populated. For my purposes is does not matter where exactly to display it (Offset.zero will open submenu at the poistion where you tapped the item in the parent menu). Others might think of some value more appropriate to their needs.
       itemBuilder: (BuildContext context) {
-        return widget.items
-            .map(
-              (item) => PopupMenuItem<T>(
-                value: item,
-                child: Text(item
-                    .toString()), //MEthod toString() of class T should be overridden to repesent something meaningful
-              ),
-            )
-            .toList();
+        return widget.items!.map((item) => PopupMenuItem<T>(
+          value: item,
+          child: Text(item.toString(), style: TextStyle(color:
+    Colors.blueGrey
+          ),
+          ),
+        )).toList();
       },
     );
-  }
-}
+  }}

@@ -5,11 +5,11 @@ part 'time_sheet_request.g.dart';
 @JsonSerializable(nullable: false , explicitToJson: true)
 class TimeSheetRequest{
 
-  String tokenId;
+  String? tokenId;
 
-  String fromDate;
+  String? fromDate;
 
-  String toDate;
+  String? toDate;
 
   TimeSheetRequest({this.tokenId, this.fromDate, this.toDate});
 

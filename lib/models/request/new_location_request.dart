@@ -4,15 +4,15 @@ part 'new_location_request.g.dart';
 
 @JsonSerializable(nullable: false)
 class NewLocationRequest {
-  String tokenId;
+  String? tokenId;
 
-  String latitude;
+  String? latitude;
 
-  String longitude;
+  String? longitude;
 
-  String locationName;
+  String? locationName;
 
-  num locationRange;
+  num? locationRange;
 
   NewLocationRequest(
       {this.tokenId,

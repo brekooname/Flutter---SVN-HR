@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sven_hr/models/response/employee_vacation_response.dart';
 import 'package:sven_hr/utilities/app_theme.dart';
 
 class SingleSelectionListView extends StatefulWidget {
-  List<EmployeeVacationResponse> employeeVacations;
+  List<EmployeeVacationResponse>? employeeVacations;
 
   SingleSelectionListView({@required this.employeeVacations});
 
@@ -14,13 +13,13 @@ class SingleSelectionListView extends StatefulWidget {
 }
 
 class _SingleSelectionListViewState extends State<SingleSelectionListView> {
-  EmployeeVacationResponse selectedValue;
+  EmployeeVacationResponse? selectedValue;
 
   @override
   void initState() {
     super.initState();
-    if(widget.employeeVacations!=null&& !widget.employeeVacations.isEmpty)
-    selectedValue = widget.employeeVacations.first;
+    if(widget.employeeVacations!.isNotEmpty)
+    selectedValue = widget.employeeVacations!.first;
   }
 
   @override
@@ -53,24 +52,26 @@ class _SingleSelectionListViewState extends State<SingleSelectionListView> {
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                selectedValue = widget.employeeVacations[index];
+                selectedValue = widget.employeeVacations![index];
                 setState(() {});
               },
               child: Container(
-                color: selectedValue == widget.employeeVacations[index]
+                color: selectedValue == widget.employeeVacations![index]
                     ? AppTheme.kPrimaryColor.withOpacity(0.1)
                     : null,
                 child: Row(
                   children: <Widget>[
                     Radio(
-                      value: widget.employeeVacations[index],
+                      value: widget.employeeVacations![index],
                       groupValue: selectedValue,
-                      onChanged: (s) {
-                        selectedValue = s;
-                        setState(() {});
+                      onChanged: (EmployeeVacationResponse? value) {
+                        setState(() {
+                          selectedValue = value;
+                        });
                       },
                       activeColor: AppTheme.kPrimaryColor,
                     ),
+
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -78,7 +79,7 @@ class _SingleSelectionListViewState extends State<SingleSelectionListView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.employeeVacations[index].vacation_type_name,
+                            widget.employeeVacations![index].vacation_type_name,
                             style: AppTheme.subtitle,
                           ),
                           Row(
@@ -90,7 +91,7 @@ class _SingleSelectionListViewState extends State<SingleSelectionListView> {
                               ),
                               Text(
                                 widget
-                                    .employeeVacations[index].remaining_balance
+                                    .employeeVacations![index].remaining_balance
                                     .toString(),
                                 style: AppTheme.subtitle,
                               ),
@@ -104,7 +105,7 @@ class _SingleSelectionListViewState extends State<SingleSelectionListView> {
                                 style: AppTheme.caption,
                               ),
                               Text(
-                                widget.employeeVacations[index].due_balance.toStringAsFixed(2)
+                                widget.employeeVacations![index].due_balance.toStringAsFixed(2)
                                     .toString(),
                                 style: AppTheme.subtitle,
                               ),
@@ -118,7 +119,7 @@ class _SingleSelectionListViewState extends State<SingleSelectionListView> {
               ),
             );
           },
-          itemCount: widget.employeeVacations.length,
+          itemCount: widget.employeeVacations!.length,
         ),
       ),
     );

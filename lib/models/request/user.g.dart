@@ -8,11 +8,12 @@ part of 'user.dart';
 
 User _$UserFromJson(Map<String, dynamic> json) {
   return User(
-    username: json['username'] as String,
-    password: json['password'] as String,
-    netsuitFlag: json['netsuitFlag'] as bool,
+    username: json['username'] as String? ?? 'default_username',
+    password: json['password'] as String? ?? 'default_password',
+    netsuitFlag: json['netsuitFlag'] as bool? ?? false,
   );
 }
+
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'username': instance.username,
